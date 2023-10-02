@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Helping Hands</title>
+</head>
+<body>
+
+    <!--  This is an example sign in page using the login.php api -->
+    <h1>Helping Hands Sign In</h1>
+    
+    <form action="login.php" method="POST">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br><br>
+        
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
+        
+        <!-- Sign in as Volunteer button -->
+        <input type="submit" name="userType" value="Sign in as volunteer">
+        
+        <!-- Sign in as Organization button -->
+        <input type="submit" name="userType" value="Sign in as organization">
+    </form>
+</body>
+</html>
