@@ -1,0 +1,362 @@
+.posting-page {
+  background-color: #d1e4e9;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+}
+
+.posting-page .div {
+  background-color: #d1e4e9;
+  width: 1440px;
+  height: 1024px;
+  position: relative;
+}
+
+.posting-page .overlap {
+  position: absolute;
+  width: 474px;
+  height: 389px;
+  top: 168px;
+  left: 16px;
+  background-color: #e7feff;
+  border-radius: 10px;
+}
+
+.posting-page .text-wrapper {
+  position: absolute;
+  top: 224px;
+  left: 111px;
+  font-family: "Inter", Helvetica;
+  font-weight: 400;
+  color: #00000040;
+  font-size: 20px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.posting-page .overlap-group {
+  position: absolute;
+  width: 55px;
+  height: 55px;
+  top: 159px;
+  left: 236px;
+}
+
+.posting-page .rectangle {
+  position: absolute;
+  width: 6px;
+  height: 55px;
+  top: 0;
+  left: 0;
+  background-color: #d4efff;
+}
+
+.posting-page .rectangle-2 {
+  transform: rotate(-90deg);
+  position: absolute;
+  width: 6px;
+  height: 55px;
+  top: 0;
+  left: 0;
+  background-color: #d4efff;
+}
+
+.posting-page .text-wrapper-2 {
+  position: absolute;
+  top: 126px;
+  left: 638px;
+  font-family: "Inter", Helvetica;
+  font-weight: 700;
+  color: #000000;
+  font-size: 24px;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.posting-page .PFP-wrapper {
+  position: absolute;
+  width: 1440px;
+  height: 105px;
+  top: 0;
+  left: 0;
+  background-image: url(../img/header.png);
+  background-size: 100% 100%;
+}
+
+.posting-page .PFP {
+  position: relative;
+  width: 116px;
+  height: 50px;
+  top: 25px;
+  left: 1297px;
+}
+
+.posting-page .div-wrapper {
+  position: absolute;
+  width: 31px;
+  height: 14px;
+  top: 36px;
+  left: 47px;
+  background-color: #ffbcbc;
+  border-radius: 5px;
+}
+
+.posting-page .text-wrapper-3 {
+  position: absolute;
+  top: 0;
+  left: 4px;
+  font-family: "Roboto", Helvetica;
+  font-weight: 600;
+  color: #3a3a3a;
+  font-size: 12px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.posting-page .profile-pic {
+  position: absolute;
+  width: 114px;
+  height: 30px;
+  top: 0;
+  left: 0;
+  background-image: url(../img/homeaid-national-full-rgb-1.png);
+  background-size: cover;
+  background-position: 50% 50%;
+}
+
+.posting-page .overlap-2 {
+  position: absolute;
+  width: 904px;
+  height: 42px;
+  top: 168px;
+  left: 507px;
+  background-color: #e6fdff;
+  border-radius: 8px;
+}
+
+.posting-page .text-wrapper-4 {
+  position: absolute;
+  top: 8px;
+  left: 13px;
+  font-family: "Inter", Helvetica;
+  font-weight: 400;
+  color: #00000040;
+  font-size: 20px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.posting-page .overlap-3 {
+  position: absolute;
+  width: 904px;
+  height: 42px;
+  top: 222px;
+  left: 507px;
+  background-color: #e6fdff;
+  border-radius: 8px;
+}
+
+.posting-page .event-type-wrapper {
+  position: absolute;
+  width: 904px;
+  height: 42px;
+  top: 515px;
+  left: 507px;
+  background-color: #e6fdff;
+  border-radius: 8px;
+}
+
+.posting-page .overlap-4 {
+  position: absolute;
+  width: 228px;
+  height: 42px;
+  top: 276px;
+  left: 507px;
+  background-color: #e6fdff;
+  border-radius: 8px;
+}
+
+.posting-page .overlap-5 {
+  position: absolute;
+  width: 228px;
+  height: 42px;
+  top: 393px;
+  left: 507px;
+  background-color: #e6fdff;
+  border-radius: 8px;
+}
+
+.posting-page .event-categories-wrapper {
+  position: absolute;
+  width: 904px;
+  height: 42px;
+  top: 574px;
+  left: 507px;
+  background-color: #e6fdff;
+  border-radius: 8px;
+}
+
+.posting-page .event-description-wrapper {
+  position: absolute;
+  width: 904px;
+  height: 163px;
+  top: 638px;
+  left: 507px;
+  background-color: #e6fdff;
+  border-radius: 8px;
+}
+
+.posting-page .overlap-6 {
+  position: absolute;
+  width: 228px;
+  height: 42px;
+  top: 455px;
+  left: 507px;
+  background-color: #e6fdff;
+  border-radius: 8px;
+}
+
+.posting-page .overlap-7 {
+  position: absolute;
+  width: 477px;
+  height: 42px;
+  top: 572px;
+  left: 16px;
+  background-color: #e6fdff;
+  border-radius: 5px;
+}
+
+.posting-page .text-wrapper-5 {
+  position: absolute;
+  top: 10px;
+  left: 8px;
+  font-family: "Inter", Helvetica;
+  font-weight: 400;
+  color: #00000040;
+  font-size: 20px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.posting-page .overlap-8 {
+  position: absolute;
+  width: 477px;
+  height: 42px;
+  top: 697px;
+  left: 16px;
+  background-color: #e6fdff;
+  border-radius: 5px;
+}
+
+.posting-page .text-wrapper-6 {
+  position: absolute;
+  top: 8px;
+  left: 7px;
+  font-family: "Inter", Helvetica;
+  font-weight: 400;
+  color: #00000040;
+  font-size: 20px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.posting-page .overlap-9 {
+  position: absolute;
+  width: 477px;
+  height: 42px;
+  top: 759px;
+  left: 16px;
+  background-color: #e6fdff;
+  border-radius: 5px;
+}
+
+.posting-page .text-wrapper-7 {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  font-family: "Inter", Helvetica;
+  font-weight: 400;
+  color: #00000040;
+  font-size: 20px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.posting-page .overlap-10 {
+  position: absolute;
+  width: 477px;
+  height: 42px;
+  top: 636px;
+  left: 16px;
+  background-color: #e6fdff;
+  border-radius: 8px;
+}
+
+.posting-page .overlap-11 {
+  position: absolute;
+  width: 228px;
+  height: 42px;
+  top: 333px;
+  left: 507px;
+  background-color: #e6fdff;
+  border-radius: 8px;
+}
+
+.posting-page .overlap-12 {
+  position: absolute;
+  width: 320px;
+  height: 64px;
+  top: 947px;
+  left: 1095px;
+}
+
+.posting-page .text-wrapper-8 {
+  position: absolute;
+  top: 12px;
+  left: 80px;
+  font-family: "Inter", Helvetica;
+  font-weight: 700;
+  color: #000000;
+  font-size: 24px;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.posting-page .p {
+  position: absolute;
+  top: 828px;
+  left: 56px;
+  font-family: "Inter", Helvetica;
+  font-weight: 400;
+  color: #000000;
+  font-size: 20px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.posting-page .text-wrapper-9 {
+  position: absolute;
+  top: 863px;
+  left: 56px;
+  font-family: "Inter", Helvetica;
+  font-weight: 400;
+  color: #000000;
+  font-size: 20px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
