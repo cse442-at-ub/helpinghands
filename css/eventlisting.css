@@ -17,7 +17,7 @@
   position: absolute;
   width: 474px;
   height: 389px;
-  top: 168px;
+  top: 150px;
   left: 16px;
   background-color: #e7feff;
   border-radius: 10px;
@@ -25,8 +25,8 @@
 
 .posting-page .text-wrapper {
   position: absolute;
-  top: 224px;
-  left: 111px;
+  top: 175px;
+  left: 150px;
   font-family: "Inter", Helvetica;
   font-weight: 400;
   color: #00000040;
@@ -40,8 +40,7 @@
   position: absolute;
   width: 55px;
   height: 55px;
-  top: 159px;
-  left: 236px;
+  top: 395px;
 }
 
 .posting-page .rectangle {
@@ -360,3 +359,27 @@
   white-space: nowrap;
 }
 
+input[type="text"], textarea {
+  background-color : #e7feff; 
+  border: none;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+}
+
+input[type="submit"] {
+  background-color: #e7feff;
+  border-radius: 10px;
+}
+
+#display_image {
+  position: absolute;
+  width: 474px;
+  height: 389px;
+  border-radius: 10px;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  z-index: 1;
+}
