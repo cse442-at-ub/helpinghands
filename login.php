@@ -6,7 +6,7 @@ require 'connect.php'; // Connecting to database
 if (isset($_POST['username']) && isset($_POST['password'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
-    $userType = $_POST['$userType'];
+    $userType = $_POST['userType'];
 
 
     // Check if the credentials are in the table, $stmt is used to store the prepared statement
