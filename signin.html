@@ -16,12 +16,17 @@
         <!-- Password box -->
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required><br><br>
+
+        <!-- User type selection -->
+        <label>User Type:</label><br>
+        <input type="radio" id="volunteer" name="userType" value="volunteer" required>
+        <label for="volunteer">Volunteer</label><br>
         
-        <!-- Sign in as Volunteer button -->
-        <input type="submit" name="userType" value="Sign in as volunteer">
-        
-        <!-- Sign in as Organization button -->
-        <input type="submit" name="userType" value="Sign in as organization">
+        <input type="radio" id="organization" name="userType" value="organization" required>
+        <label for="organization">Organization</label><br>
+    
+        <!-- Sign in button -->
+        <input type="submit" value="Sign In">
     </form>
 </body>
 </html>
