@@ -18,11 +18,12 @@
                </div>
             </div>
             <div class="event-form">
-               <form>
+               <form id="event-listing-form" action="upload.php" method="POST" enctype="multipart/form-data">
                   <div class="overlap">
                      <div id="display_image"></div>
                      <div class="overlap-group">
-                        <input type="file" id="image_input" accept="image/*">
+                        <input type="file" id="image_input" name="image-input" accept="image/*">
+                        <img id="uploadedImage" src="" alt="Uploaded Image" style="display: none;" />
                      </div>
                      <p class="text-wrapper">Upload event image</p>
                   </div>
@@ -94,7 +95,7 @@
                   </p>
                   <div class="overlap-12">
                     <!--<div class="text-wrapper-8">Publish Event</div>-->
-                    <input type="submit" value="Create event" style="height:50px; width: 300px;">
+                    <input type="submit" name="submit" value="Create event" style="height:50px; width: 300px;">
                  </div>
                </form>
             </div>

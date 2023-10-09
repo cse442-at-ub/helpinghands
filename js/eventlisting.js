@@ -1,3 +1,4 @@
+//Displays the user uploaded image to the form
 const image_input = document.querySelector("#image_input");
 var upload_image = "";
 
