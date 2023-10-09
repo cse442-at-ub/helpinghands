@@ -10,14 +10,14 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
     $userType = $_POST['userType'];
 
     if ($userType === 'volunteer'){
-        $sql = "INSERT INTO volunteers (name, password) VALUES ('$name' , '$password')";
+        $sql = "INSERT INTO volunteers (username, password) VALUES ('$username' , '$password')";
         if($conn->query($sql) === TRUE){ // Checks if data was inserted into database by checking if the mysqli_result object is true
             echo "New record created successfully";
         } else {
             echo "Error";
          }
     } else if ($userType === 'organization'){
-        $sql = "INSERT INTO organizations (name, password) VALUES ('$name' , '$password')";
+        $sql = "INSERT INTO organizations (username, password) VALUES ('$username' , '$password')";
         if($conn->query($sql) === TRUE){ // Checks if data was inserted into database by checking if the mysqli_result object is true
             echo "New record created successfully";
         } else {
