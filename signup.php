@@ -14,14 +14,14 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
         if($conn->query($sql) === TRUE){ // Checks if data was inserted into database by checking if the mysqli_result object is true
             echo "New record created successfully";
         } else {
-            echo "Error";
+            echo "Error: " . $conn->error; // Displays error type
          }
     } else if ($userType === 'organization'){
         $sql = "INSERT INTO organizations (username, password) VALUES ('$username' , '$password')";
         if($conn->query($sql) === TRUE){ // Checks if data was inserted into database by checking if the mysqli_result object is true
             echo "New record created successfully";
         } else {
-            echo "Error";
+            echo "Error: " . $conn->error; // Displays error type
          }
     }
 
