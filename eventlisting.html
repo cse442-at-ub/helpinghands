@@ -2,30 +2,50 @@
 <html>
    <head>
       <meta content='width=device-width, initial-scale=1' name='viewport'/>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter">
       <link rel="stylesheet" href="/css/globals.css" />
       <link rel="stylesheet" href="css/eventlisting.css" />
    </head>
    <body>
+      <div class="banner">
+         <header>
+             <div class="wrapper">
+                 <div class="logo">
+                     <img src="Images/Helping Hands Logo.png" alt="Helping Hands Logo" style="margin-right:1vw;margin-top:1.75vh;" class="imgleft">
+                     <div class="logo-title">
+                         <a href="#"> HELPING <span class="multicolorlogo">HANDS</span></a>
+                     </div>
+                 </div>
+                 <div class="searchbar">
+                     <input type="text" placeholder="Search">
+                 </div>
+                 <nav>
+                     <a href="#">Settings</a>
+                     <a href="#">Notifications</a>
+                 </nav>
+                 <div class="profile">
+                     <a href="#"><img src="Images/ProfilePicture.png" alt="Profile Picture" style="border-radius:50vw;margin-top:1vh;" class="profilepic" ></a>
+                     <div class="behindpfp">
+                        4.98
+                     </div>
+                     <div class="activedot"></div>
+                 </div>
+             </div>
+         </header>
+     </div>
       <div class="posting-page">
          <div class="div">
             <div class="text-wrapper-2">Create event</div>
-            <div class="PFP-wrapper">
-               <div class="PFP">
-                  <div class="div-wrapper">
-                     <div class="text-wrapper-3">4.98</div>
-                  </div>
-                  <div class="profile-pic"></div>
-               </div>
-            </div>
             <div class="event-form">
                <form id="event-listing-form" action="upload.php" method="POST" enctype="multipart/form-data">
+                  <p class="text-wrapper">Upload event image</p>
                   <div class="overlap">
+                     <p class="text-wrapper">Upload event image</p>
                      <div id="display_image"></div>
                      <div class="overlap-group">
                         <input type="file" id="image_input" name="image-input" accept="image/*">
                         <img id="uploadedImage" src="" alt="Uploaded Image" style="display: none;" />
                      </div>
-                     <p class="text-wrapper">Upload event image</p>
                   </div>
                   <div class="overlap-2">
                      <div class="text-wrapper-4">

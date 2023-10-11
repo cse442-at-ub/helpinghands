@@ -21,6 +21,7 @@
   left: 16px;
   background-color: #e7feff;
   border-radius: 10px;
+  z-index: 1;
 }
 
 .posting-page .text-wrapper {
@@ -74,16 +75,6 @@
   line-height: normal;
 }
 
-.posting-page .PFP-wrapper {
-  position: absolute;
-  width: 1440px;
-  height: 105px;
-  top: 0;
-  left: 0;
-  background-image: url(../img/header.png);
-  background-size: 100% 100%;
-}
-
 .posting-page .PFP {
   position: relative;
   width: 116px;
@@ -120,16 +111,7 @@
   -webkit-box-orient: vertical;
 }
 
-.posting-page .profile-pic {
-  position: absolute;
-  width: 114px;
-  height: 30px;
-  top: 0;
-  left: 0;
-  background-image: url(../img/homeaid-national-full-rgb-1.png);
-  background-size: cover;
-  background-position: 50% 50%;
-}
+
 
 .posting-page .overlap-2 {
   position: absolute;
@@ -382,4 +364,160 @@ input[type="submit"] {
   background-size: cover;
   background-repeat: no-repeat;
   z-index: 1;
+}
+
+.wrapper{
+  width:90%;
+  margin: 0 auto;
+  white-space: nowrap;
+  display:flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items:center;
+  align-content:stretch;
+}
+
+header{
+  width:100%;
+  top:0;
+  height: 11vh;
+  background: rgb(245,255,254);
+  border-bottom-left-radius: 3vh;
+  border-bottom-right-radius: 3vh;
+  position: fixed;
+  box-shadow: .25vh .25vw gray;
+  z-index: 2;
+}
+
+.logo{ 
+  flex-shrink:0;
+  flex-grow:0;
+  width: 30%;
+  text-align: left;
+  margin-left: -2.5vw;
+  line-height: 11vh;
+  justify-self:flex-start;
+}
+
+.logo a{
+  text-decoration: none;
+  font-size: 1.3vw;
+  font-family: 'Inter';
+  color: rgb(68,172,190);
+}
+
+.logo-title {
+  margin-top:0vh;
+  padding:0;
+}
+
+.multicolorlogo {
+  color:#243841;
+}
+
+.searchbar {
+  margin-left:-9vw;
+  flex-grow:3;
+  background-color: #e9e9e900;
+}
+
+.searchbar a {
+  border-radius: 30px;
+  display:block;
+  color: rgb(0, 0, 0);
+  text-align: center;
+  padding: .875vh 1vw;
+  text-decoration: none;
+  font-size: 1vw;
+}
+
+.searchbar a:hover {
+  background-color: #D9EFF0;
+  color: black;
+}
+
+.searchbar a.active {
+  background-color: #2196F3;
+  color: white;
+}
+
+.searchbar input[type=text] {
+  width:30vw;
+  float: left;
+  padding: .5625vw;
+  border: none;
+  font-size: 1vw;
+  background-color: #D9EFF0;
+  border-radius:2vw;
+  color:#959595;
+}
+
+.imgleft {
+  float: left;
+  max-width:4vw;
+  min-width:4vw;
+}
+
+.profile {
+  justify-self: felx-end;
+  align-self: center;
+  margin-top:-2.5vh;
+  float:right;
+}
+
+.profile .profilepic {
+  border-radius:50vw;
+  z-index:5;
+  position:relative;
+}
+
+.profilepic {
+  max-width:4vw;
+  min-width:4vw;
+}
+
+.profile .profilepic span {
+  background: none;
+}
+
+.profile .behindpfp {
+  background-color: #FFBCBC;
+  border-radius:1vh;
+  width:70%;
+  margin-left:15%;
+  height:3.5vh;
+  line-height:5vh;
+  margin-top:-2vh;
+  font-size:0.75vw;
+}
+.profile .activedot {
+  background-color: #00E309;
+  position:relative;
+  z-index:6;
+  width:1vw;
+  height:1vw;
+  border-radius:100vw;
+  margin-left:75%;
+  margin-top:-40%;
+}
+
+nav {
+  flex-grow:0;
+  margin-right:1vw;
+  line-height: 5vh;
+}
+
+nav a{
+  text-decoration: none;
+  font-family: 'Inter';
+  font-size: 1.3vw;
+  color: #000;
+  padding: 1.3vh 0.625vw;
+}
+
+nav a:hover{
+  border-radius:3vw;
+  padding:.8vw;
+  background: #D1E4E9;
+  color: black;
 }
