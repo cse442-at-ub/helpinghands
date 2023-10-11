@@ -9,15 +9,18 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
     $password = $_POST['password'];
     $userType = $_POST['userType'];
 
+    $hash = password_hash($password, PASSWORD_DEFAULT); // Hashing the password
+
+
     if ($userType === 'volunteer'){
-        $sql = "INSERT INTO volunteers (username, password) VALUES ('$username' , '$password')";
+        $sql = "INSERT INTO volunteers (username, password) VALUES ('$username' , '$hash')";
         if($conn->query($sql) === TRUE){ // Checks if data was inserted into database by checking if the mysqli_result object is true
             echo "New record created successfully";
         } else {
             echo "Error: " . $conn->error; // Displays error type
          }
     } else if ($userType === 'organization'){
-        $sql = "INSERT INTO organizations (username, password) VALUES ('$username' , '$password')";
+        $sql = "INSERT INTO organizations (username, password) VALUES ('$username' , '$hash')";
         if($conn->query($sql) === TRUE){ // Checks if data was inserted into database by checking if the mysqli_result object is true
             echo "New record created successfully";
         } else {
