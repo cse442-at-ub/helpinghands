@@ -16,11 +16,11 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
     // Check the user type
     if ($userType === 'volunteer') {
 
-        $stmt = $mysqli->prepare("SELECT * FROM volunteers WHERE username = ?"); // Prepares SQL for a statement, the ? is the placeholder for the username
+        $stmt = $conn->prepare("SELECT * FROM volunteers WHERE username = ?"); // Prepares SQL for a statement, the ? is the placeholder for the username
 
     } elseif ($userType === 'organization') {
 
-        $stmt = $mysqli->prepare("SELECT * FROM organizations WHERE username = ?"); // Prepares SQL for a statement, the ? is the placeholder for the username
+        $stmt = $conn->prepare("SELECT * FROM organizations WHERE username = ?"); // Prepares SQL for a statement, the ? is the placeholder for the username
 
     } else {
         echo "Invalid user type";
@@ -67,8 +67,12 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
         echo "Invalid user type";
     }
 
-
-
+/*
+    $stmt->close();
+    $conn->close();
+    */
 }
+
+
 
 ?>
