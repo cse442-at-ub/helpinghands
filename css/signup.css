@@ -32,7 +32,7 @@ header
 {
     text-decoration: none;
     font-size: 30px;
-    margin: 10px;
+    margin-left: 10px;
     font-family: 'Inter';
     color: rgb(68,172,190);
     flex-shrink: 0;
@@ -76,7 +76,7 @@ nav a:hover
 {
     color: #1d1d1d;
     text-align: center;
-    font-family: 'Inter';
+    font-family: "Inter";
     font-size: 12px;
     position: absolute;
     width: 620px;
@@ -101,7 +101,7 @@ nav a:hover
 {
     text-decoration: none;
     font-size: 22px;
-    font-family: "Inter";
+    font-family: 'Inter';
     color: rgb(68,172,190);
     position: absolute;
     margin-top: 40px;
@@ -142,15 +142,15 @@ nav a:hover
 
 .selectionBox
 {
-    width: 75px;
+    width: 120px;
     height:4px;
-    transform:translate(0px, 3px);
+    transform:translate(79px, 3px);
     border-radius: 10px 10px 0px 0px;
     background: #47DEFF;
     pointer-events: none;
 }
 
-.InputBox
+.AccountBox .InputBox
 {
     text-align: center;
     width: 100%;
@@ -178,6 +178,12 @@ nav a:hover
     border-radius: 5px;
 }
 
+.AccountBox input::placeholder
+{
+    color: black;
+    opacity: 20%;
+}
+
 .accountCheck
 {
     width: 110px;
@@ -197,13 +203,7 @@ nav a:hover
     height: 18px;
 }
 
-.AccountBox input::placeholder
-{
-    color: black;
-    opacity: 20%;
-}
-
-.AccountBox #signin
+.AccountBox #signup
 {
     width: 295px;
     height: 49px;
@@ -217,13 +217,13 @@ nav a:hover
     transition: 0.2s;
 }
 
-.AccountBox #signin:hover
+.AccountBox #signup:hover
 {
     background-color: #76ff21;
     transition: 0.3s;
 }
 
-.AccountBox #signin:active
+.AccountBox #signup:active
 {
     background-color: #4bc400;
     transition: 0.2s;
