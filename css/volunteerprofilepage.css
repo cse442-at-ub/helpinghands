@@ -15,6 +15,17 @@ header{
      justify-content: space-between;
     align-content: center;
 }
+.logo-title {
+    margin-top:0vh;
+    padding:0;
+    text-decoration: none;
+    font-size: 1.3vw;
+    font-family: 'Inter';
+    color: rgb(68,172,190);
+}
+.multicolorlogo {
+    color:#243841;
+}
 .left{
     width: 50%;
     display: flex;

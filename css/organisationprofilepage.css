@@ -233,6 +233,17 @@ nav ul li a{
     z-index: 0;
     background-color: #FFBCBC;
 }
+.logo-title {
+    margin-top:0vh;
+    padding:0;
+    text-decoration: none;
+    font-size: 1.3vw;
+    font-family: 'Inter';
+    color: rgb(68,172,190);
+}
+.multicolorlogo {
+    color:#243841;
+}
 .pepople_rating{
     display: flex;
     gap: 10px;
