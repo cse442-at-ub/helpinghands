@@ -2,6 +2,8 @@
 
 require 'connect.php'; // Connecting to database
 
+session_start(); // Creating session
+
 // Check if username, password, and user type are given using the POST method
 if (isset($_POST['username']) && isset($_POST['password'])) {
     $username = $_POST['username'];
@@ -41,7 +43,11 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
         if ($volunteer = $result->fetch_assoc()) { // If result is a row from the table, it is stored in $volunteer
                 // Verifying the password in the row that was fetched
                 if (password_verify($password, $volunteer['password'])) { 
-                    echo "Volunteer logged in successfully";
+
+                    // Storing username and userType in session
+                    $_SESSION['username'] = $username;
+                    $_SESSION['userType'] = $userType;
+                    echo $_SESSION['userType'] . " " . $_SESSION['username'] . " logged in successfully";
                 }
         }
 
@@ -54,7 +60,11 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
         if($organization = $result->fetch_assoc()) {  // If result is a row from the table, it is stored in $organization
             // Verifying the password in the row that was fetched
             if (password_verify($password, $organization['password'])) { 
-                echo "Organization logged in successfully";
+
+                // Storing username and userType in session
+                $_SESSION['username'] = $username;
+                $_SESSION['userType'] = $userType;
+                echo $_SESSION['userType'] . " " . $_SESSION['username'] . " logged in successfully";
             }
         }
 
@@ -73,6 +83,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
     */
 }
 
+// session_destroy(); // destroys session and clears all session data
 
 
 ?>
