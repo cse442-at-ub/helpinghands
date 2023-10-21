@@ -3,7 +3,7 @@
    <head>
       <title>ProfilePage</title>
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter">
-      <link rel="stylesheet" href="css\organizationedit.css">
+      <link rel="stylesheet" href="css\volunteeredit.css">
    </head>
    <body>
       <header>
@@ -31,11 +31,13 @@
       <div class="container">
          <form id="edit-profile-form" action="edit.php" method="POST" enctype="multipart/form-data">
             <div class="first_box">
-              <input type="file" id="imgInp" name="imgImp" accept="image/*">
+              <input type="file" id="imgInp" name="imgInp" accept="image/*">
                <img id="profilePic" src="Images/HomeAid-National.png"/>
             </div>
 
             <div class="second_box">
+               <h5>Name</h5>
+               <input type="text" id="profile-name" placeholder="enter your name here..." style="width:50vh; height:3vh">
                <h5>Description</h5>
                <textarea style="resize:none" name="edit-description" placeholder="enter your description here..." cols="70" rows="8"></textarea>
             </div>

@@ -191,10 +191,11 @@ body{
     text-align: center;
 }
 
-textarea {
+textarea, input[type="text"] {
     background-color : #E4E4E4; 
     border: none;
     z-index: 2;
+    border-radius: 10px;
 }
   
 input:focus, textarea:focus {
