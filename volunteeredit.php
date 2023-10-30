@@ -2,15 +2,23 @@
 <html>
    <head>
       <title>ProfilePage</title>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter">
       <link rel="stylesheet" href="css\volunteeredit.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter">
    </head>
    <body>
+      <?php
+         require 'connect.php';
+         session_start();
+         $username = $_SESSION['username'];
+         $getimg = mysqli_query($conn,"SELECT profile_image FROM volunteers WHERE username='$username'");
+         $rows=mysqli_fetch_array($getimg);
+         $img = $rows['profile_image'];
+      ?>
       <header>
          <div class="left">
             <img src="Images/Helping Hands Logo.png"/>
             <div class="logo-title">
-               <a> HELPING <span class="multicolorlogo">HANDS</span></a>
+               <a href="homepage.php"> HELPING <span class="multicolorlogo">HANDS</span></a>
             </div>
             <div class="searchbar" >
                <input type="text" placeholder="Search"/>
@@ -20,7 +28,7 @@
             <a href="#">Settings</a>
             <a href="#">Notifcations</a>
             <div class="img">
-               <img src="Images/HomeAid-National.png"/>
+               <img src="uploaded/<?php echo $img?>" alt="<?php echo $img ?>"/>
                <div class="rating">4.8</div>
             </div>
          </div>
@@ -32,7 +40,7 @@
          <form id="edit-profile-form" action="edit.php" method="POST" enctype="multipart/form-data">
             <div class="first_box">
               <input type="file" id="imgInp" name="imgInp" accept="image/*">
-               <img id="profilePic" src="Images/HomeAid-National.png"/>
+               <img id="profilePic" src="uploaded/<?php echo $img?>" alt="<?php echo $img ?>"/>
             </div>
 
             <div class="second_box">

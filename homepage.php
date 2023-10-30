@@ -6,13 +6,21 @@
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter">
    </head>
    <body>
+   <?php
+      require 'connect.php';
+      session_start();
+      $username = $_SESSION['username'];
+      $getimg = mysqli_query($conn,"SELECT profile_image FROM volunteers WHERE username='$username'");
+      $rows=mysqli_fetch_array($getimg);
+      $img = $rows['profile_image'];
+   ?>
       <div class="banner">
          <header>
             <div class="wrapper">
                <div class="logo">
                   <img src="Images/Helping Hands Logo.png" alt="Helping Hands Logo" style="margin-right:1vw;margin-top:1.75vh;" class="imgleft">
                   <div class="logo-title">
-                     <a href="#"> HELPING <span class="multicolorlogo">HANDS</span></a>
+                     <a href="homepage.php"> HELPING <span class="multicolorlogo">HANDS</span></a>
                   </div>
                </div>
                <div class="searchbar">
@@ -23,7 +31,7 @@
                   <a href="#">Notifications</a>
                </nav>
                <div class="profile">
-                  <a href="#"><img src="Images/ProfilePicture.png" alt="Profile Picture" style="border-radius:50vw;margin-top:1vh;" class="profilepic" ></a>
+                  <a href="volunteerprofilepage.php"><img src="uploaded/<?php echo $img?>" alt="<?php echo $img ?>" style="border-radius:50vw;margin-top:1vh;" class="profilepic" ></a>
                   <div class="behindpfp">
                      4.98
                   </div>

@@ -7,12 +7,21 @@
 </head>
 <body>
 
+<?php
+  require 'connect.php';
+  session_start();
+  $username = $_SESSION['username'];
+  $getimg = mysqli_query($conn,"SELECT profile_image FROM volunteers WHERE username='$username'");
+  $rows=mysqli_fetch_array($getimg);
+  $img = $rows['profile_image'];
+?>
+
 <header>
 
     <div class="left">
             <img src="Images/Helping Hands Logo.png"/>
             <div class="logo-title">
-                <a> HELPING <span class="multicolorlogo">HANDS</span></a>
+                <a href="homepage.php"> HELPING <span class="multicolorlogo">HANDS</span></a>
             </div>
             <div class="searchbar" >
                     <input type="text" placeholder="Search"/>
@@ -22,7 +31,7 @@
                     <a href="#">Settings</a>
                     <a href="#">Notifcations</a>
                     <div class="img">
-                    <img src="Images/ProfilePicture.png"/>
+                      <a href="volunteerprofilepage.php"><img src="uploaded/<?php echo $img?>" alt="<?php echo $img ?>"/>
                         <div class="online"></div>
                         <div class="rating">4.8</div>
                     </div>
@@ -46,14 +55,14 @@
                 <a hef="#">View History</a>
             </li>
             <li>
-              <a href="volunteeredit.html">Edit Profile</a>
+              <a href="volunteeredit.php">Edit Profile</a>
           </li>
         </ul>
     </nav>
     <div class="first_box">
         <div class="df">
         <div class="img">
-            <img src="Images/ProfilePicture.png"/>
+            <img src="uploaded/<?php echo $img?>" alt="<?php echo $img ?>"/>
                 <div class="online"></div>
                
             </div>
