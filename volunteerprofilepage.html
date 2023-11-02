@@ -114,8 +114,21 @@
               <button class="showall d_none" onclick="hideall(this)" data-box="comments" >Hide All</button>
             
     </div>
-    <div class="second_box hidden" id="comments">
-       <h2 class="history">Empty, You should volunter to fill this </h2>
+
+   <div class="second_box hidden" id="comments" style="display: block;">
+        <h1 style="font-family: 'Inter';">Leave a comment!</h1>
+        
+        <div class="commentSection">
+          <input type="text" id="comment-name" placeholder="Your Name" maxlength="50">
+          <textarea id="user-comment" placeholder="Your Comment (500 character limit)" maxlength="500"></textarea>
+          <button onclick="addComment()">Submit Comment</button>
+        </div>
+        <h1 style="margin-top:20px; font-family: 'Inter';">Comments:</h1>
+        <div class="CommentBar"></div>
+        <h1></h1>
+        <ul id="comment-list">
+          <!-- Comments will be created here -->
+        </ul>
     </div>
 
 
@@ -134,6 +147,23 @@
      el.previousElementSibling.classList.remove('d_none')
     id = el.getAttribute("data-box");
     document.getElementById(id).classList.add("hidden")
+  }
+</script>
+
+<script>
+  function addComment() {
+    var name = document.getElementById("comment-name").value;
+    var comment = document.getElementById("user-comment").value;
+    if (name != "" && comment != "")
+    {
+      var commentListItem = document.createElement("li");
+      commentListItem.innerHTML = `<strong>${name}:</strong> ${comment}`;
+
+      document.getElementById("comment-list").appendChild(commentListItem);
+
+      document.getElementById("comment-name").value = "";
+      document.getElementById("user-comment").value = "";
+    }
   }
 </script>
 
