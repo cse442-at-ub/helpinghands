@@ -11,8 +11,11 @@
          session_start();
          $username = $_SESSION['username'];
          $getimg = mysqli_query($conn,"SELECT profile_image FROM volunteers WHERE username='$username'");
+         $getrating = mysqli_query($conn, "SELECT rating FROM volunteers WHERE username='$username'");
          $rows=mysqli_fetch_array($getimg);
+         $rows_rating = mysqli_fetch_array($getrating);
          $img = $rows['profile_image'];
+         $rating = $rows_rating['rating'];
       ?>
       <header>
          <div class="left">
@@ -28,8 +31,8 @@
             <a href="#">Settings</a>
             <a href="#">Notifcations</a>
             <div class="img">
-               <img src="uploaded/<?php echo $img?>" alt="<?php echo $img ?>"/>
-               <div class="rating">4.8</div>
+               <img id="profile-image" src="uploaded/<?php echo $img?>" alt="<?php echo $img ?>" style="border-radius: 75px;"/>
+               <div class="rating"><?php echo htmlspecialchars_decode($rating)?></div>
             </div>
          </div>
       </header>
@@ -40,14 +43,14 @@
          <form id="edit-profile-form" action="edit.php" method="POST" enctype="multipart/form-data">
             <div class="first_box">
               <input type="file" id="imgInp" name="imgInp" accept="image/*">
-               <img id="profilePic" src="uploaded/<?php echo $img?>" alt="<?php echo $img ?>"/>
+               <img id="profilePic" src="uploaded/<?php echo $img?>" alt="<?php echo $img ?>" style="width: 50%; height: 50%"/>
             </div>
 
             <div class="second_box">
                <h5>Name</h5>
-               <input type="text" id="profile-name" placeholder="enter your name here..." style="width:50vh; height:3vh">
+               <input type="text" name = "profile-name" id="profile-name" placeholder="enter your name here..." style="width:50vh; height:3vh">
                <h5>Description</h5>
-               <textarea style="resize:none" name="edit-description" placeholder="enter your description here..." cols="70" rows="8"></textarea>
+               <textarea style="resize:none" name="edit-description" id="edit-description" placeholder="enter your description here..." cols="70" rows="8"></textarea>
             </div>
 
             <div class="overlap-12">

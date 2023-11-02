@@ -9,10 +9,22 @@ session_start();
 //$userType = $_SESSION['userType'];
 $username = $_SESSION['username'];
 
+if (isset($_POST['submit'])) {
+  $name = $_POST['profile-name'];
+  $desc = $_POST['edit-description'];
+
+  $sql = "UPDATE volunteers SET name = '$name' WHERE username = '$username'";
+  $sql = "UPDATE volunteers SET description = '$desc' WHERE username = '$username'";
+}
+
+
+
+
 if ($_FILES['imgInp']['error'] === UPLOAD_ERR_OK) {
   $file_name = basename($_FILES["imgInp"]["name"]);
   $target_dir = "uploaded/";
   $target_file = $target_dir . $file_name;
+
 
   if (move_uploaded_file($_FILES["imgInp"]["tmp_name"], $target_file)) {
     $sql = "UPDATE volunteers SET profile_image = '$file_name' WHERE username = '$username'";

@@ -12,8 +12,17 @@
   session_start();
   $username = $_SESSION['username'];
   $getimg = mysqli_query($conn,"SELECT profile_image FROM volunteers WHERE username='$username'");
-  $rows=mysqli_fetch_array($getimg);
+  $getname = mysqli_query($conn, "SELECT name FROM volunteers WHERE username='$username'");
+  $getrating = mysqli_query($conn, "SELECT rating FROM volunteers WHERE username='$username'");
+  $getdesc = mysqli_query($conn, "SELECT description FROM volunteers WHERE username='$username'");
+  $rows = mysqli_fetch_array($getimg);
+  $rows_name = mysqli_fetch_array($getname);
+  $rows_rating = mysqli_fetch_array($getrating);
+  $rows_description = mysqli_fetch_array($getdesc);
   $img = $rows['profile_image'];
+  $name = $rows_name['name'];
+  $rating = $rows_rating['rating'];
+  $desc = $rows_description['description'];
 ?>
 
 <header>
@@ -33,7 +42,7 @@
                     <div class="img">
                       <a href="volunteerprofilepage.php"><img src="uploaded/<?php echo $img?>" alt="<?php echo $img ?>"/>
                         <div class="online"></div>
-                        <div class="rating">4.8</div>
+                        <div class="rating"><?php echo htmlspecialchars_decode($rating)?></div>
                     </div>
                     
             
@@ -66,14 +75,14 @@
                 <div class="online"></div>
                
             </div>
-            <h1>Rob Roberts</h1>
+            <h1><?php echo htmlspecialchars_decode($name);?></h1>
             </div>
-            <div class="ratings">4.98/5</div>
+            <div class="ratings"><?php echo htmlspecialchars_decode($rating)?>/5</div>
     </div>
     <div class="second_box">
 
         <h5>Description</h5>
-        <p>I have no purpose other than to assist in other life</p>
+        <p><?php echo htmlspecialchars_decode($desc)?></p>
     </div>
     
     <div class="first_box mt_4">

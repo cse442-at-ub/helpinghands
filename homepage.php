@@ -11,8 +11,11 @@
       session_start();
       $username = $_SESSION['username'];
       $getimg = mysqli_query($conn,"SELECT profile_image FROM volunteers WHERE username='$username'");
+      $getrating = mysqli_query($conn, "SELECT rating FROM volunteers WHERE username='$username'");
       $rows=mysqli_fetch_array($getimg);
+      $rows_rating = mysqli_fetch_array($getrating);
       $img = $rows['profile_image'];
+      $rating = $rows_rating['rating'];
    ?>
       <div class="banner">
          <header>
@@ -33,7 +36,7 @@
                <div class="profile">
                   <a href="volunteerprofilepage.php"><img src="uploaded/<?php echo $img?>" alt="<?php echo $img ?>" style="border-radius:50vw;margin-top:1vh;" class="profilepic" ></a>
                   <div class="behindpfp">
-                     4.98
+                  <?php echo htmlspecialchars_decode($rating)?>
                   </div>
                   <div class="activedot"></div>
                </div>
