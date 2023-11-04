@@ -10,11 +10,11 @@
 <?php
   require 'connect.php';
   session_start();
-  $username = $_SESSION['username'];
-  $getimg = mysqli_query($conn,"SELECT profile_image FROM volunteers WHERE username='$username'");
-  $getname = mysqli_query($conn, "SELECT name FROM volunteers WHERE username='$username'");
-  $getrating = mysqli_query($conn, "SELECT rating FROM volunteers WHERE username='$username'");
-  $getdesc = mysqli_query($conn, "SELECT description FROM volunteers WHERE username='$username'");
+  $email = $_SESSION['email'];
+  $getimg = mysqli_query($conn,"SELECT profile_image FROM accounts WHERE email='$email'");
+  $getname = mysqli_query($conn, "SELECT name FROM accounts WHERE email='$email'");
+  $getrating = mysqli_query($conn, "SELECT rating FROM accounts WHERE email='$email'");
+  $getdesc = mysqli_query($conn, "SELECT description FROM accounts WHERE email='$email'");
   $rows = mysqli_fetch_array($getimg);
   $rows_name = mysqli_fetch_array($getname);
   $rows_rating = mysqli_fetch_array($getrating);

@@ -9,9 +9,9 @@
    <?php
       require 'connect.php';
       session_start();
-      $username = $_SESSION['username'];
-      $getimg = mysqli_query($conn,"SELECT profile_image FROM volunteers WHERE username='$username'");
-      $getrating = mysqli_query($conn, "SELECT rating FROM volunteers WHERE username='$username'");
+      $email = $_SESSION['email'];
+      $getimg = mysqli_query($conn,"SELECT profile_image FROM accounts WHERE email='$email'");
+      $getrating = mysqli_query($conn, "SELECT rating FROM accounts WHERE email='$email'");
       $rows=mysqli_fetch_array($getimg);
       $rows_rating = mysqli_fetch_array($getrating);
       $img = $rows['profile_image'];
