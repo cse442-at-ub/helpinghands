@@ -40,7 +40,7 @@
                     <a href="#">Settings</a>
                     <a href="#">Notifcations</a>
                     <div class="img">
-                      <a href="volunteerprofilepage.php"><img src="uploaded/<?php echo $img?>" alt="<?php echo $img ?>"/>
+                    <img src="uploaded/<?php echo $img?>" alt="<?php echo $img ?>" style="border-radius:50vw;margin-top:1vh; cursor:pointer;" onclick="redirectToPage('<?php echo $role; ?>')"/>
                         <div class="online"></div>
                         <div class="rating"><?php echo htmlspecialchars_decode($rating)?></div>
                     </div>
@@ -154,6 +154,7 @@
     document.getElementById(id).classList.add("hidden")
   }
 </script>
+<script src="js/redirect.js"></script>
 
 </body>
 </html>

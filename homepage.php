@@ -12,10 +12,13 @@
       $email = $_SESSION['email'];
       $getimg = mysqli_query($conn,"SELECT profile_image FROM accounts WHERE email='$email'");
       $getrating = mysqli_query($conn, "SELECT rating FROM accounts WHERE email='$email'");
+      $getrole = mysqli_query($conn,"SELECT userType FROM accounts WHERE email='$email'");
       $rows=mysqli_fetch_array($getimg);
       $rows_rating = mysqli_fetch_array($getrating);
+      $rows_role=mysqli_fetch_array($getrole);
       $img = $rows['profile_image'];
       $rating = $rows_rating['rating'];
+      $role = $rows_role['userType'];
    ?>
       <div class="banner">
          <header>
@@ -34,7 +37,7 @@
                   <a href="#">Notifications</a>
                </nav>
                <div class="profile">
-                  <a href="volunteerprofilepage.php"><img src="uploaded/<?php echo $img?>" alt="<?php echo $img ?>" style="border-radius:50vw;margin-top:1vh;" class="profilepic" ></a>
+                  <img src="uploaded/<?php echo $img?>" alt="<?php echo $img ?>" style="border-radius:50vw;margin-top:1vh; cursor:pointer;" class="profilepic" onclick="redirectToPage('<?php echo $role; ?>')">
                   <div class="behindpfp">
                   <?php echo htmlspecialchars_decode($rating)?>
                   </div>
@@ -148,5 +151,6 @@
             <img src="Images/HeavyLifting.png" alts="Stick figure lifing heavy box" class="warningimages">
          </div>
       </div>
+      <script src="js/redirect.js"></script>
    </body>
 </html>

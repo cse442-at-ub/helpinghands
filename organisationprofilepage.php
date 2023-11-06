@@ -10,10 +10,22 @@
 <?php
   require 'connect.php';
   session_start();
-  $username = $_SESSION['username'];
-  $getimg = mysqli_query($conn,"SELECT profile_image FROM volunteers WHERE username='$username'");
-  $rows=mysqli_fetch_array($getimg);
+  $email = $_SESSION['email'];
+  $getimg = mysqli_query($conn,"SELECT profile_image FROM accounts WHERE email='$email'");
+  $getname = mysqli_query($conn, "SELECT name FROM accounts WHERE email='$email'");
+  $getrating = mysqli_query($conn, "SELECT rating FROM accounts WHERE email='$email'");
+  $getdesc = mysqli_query($conn, "SELECT description FROM accounts WHERE email='$email'");
+  $getrole = mysqli_query($conn,"SELECT userType FROM accounts WHERE email='$email'");
+  $rows = mysqli_fetch_array($getimg);
+  $rows_name = mysqli_fetch_array($getname);
+  $rows_rating = mysqli_fetch_array($getrating);
+  $rows_description = mysqli_fetch_array($getdesc);
+  $rows_role=mysqli_fetch_array($getrole);
   $img = $rows['profile_image'];
+  $name = $rows_name['name'];
+  $rating = $rows_rating['rating'];
+  $desc = $rows_description['description'];
+  $role = $rows_role['userType'];
 ?>
 
 <header>
@@ -31,8 +43,8 @@
                     <a href="#">Settings</a>
                     <a href="#">Notifcations</a>
                     <div class="img">
-                    <img src="uploaded/<?php echo $img?>" alt="<?php echo $img ?>"/>
-                        <div class="rating">4.8</div>
+                    <img src="uploaded/<?php echo $img?>" alt="<?php echo $img ?>" style="border-radius:50vw;margin-top:1vh; cursor:pointer;" onclick="redirectToPage('<?php echo $role; ?>')"/>
+                        <div class="rating"><?php echo htmlspecialchars_decode($rating)?></div>
                     </div>
                     
             
@@ -59,13 +71,14 @@
         </ul>
     </nav>
     <div class="first_box">
-            <img src="uploaded/<?php echo $img?>" alt="<?php echo $img ?>"/>
-            <div class="ratings">4.92/5</div>
+            <img src="uploaded/<?php echo $img?>" alt="<?php echo $img ?>" style="height: 150px; width: auto"/>
+            <h1><?php echo htmlspecialchars_decode($name);?></h1>
+            <div class="ratings"><?php echo htmlspecialchars_decode($rating)?>/5</div>
     </div>
     <div class="second_box">
 
         <h5>Description</h5>
-        <p>HomeAid operates through 19 Affiliates in 13 states as a leading non-profit developer of housing and programmatic facilities for people experiencing or at risk of homelessness</p>
+        <p><?php echo htmlspecialchars_decode($desc)?></p>
     </div>
     
     <div class="first_box mt_4">
@@ -137,6 +150,7 @@
     document.getElementById(id).classList.add("hidden")
   }
 </script>
+<script src="js/redirect.js"></script>
 
 </body>
 </html>
