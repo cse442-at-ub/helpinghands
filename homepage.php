@@ -102,8 +102,7 @@
          if ($result->num_rows > 0){
             // outputs data into event body for each row
             while ($row = $result->fetch_assoc()) {
-               echo "<div class=\"post-body\"><post-header><div class=\"post-wrapper\"><div class=\"post-logo\">
-                     <img src=\"Images/HomeAid-National.png\" alts=\"HomeAidk Logo\" class=\"logocenter\"></div><a href=\"#\">...</a></div></post-header>";
+               echo "<div class=\"post-body\"><post-header><div class=\"post-wrapper\"><div class=\"post-logo\"><img src=\"Images/HomeAid-National.png\" alts=\"HomeAidk Logo\" class=\"logocenter\"></div><a href=\"#\">...</a></div></post-header>";
                echo "<div class=\"post-rating\"><p>4.92</p></div>";
                echo "<div class=\"post-description\"><p>" . $row["description"] . "</p></div>";
                echo "<post-infomatics><img src=\"Images/calendar.png\" alts=\"Calendar\" class=\"post-infomatics-images\"><div class=\"date\"><a>" . $row["startDate"] . " - " . $row["endDate"] ."</a></div>";
@@ -113,7 +112,7 @@
                echo "<div class=\"post-register\"><a>Register!</a></div>";
                echo "<div class=\"post-share\"><a>Share</a></div>";
                echo "<div class=\"post-save\"><a>Save for later</a></div>";
-               echo "<div class=\"post-warnings\"><img src=\"Images/673px-Wheelchair_symbol.svg.png\" alts=\"Disabled Symbol\" class=\"warningimages\"><img src=\"Images/warning-sign-arning-sign-colored-stroke-icon-34.png\" alts=\"No Smoking Symbol\" class=\"warningimages\"><img src=\"Images/HeavyLifting.png\" alts=\"Stick figure lifing heavy box\" class=\"warningimages\"></div></div>"
+               echo "<div class=\"post-warnings\"><img src=\"Images/673px-Wheelchair_symbol.svg.png\" alts=\"Disabled Symbol\" class=\"warningimages\"><img src=\"Images/warning-sign-arning-sign-colored-stroke-icon-34.png\" alts=\"No Smoking Symbol\" class=\"warningimages\"><img src=\"Images/HeavyLifting.png\" alts=\"Stick figure lifing heavy box\" class=\"warningimages\"></div></div>";
             }
          }
          else {
