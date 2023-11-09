@@ -4,79 +4,48 @@ require 'connect.php'; // Connecting to database
 
 session_start(); // Creating session
 
-// Check if username, password, and user type are given using the POST method
-if (isset($_POST['username']) && isset($_POST['password'])) {
-    $username = $_POST['username'];
+if(isset($_SESSION['message'])){
+    consoleLog($_SESSION['message']);
+    unset($_SESSION['message']);
+}
+
+// Check if email and password are given using the POST method
+if (isset($_POST['email']) && isset($_POST['password'])) {
+    $email = $_POST['email'];
     $password = $_POST['password'];
-    $userType = $_POST['userType'];
 
 
-    // Check if the credentials are in the table, $stmt is used to store the prepared statement
-   
-    // Username
+    // Check if the credentials are in the table
+    $stmt = $conn->prepare("SELECT * FROM accounts WHERE email = ?"); // Prepares SQL for a statement, the ? is the placeholder for the email
 
-    // Check the user type
-    if ($userType === 'volunteer') {
-
-        $stmt = $conn->prepare("SELECT * FROM volunteers WHERE username = ?"); // Prepares SQL for a statement, the ? is the placeholder for the username
-
-    } elseif ($userType === 'organization') {
-
-        $stmt = $conn->prepare("SELECT * FROM organizations WHERE username = ?"); // Prepares SQL for a statement, the ? is the placeholder for the username
-
-    } else {
-        echo "Invalid user type";
-    }
-    
-
-    $stmt->bind_param('s', $username); // binding the username variable to the statement as a string, this prevents SQL injection
+    $stmt->bind_param('s', $email); // binding the username variable to the statement as a string, this prevents SQL injection
 
     $stmt->execute(); // Executes the now prepared statement
 
     $result = $stmt->get_result(); // Stores result of the exectued statement
 
-
-    // Password
-
-    // Check the user type
-    if($userType === 'volunteer'){
-        if ($volunteer = $result->fetch_assoc()) { // If result is a row from the table, it is stored in $volunteer
+        if ($account = $result->fetch_assoc()) { // If result is a row from the table, it is stored in $account
                 // Verifying the password in the row that was fetched
-                if (password_verify($password, $volunteer['password'])) { 
+                if (password_verify($password, $account['password'])) { 
+
+                    $userType = $account['userType'];
 
                     // Storing username and userType in session
-                    $_SESSION['username'] = $username;
+                    $_SESSION['email'] = $email;
                     $_SESSION['userType'] = $userType;
+                    //echo $_SESSION['userType'] . " " . $_SESSION['email'] . " logged in successfully";
+                    $_SESSION['message'] = $_SESSION['userType'] . " " . $_SESSION['email'] . " logged in succesfully"; // setting the console output as a message
                     header("Location: homepage.php");
+                    exit();
+                    
+                } else { // If password is incorrect
+                    $_SESSION['message'] = "Incorrect email or password";
+                    header("Locaiton: signin.html");
+                    exit();
                 }
+        } else{ // If the credentials arent in the table
+             consoleLog("Incorrect email or password");
         }
-
-        else{ // If the credentials arent in the table
-            echo "Incorrect username or password";
-        }
-    }
-
-    elseif($userType === 'organization'){
-        if($organization = $result->fetch_assoc()) {  // If result is a row from the table, it is stored in $organization
-            // Verifying the password in the row that was fetched
-            if (password_verify($password, $organization['password'])) { 
-
-                // Storing username and userType in session
-                $_SESSION['username'] = $username;
-                $_SESSION['userType'] = $userType;
-                header("Location: homepage.php");
-            }
-        }
-
-        else{ // If the credentials arent in the table
-            echo "Incorrect username or password";
-        }
-    }
-
-    else {
-        echo "Invalid user type";
-    }
-
 /*
     $stmt->close();
     $conn->close();
@@ -85,5 +54,9 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
 
 // session_destroy(); // destroys session and clears all session data
 
+
+function consoleLog($data){
+    echo "<script>console.log('$data');</script>";
+}
 
 ?>
