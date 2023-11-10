@@ -1,3 +1,4 @@
+// redirects the user to the volunteerprofile page or organizationprofile page based on their userType
 function redirectToPage(role) {
     if (role === 'volunteer') {
         window.location.href = 'volunteerprofilepage.php';
