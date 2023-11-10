@@ -4,10 +4,12 @@ require 'connect.php'; // Connecting to database
 
 session_start(); // Creating session
 
+/*
 if(isset($_SESSION['message'])){
     consoleLog($_SESSION['message']);
     unset($_SESSION['message']);
 }
+*/
 
 // Check if email and password are given using the POST method
 if (isset($_POST['email']) && isset($_POST['password'])) {
@@ -34,17 +36,17 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
                     $_SESSION['email'] = $email;
                     $_SESSION['userType'] = $userType;
                     //echo $_SESSION['userType'] . " " . $_SESSION['email'] . " logged in successfully";
-                    $_SESSION['message'] = $_SESSION['userType'] . " " . $_SESSION['email'] . " logged in succesfully"; // setting the console output as a message
+                    //$_SESSION['message'] = $_SESSION['userType'] . " " . $_SESSION['email'] . " logged in succesfully"; // setting the console output as a message
                     header("Location: homepage.php");
-                    exit();
+                    //exit();
                     
                 } else { // If password is incorrect
-                    $_SESSION['message'] = "Incorrect email or password";
+                    //$_SESSION['message'] = "Incorrect email or password";
                     header("Locaiton: signin.html");
-                    exit();
+                    //exit();
                 }
         } else{ // If the credentials arent in the table
-             consoleLog("Incorrect email or password");
+            // consoleLog("Incorrect email or password");
         }
 /*
     $stmt->close();

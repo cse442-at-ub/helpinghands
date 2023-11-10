@@ -42,6 +42,7 @@ if (isset($_POST['user']) && isset($_POST['eventID'])) {
         // Comparing
         if($numRegistrations >= $maxVolunteers){
             echo "Unfortunately, the maxinmum number of volunteers has been reached for this event";
+            exit;
         }
 
         
