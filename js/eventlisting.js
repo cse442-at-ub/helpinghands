@@ -1,4 +1,4 @@
-//Displays the user uploaded image to the form
+//Displays the user uploaded image to the event listing form
 const image_input = document.querySelector("#image_input");
 var upload_image = "";
 

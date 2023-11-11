@@ -7,12 +7,30 @@
 </head>
 <body>
 
+<?php
+  require 'connect.php';
+  session_start();
+  $email = $_SESSION['email'];
+  $getimg = mysqli_query($conn,"SELECT profile_image FROM accounts WHERE email='$email'");
+  $getname = mysqli_query($conn, "SELECT name FROM accounts WHERE email='$email'");
+  $getrating = mysqli_query($conn, "SELECT rating FROM accounts WHERE email='$email'");
+  $getdesc = mysqli_query($conn, "SELECT description FROM accounts WHERE email='$email'");
+  $rows = mysqli_fetch_array($getimg);
+  $rows_name = mysqli_fetch_array($getname);
+  $rows_rating = mysqli_fetch_array($getrating);
+  $rows_description = mysqli_fetch_array($getdesc);
+  $img = $rows['profile_image'];
+  $name = $rows_name['name'];
+  $rating = $rows_rating['rating'];
+  $desc = $rows_description['description'];
+?>
+
 <header>
 
     <div class="left">
             <img src="Images/Helping Hands Logo.png"/>
             <div class="logo-title">
-                <a> HELPING <span class="multicolorlogo">HANDS</span></a>
+                <a href="homepage.php"> HELPING <span class="multicolorlogo">HANDS</span></a>
             </div>
             <div class="searchbar" >
                     <input type="text" placeholder="Search"/>
@@ -22,9 +40,9 @@
                     <a href="#">Settings</a>
                     <a href="#">Notifcations</a>
                     <div class="img">
-                    <img src="Images/ProfilePicture.png"/>
+                    <img src="uploaded/<?php echo $img?>" alt="<?php echo $img ?>" style="border-radius:50vw;margin-top:1vh; cursor:pointer;" onclick="redirectToPage('<?php echo $role; ?>')"/>
                         <div class="online"></div>
-                        <div class="rating">4.8</div>
+                        <div class="rating"><?php echo htmlspecialchars_decode($rating)?></div>
                     </div>
                     
             
@@ -46,25 +64,25 @@
                 <a hef="#">View History</a>
             </li>
             <li>
-              <a href="volunteeredit.html">Edit Profile</a>
+              <a href="volunteeredit.php">Edit Profile</a>
           </li>
         </ul>
     </nav>
     <div class="first_box">
         <div class="df">
         <div class="img">
-            <img src="Images/ProfilePicture.png"/>
+            <img src="uploaded/<?php echo $img?>" alt="<?php echo $img ?>"/>
                 <div class="online"></div>
                
             </div>
-            <h1>Rob Roberts</h1>
+            <h1><?php echo htmlspecialchars_decode($name);?></h1>
             </div>
-            <div class="ratings">4.98/5</div>
+            <div class="ratings"><?php echo htmlspecialchars_decode($rating)?>/5</div>
     </div>
     <div class="second_box">
 
         <h5>Description</h5>
-        <p>I have no purpose other than to assist in other life</p>
+        <p><?php echo htmlspecialchars_decode($desc)?></p>
     </div>
     
     <div class="first_box mt_4">
@@ -136,6 +154,7 @@
     document.getElementById(id).classList.add("hidden")
   }
 </script>
+<script src="js/redirect.js"></script>
 
 </body>
 </html>

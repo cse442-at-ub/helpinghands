@@ -4,12 +4,18 @@ require 'connect.php'; // Connecting to database
 
 session_start(); // Creating session
 
+<<<<<<< HEAD
 /*
+=======
+>>>>>>> 02f14242739bdce8d30c55e27ca3477d3d605ea9
 if(isset($_SESSION['message'])){
     consoleLog($_SESSION['message']);
     unset($_SESSION['message']);
 }
+<<<<<<< HEAD
 */
+=======
+>>>>>>> 02f14242739bdce8d30c55e27ca3477d3d605ea9
 
 // Check if email and password are given using the POST method
 if (isset($_POST['email']) && isset($_POST['password'])) {
@@ -36,6 +42,7 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
                     $_SESSION['email'] = $email;
                     $_SESSION['userType'] = $userType;
                     //echo $_SESSION['userType'] . " " . $_SESSION['email'] . " logged in successfully";
+<<<<<<< HEAD
                     //$_SESSION['message'] = $_SESSION['userType'] . " " . $_SESSION['email'] . " logged in succesfully"; // setting the console output as a message
                     header("Location: homepage.php");
                     //exit();
@@ -47,6 +54,19 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
                 }
         } else{ // If the credentials arent in the table
             // consoleLog("Incorrect email or password");
+=======
+                    $_SESSION['message'] = $_SESSION['userType'] . " " . $_SESSION['email'] . " logged in succesfully"; // setting the console output as a message
+                    header("Location: homepage.php");
+                    exit();
+                    
+                } else { // If password is incorrect
+                    $_SESSION['message'] = "Incorrect email or password";
+                    header("Locaiton: signin.html");
+                    exit();
+                }
+        } else{ // If the credentials arent in the table
+             consoleLog("Incorrect email or password");
+>>>>>>> 02f14242739bdce8d30c55e27ca3477d3d605ea9
         }
 /*
     $stmt->close();
