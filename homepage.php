@@ -32,87 +32,53 @@
             </div>
          </header>
       </div>
-      <div class="post-body">
-         <post-header>
-            <div class="post-wrapper">
-               <div class="post-logo">
-                  <img src="Images/WeldFoodBank_Vertical CMYK 1.png" alts="Weld Food Bank Logo" class="logocenter">
-               </div>
-               <a href="#">...</a>
-            </div>
-         </post-header>
-         <div class="post-rating">
-            <p>
-               4.86
-            </p>
-         </div>
-         <div class="post-description">
-            <p>
-               Together, we can fill empty plates and hearts. Your time and energy are powerful
-               tools for change, and by volunteering, you become an essential ingredient in the 
-               recipe for a better world. Don't wait—take action today! Join us in the fight against 
-               hunger and experience the joy of knowing you've played a crucial role in making a 
-               brighter, more nourished future for all.
-            </p>
-         </div>
-         <post-infomatics>
-            <img src="Images/calendar.png" alts="Calendar" class="post-infomatics-images">
-            <div class="date">
-               <a>Oct 13,2023 - Oct 17,2023</a>
-            </div>
-            <img src="Images/clock-png-25767.png" alts="Clock" class="post-infomatics-images">
-            <div class="time">
-               <a>12pm - 4pm</a>
-            </div>
-            <img src="Images/people.png" alts="Five Stick figure torsos and heads" class="post-infomatics-images">
-            <div class="participants">
-               <a>26/30</a>
-            </div>
-         </post-infomatics>
-         <img src="Images/elyssa-kaplan-an-employee-at-world-central-kitchen-news-photo-1586376300 1.png" alts="Elyssa Kaplan and employee at world central kitchen" class="imagecenter">
-         <div class="post-register">
-            <a>Register!</a>
-         </div>
-         <div class="post-share">
-            <a>Share</a>
-         </div>
-         <div class="post-save">
-            <a>Save for later</a>
-         </div>
-         <div class="post-warnings">
-            <img src="Images/673px-Wheelchair_symbol.svg.png" alts="Disabled Symbol" class="warningimages">
-            <img src="Images/No_Smoking.svg.png" alts="No Smoking Symbol" class="warningimages">
-            <img src="Images/HeavyLifting.png" alts="Stick figure lifing heavy box" class="warningimages">
-         </div>
-      </div>
+      
       <?php
          require 'connect.php'; // Connecting to database
-      
-            // Checking if email is already in the database
-         $stmt = $conn->prepare('SELECT * FROM accounts WHERE email = ?');
-         $stmt->bind_param('s', $email);
-         $stmt->execute();
-         $result = $stmt->get_result();
 
          // Access Events Table
-         $sql = "SELECT startTime,endTime, startDate, endDate, description, volunteersRequired, username FROM events";
+         $sql = "SELECT image,startTime,endTime, startDate, endDate, eventID, description, volunteersRequired, username FROM events";
+         $sql2 = "SELECT eventID, user FROM eventRegistrations";
          $result = $conn->query($sql);
+         $result2 = $conn->query($sql2);
 
          // Makes sure there is actually an event to be listed
          if ($result->num_rows > 0){
             // outputs data into event body for each row
             while ($row = $result->fetch_assoc()) {
-               echo "<div class=\"post-body\"><post-header><div class=\"post-wrapper\"><div class=\"post-logo\"><img src=\"Images/HomeAid-National.png\" alts=\"HomeAidk Logo\" class=\"logocenter\"></div><a href=\"#\">...</a></div></post-header>";
-               echo "<div class=\"post-rating\"><p>4.92</p></div>";
+               $countregisteredUsers = 0;
+               while ($row2 = mysqli_fetch_assoc($result2)){
+                  if ($row2["eventID"]==$row["eventID"]){
+                     $countregisteredUsers++;
+                  }
+               }
+               //$user = $row["username"];
+               //$getrating = mysqli_query($conn,"SELECT rating FROM accounts WHERE name='$user'");
+               //$rows_rating = mysqli_fetch_array($getrating);
+               //$rating = $rows_rating['rating'];
+               //$getimg  = mysqli_queryy($conn,"SELECT profile_image FROm accounts WHERE name='$user'");
+               //$rows=mysqli_fetch_array($getimg);
+               //$img = $rows['profile_image'];
+               //echo "<div class=\"post-body\"><post-header><div class=\"post-wrapper\"><div class=\"post-logo\"><img src=" . $rows["profile_image"] . " class=\"logocenter\"></div><a href=\"#\">...</a></div></post-header>";
+               if ($row["username"]=="Homeaid"){
+                  echo "<div class=\"post-body\"><post-header><div class=\"post-wrapper\"><div class=\"post-logo\"><img src=\"Images/HomeAid-National.png\"class=\"logocenter\"></div><a href=\"#\">...</a></div></post-header>";
+                  echo "<div class=\"post-rating\"><p>4.92</p></div>";
+               }
+               if ($row["username"]=="WeldFoodBank") {
+                  echo "<div class=\"post-body\"><post-header><div class=\"post-wrapper\"><div class=\"post-logo\"><img src=\"Images/WeldFoodBank_Vertical CMYK 1.png\" alts=\"Weld Food Bank Logo\" class=\"logocenter\"></div><a href=\"#\">...</a></div></post-header>";
+                  echo "<div class=\"post-rating\"><p>4.86</p></div>";
+               }
+               //echo "<div class=\"post-rating\"><p>" . $rows_rating["rating"] . "</p></div>";
                echo "<div class=\"post-description\"><p>" . $row["description"] . "</p></div>";
                echo "<post-infomatics><img src=\"Images/calendar.png\" alts=\"Calendar\" class=\"post-infomatics-images\"><div class=\"date\"><a>" . $row["startDate"] . " - " . $row["endDate"] ."</a></div>";
                echo "<img src=\"Images/clock-png-25767.png\" alts=\"Clock\" class=\"post-infomatics-images\"><div class=\"time\"><a>" . $row["startTime"] . " - " . $row["endTime"] . "</a></div>";
-               echo "<img src=\"Images/people.png\" alts=\"Five Stick figure torsos and heads\" class=\"post-infomatics-images\"><div class=\"participants\"><a>32/" . $row["volunteersRequired"] . "</a></div></post-infomatics>";
-               echo "<img src=\"Images/ConstructionVolunteers.png\" alts=\"Construction workers at work\" class=\"imagecenter\">";
+               echo "<img src=\"Images/people.png\" alts=\"Five Stick figure torsos and heads\" class=\"post-infomatics-images\"><div class=\"participants\"><a>" . $countregisteredUsers . "/" . $row["volunteersRequired"] . "</a></div></post-infomatics>";
+               echo "<img src=\"" . $row["image"] . "\"class=\"imagecenter\">";
                echo "<div class=\"post-register\"><a>Register!</a></div>";
                echo "<div class=\"post-share\"><a>Share</a></div>";
                echo "<div class=\"post-save\"><a>Save for later</a></div>";
-               echo "<div class=\"post-warnings\"><img src=\"Images/673px-Wheelchair_symbol.svg.png\" alts=\"Disabled Symbol\" class=\"warningimages\"><img src=\"Images/warning-sign-arning-sign-colored-stroke-icon-34.png\" alts=\"No Smoking Symbol\" class=\"warningimages\"><img src=\"Images/HeavyLifting.png\" alts=\"Stick figure lifing heavy box\" class=\"warningimages\"></div></div>";
+               //echo "<div class=\"post-warnings\"><img src=\"Images/673px-Wheelchair_symbol.svg.png\" alts=\"Disabled Symbol\" class=\"warningimages\"><img src=\"Images/warning-sign-arning-sign-colored-stroke-icon-34.png\" alts=\"No Smoking Symbol\" class=\"warningimages\"><img src=\"Images/HeavyLifting.png\" alts=\"Stick figure lifing heavy box\" class=\"warningimages\"></div>";
+               echo "</div>";
             }
          }
          else {
@@ -121,58 +87,5 @@
          $conn->close();
       ?>
       
-
-      <div class="post-body">
-         <post-header>
-            <div class="post-wrapper">
-               <div class="post-logo">
-                  <img src="Images/HomeAid-National.png" alts="Weld Food Bank Logo" class="logocenter">
-               </div>
-               <a href="#">...</a>
-            </div>
-         </post-header>
-         <div class="post-rating">
-            <p>
-               4.92
-            </p>
-         </div>
-         <div class="post-description">
-            <p>
-               Together, we can transform empty spaces into places of refuge and compassion. 
-               Your dedication and effort will be the bricks and mortar of a brighter, more 
-               inclusive community. Don't hesitate—take a step towards making homelessness a
-               solvable issue. Join our team today, and let's build a better tomorrow for those who need it most.
-            </p>
-         </div>
-         <post-infomatics>
-            <img src="Images/calendar.png" alts="Calendar" class="post-infomatics-images">
-            <div class="date">
-               <a>Apr 08,2023 - Aug 03,2023</a>
-            </div>
-            <img src="Images/clock-png-25767.png" alts="Clock" class="post-infomatics-images">
-            <div class="time">
-               <a>8am - 1pm</a>
-            </div>
-            <img src="Images/people.png" alts="Five Stick figure torsos and heads" class="post-infomatics-images">
-            <div class="participants">
-               <a>32/50</a>
-            </div>
-         </post-infomatics>
-         <img src="Images/ConstructionVolunteers.png" alts="Elyssa Kaplan and employee at world central kitchen" class="imagecenter">
-         <div class="post-register">
-            <a>Register!</a>
-         </div>
-         <div class="post-share">
-            <a>Share</a>
-         </div>
-         <div class="post-save">
-            <a>Save for later</a>
-         </div>
-         <div class="post-warnings">
-            <img src="Images/673px-Wheelchair_symbol.svg.png" alts="Disabled Symbol" class="warningimages">
-            <img src="Images/warning-sign-arning-sign-colored-stroke-icon-34.png" alts="No Smoking Symbol" class="warningimages">
-            <img src="Images/HeavyLifting.png" alts="Stick figure lifing heavy box" class="warningimages">
-         </div>
-      </div>
    </body>
 </html>
