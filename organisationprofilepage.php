@@ -7,12 +7,40 @@
 </head>
 <body>
 
+HomepageUI
+=======
+<?php
+  require 'connect.php';
+  session_start();
+  $email = $_SESSION['email'];
+  $getimg = mysqli_query($conn,"SELECT profile_image FROM accounts WHERE email='$email'");
+  $getname = mysqli_query($conn, "SELECT name FROM accounts WHERE email='$email'");
+  $getrating = mysqli_query($conn, "SELECT rating FROM accounts WHERE email='$email'");
+  $getdesc = mysqli_query($conn, "SELECT description FROM accounts WHERE email='$email'");
+  $getrole = mysqli_query($conn,"SELECT userType FROM accounts WHERE email='$email'");
+  $rows = mysqli_fetch_array($getimg);
+  $rows_name = mysqli_fetch_array($getname);
+  $rows_rating = mysqli_fetch_array($getrating);
+  $rows_description = mysqli_fetch_array($getdesc);
+  $rows_role=mysqli_fetch_array($getrole);
+  $img = $rows['profile_image'];
+  $name = $rows_name['name'];
+  $rating = $rows_rating['rating'];
+  $desc = $rows_description['description'];
+  $role = $rows_role['userType'];
+?>
+
+ dev
 <header>
 
     <div class="left">
             <img src="Images/Helping Hands Logo.png"/>
             <div class="logo-title">
+ HomepageUI
               <a> HELPING <span class="multicolorlogo">HANDS</span></a>
+=======
+              <a href="homepage.php"> HELPING <span class="multicolorlogo">HANDS</span></a>
+ dev
             </div>
             <div class="searchbar" >
                     <input type="text" placeholder="Search"/>
@@ -22,8 +50,13 @@
                     <a href="#">Settings</a>
                     <a href="#">Notifcations</a>
                     <div class="img">
+ HomepageUI
                     <img src="Images/HomeAid-National.png"/>
                         <div class="rating">4.8</div>
+=======
+                    <img src="uploaded/<?php echo $img?>" alt="<?php echo $img ?>" style="border-radius:50vw;margin-top:1vh; cursor:pointer;" onclick="redirectToPage('<?php echo $role; ?>')"/>
+                        <div class="rating"><?php echo htmlspecialchars_decode($rating)?></div>
+ dev
                     </div>
                     
             
@@ -33,6 +66,7 @@
     <nav>
         <ul>
             <li>
+HomepageUI
             <a href="https://www-student.cse.buffalo.edu/CSE442-542/2023-Fall/cse-442d/eventlisting2.php">Create event</a>
            </li>
             <li>
@@ -55,11 +89,37 @@
     <div class="first_box">
             <img src="Images/HomeAid-National.png"/>
             <div class="ratings">4.92/5</div>
+=======
+                <a hef="#">Leave a comment</a>
+            </li>
+            <li>
+                <a hef="#">Rate</a>
+            </li>
+            <li>
+                <a hef="#">View Events</a>
+            </li>
+            <li>
+                <a hef="#">View History</a>
+            </li>
+            <li>
+              <a href="volunteeredit.php">Edit Profile</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="first_box">
+            <img src="uploaded/<?php echo $img?>" alt="<?php echo $img ?>" style="height: 150px; width: auto"/>
+            <h1><?php echo htmlspecialchars_decode($name);?></h1>
+            <div class="ratings"><?php echo htmlspecialchars_decode($rating)?>/5</div>
+ dev
     </div>
     <div class="second_box">
 
         <h5>Description</h5>
+HomepageUI
         <p>HomeAid operates through 19 Affiliates in 13 states as a leading non-profit developer of housing and programmatic facilities for people experiencing or at risk of homelessness</p>
+=======
+        <p><?php echo htmlspecialchars_decode($desc)?></p>
+ dev
     </div>
     
     <div class="first_box mt_4">
@@ -131,6 +191,10 @@
     document.getElementById(id).classList.add("hidden")
   }
 </script>
+HomepageUI
+=======
+<script src="js/redirect.js"></script>
+ dev
 
 </body>
 </html>

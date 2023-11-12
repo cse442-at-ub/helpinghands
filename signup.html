@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<title>Sign In</title>
-<link rel="stylesheet" href="signin.css">
+<title>Sign up</title>
+<link rel="stylesheet" href="signup.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter">
 </head>
 <body>
@@ -34,18 +34,25 @@
                 <li><a id="accountLink" href="signup.html">New Account<a></li>
                 <div class="selectionBox"></div>
             </div>
-            <form action="login.php" method="POST">
-            <div class="InputBox">
-                <label for="email"><b>Email</b></label>
-                <input type="text" placeholder="Enter Email" name="email" required>
-            </div>
-            <div class="InputBox">
-                <label for="psw"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="password" required>
-            </div>
-            <div class="InputBox">
-                <button type="submit" id="signin">Sign in</button>
-            </div>
+            <form action="signup.php" method="POST">
+                <div class="InputBox">
+                    <label for="email"><b>Email</b></label>
+                    <input type="text" placeholder="Enter Email" name="email" required>
+                </div>
+                <div class="InputBox">
+                    <label for="psw"><b>Password</b></label>
+                    <input type="password" placeholder="Enter Password" name="password" minlength="8" required>
+                </div>
+                <div class="accountCheck">
+                    <input type="radio" id="volunteer" name="userType" value="volunteer" required>
+                        <label for="volunteer">Volunteer</label><br>
+        
+                    <input type="radio" id="organization" name="userType" value="organization" required>
+                        <label for="organization">Organization</label><br>
+                </div>
+                <div class="InputBox">
+                    <button type="submit" id="signup">Sign up</button>
+                </div>
             </form>
         </div>
     </body>
