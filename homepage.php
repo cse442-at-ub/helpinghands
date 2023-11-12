@@ -13,12 +13,15 @@
       $getimg = mysqli_query($conn,"SELECT profile_image FROM accounts WHERE email='$email'");
       $getrating = mysqli_query($conn, "SELECT rating FROM accounts WHERE email='$email'");
       $getrole = mysqli_query($conn,"SELECT userType FROM accounts WHERE email='$email'");
+      $getname = mysqli_query($conn,"SELECT name FROM accounts WHERE email='$email'");
       $rows=mysqli_fetch_array($getimg);
       $rows_rating = mysqli_fetch_array($getrating);
       $rows_role=mysqli_fetch_array($getrole);
+      $rows_name=mysqli_fetch_array($getname);
       $img = $rows['profile_image'];
       $rating = $rows_rating['rating'];
       $role = $rows_role['userType'];
+      $name = $rows_name['name'];
    ?>
       <div class="banner">
          <header>
@@ -46,111 +49,59 @@
             </div>
          </header>
       </div>
-      <div class="post-body">
-         <post-header>
-            <div class="post-wrapper">
-               <div class="post-logo">
-                  <img src="Images/WeldFoodBank_Vertical CMYK 1.png" alts="Weld Food Bank Logo" class="logocenter">
-               </div>
-               <a href="#">...</a>
-            </div>
-         </post-header>
-         <div class="post-rating">
-            <p>
-               4.86
-            </p>
-         </div>
-         <div class="post-description">
-            <p>
-               Together, we can fill empty plates and hearts. Your time and energy are powerful
-               tools for change, and by volunteering, you become an essential ingredient in the 
-               recipe for a better world. Don't wait—take action today! Join us in the fight against 
-               hunger and experience the joy of knowing you've played a crucial role in making a 
-               brighter, more nourished future for all.
-            </p>
-         </div>
-         <post-infomatics>
-            <img src="Images/calendar.png" alts="Calendar" class="post-infomatics-images">
-            <div class="date">
-               <a>Oct 13,2023 - Oct 17,2023</a>
-            </div>
-            <img src="Images/clock-png-25767.png" alts="Clock" class="post-infomatics-images">
-            <div class="time">
-               <a>12pm - 4pm</a>
-            </div>
-            <img src="Images/people.png" alts="Five Stick figure torsos and heads" class="post-infomatics-images">
-            <div class="participants">
-               <a>26/30</a>
-            </div>
-         </post-infomatics>
-         <img src="Images/elyssa-kaplan-an-employee-at-world-central-kitchen-news-photo-1586376300 1.png" alts="Elyssa Kaplan and employee at world central kitchen" class="imagecenter">
-         <div class="post-register">
-            <a>Register!</a>
-         </div>
-         <div class="post-share">
-            <a>Share</a>
-         </div>
-         <div class="post-save">
-            <a>Save for later</a>
-         </div>
-         <div class="post-warnings">
-            <img src="Images/673px-Wheelchair_symbol.svg.png" alts="Disabled Symbol" class="warningimages">
-            <img src="Images/No_Smoking.svg.png" alts="No Smoking Symbol" class="warningimages">
-            <img src="Images/HeavyLifting.png" alts="Stick figure lifing heavy box" class="warningimages">
-         </div>
-      </div>
-      <div class="post-body">
-         <post-header>
-            <div class="post-wrapper">
-               <div class="post-logo">
-                  <img src="Images/HomeAid-National.png" alts="Weld Food Bank Logo" class="logocenter">
-               </div>
-               <a href="#">...</a>
-            </div>
-         </post-header>
-         <div class="post-rating">
-            <p>
-               4.92
-            </p>
-         </div>
-         <div class="post-description">
-            <p>
-               Together, we can transform empty spaces into places of refuge and compassion. 
-               Your dedication and effort will be the bricks and mortar of a brighter, more 
-               inclusive community. Don't hesitate—take a step towards making homelessness a
-               solvable issue. Join our team today, and let's build a better tomorrow for those who need it most.
-            </p>
-         </div>
-         <post-infomatics>
-            <img src="Images/calendar.png" alts="Calendar" class="post-infomatics-images">
-            <div class="date">
-               <a>Apr 08,2023 - Aug 03,2023</a>
-            </div>
-            <img src="Images/clock-png-25767.png" alts="Clock" class="post-infomatics-images">
-            <div class="time">
-               <a>8am - 1pm</a>
-            </div>
-            <img src="Images/people.png" alts="Five Stick figure torsos and heads" class="post-infomatics-images">
-            <div class="participants">
-               <a>32/50</a>
-            </div>
-         </post-infomatics>
-         <img src="Images/ConstructionVolunteers.png" alts="Elyssa Kaplan and employee at world central kitchen" class="imagecenter">
-         <div class="post-register">
-            <a>Register!</a>
-         </div>
-         <div class="post-share">
-            <a>Share</a>
-         </div>
-         <div class="post-save">
-            <a>Save for later</a>
-         </div>
-         <div class="post-warnings">
-            <img src="Images/673px-Wheelchair_symbol.svg.png" alts="Disabled Symbol" class="warningimages">
-            <img src="Images/warning-sign-arning-sign-colored-stroke-icon-34.png" alts="No Smoking Symbol" class="warningimages">
-            <img src="Images/HeavyLifting.png" alts="Stick figure lifing heavy box" class="warningimages">
-         </div>
-      </div>
+      
+      <?php
+         require 'connect.php'; // Connecting to database
+
+         // Access Events Table
+         $sql = "SELECT image,startTime,endTime, startDate, endDate, eventID, description, volunteersRequired, username FROM events";
+         $sql2 = "SELECT eventID, user FROM eventRegistrations";
+         $sql3 = "SELECT name, profile_image, rating FROM accounts";
+         $result = $conn->query($sql);
+         $result2 = $conn->query($sql2);
+         $result3 = $conn->query($sql3);
+
+         // Makes sure there is actually an event to be listed
+         if ($result->num_rows > 0){
+            // outputs data into event body for each row
+            while ($row = $result->fetch_assoc()) {
+               $countregisteredUsers = 0;
+               while ($row2 = mysqli_fetch_assoc($result2)){
+                  if ($row2["eventID"]==$row["eventID"]){
+                     $countregisteredUsers++;
+                  }
+               }
+               $image = "";
+               $rating = 0;
+               while ($row3 = mysqli_fetch_assoc($result3)){
+                  if ($row3["name"]==$row["username"]){
+                     $rating = $row3["rating"];
+                     $image = $row3["profile_image"];
+                  }
+               }
+               echo "<div class=\"post-body\"><post-header><div class=\"post-wrapper\"><div class=\"post-logo\"><img src=\"uploaded/" . $image . "\" class=\"logocenter\"></div><a href=\"#\">...</a></div></post-header>";
+               echo "<div class=\"post-rating\"><p>" . $rating . "</p></div>";
+               echo "<div class=\"post-description\"><p>" . $row["description"] . "</p></div>";
+               echo "<post-infomatics><img src=\"Images/calendar.png\" alts=\"Calendar\" class=\"post-infomatics-images\"><div class=\"date\"><a>" . $row["startDate"] . " - " . $row["endDate"] ."</a></div>";
+               echo "<img src=\"Images/clock-png-25767.png\" alts=\"Clock\" class=\"post-infomatics-images\"><div class=\"time\"><a>" . $row["startTime"] . " - " . $row["endTime"] . "</a></div>";
+               echo "<img src=\"Images/people.png\" alts=\"Five Stick figure torsos and heads\" class=\"post-infomatics-images\"><div class=\"participants\"><a>" . $countregisteredUsers . "/" . $row["volunteersRequired"] . "</a></div></post-infomatics>";
+               echo "<img src=\"" . $row["image"] . "\"class=\"imagecenter\">";
+               echo "<form action=\"registerEvent.php\" method=\"POST\">";
+               echo "<input type=\"hidden\" id=\"user\" name=\"user\" value=\"" . $name ."\">";
+               echo "<input type=\"hidden\" id=\"" . $row["eventID"] . "\" name=\"eventID\" value=\"" . $row["eventID"] . "\">";
+               echo "<div class=\"post-register\"><button type=\"submit\" id=\"eventRegister\">Register</button></div></form>";
+               echo "<div class=\"post-share\"><a>Share</a></div>";
+               echo "<div class=\"post-save\"><a>Save for later</a></div>";
+               //echo "<div class=\"post-warnings\"><img src=\"Images/673px-Wheelchair_symbol.svg.png\" alts=\"Disabled Symbol\" class=\"warningimages\"><img src=\"Images/warning-sign-arning-sign-colored-stroke-icon-34.png\" alts=\"No Smoking Symbol\" class=\"warningimages\"><img src=\"Images/HeavyLifting.png\" alts=\"Stick figure lifing heavy box\" class=\"warningimages\"></div>";
+               echo "</div>";
+            }
+         }
+         else {
+            echo "no events found";
+         }
+         $conn->close();
+      ?>
+      
       <script src="js/redirect.js"></script>
    </body>
 </html>
