@@ -102,5 +102,6 @@
          $conn->close();
       ?>
       
+      <script src="js/redirect.js"></script>
    </body>
 </html>
