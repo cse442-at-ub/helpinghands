@@ -87,7 +87,7 @@
                echo "<img src=\"Images/people.png\" alts=\"Five Stick figure torsos and heads\" class=\"post-infomatics-images\"><div class=\"participants\"><a>" . $countregisteredUsers . "/" . $row["volunteersRequired"] . "</a></div></post-infomatics>";
                echo "<img src=\"" . $row["image"] . "\"class=\"imagecenter\">";
                echo "<form action=\"registerEvent.php\" method=\"POST\">";
-               echo "<input type=\"hidden\" id=\"user\" name=\"user\" value=\"" . $name ."\">";
+               echo "<input type=\"hidden\" id=\"user\" name=\"user\" value=\"" . $email ."\">";
                echo "<input type=\"hidden\" id=\"" . $row["eventID"] . "\" name=\"eventID\" value=\"" . $row["eventID"] . "\">";
                echo "<div class=\"post-register\"><button type=\"submit\" id=\"eventRegister\">Register</button></div></form>";
                echo "<div class=\"post-share\"><a>Share</a></div>";
