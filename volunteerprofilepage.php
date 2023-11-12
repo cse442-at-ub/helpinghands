@@ -7,8 +7,7 @@
 </head>
 <body>
 
-HomepageUI
-=======
+
 <?php
   require 'connect.php';
   session_start();
@@ -27,17 +26,14 @@ HomepageUI
   $desc = $rows_description['description'];
 ?>
 
- dev
 <header>
 
     <div class="left">
             <img src="Images/Helping Hands Logo.png"/>
             <div class="logo-title">
-HomepageUI
-                <a> HELPING <span class="multicolorlogo">HANDS</span></a>
-=======
-                <a href="homepage.php"> HELPING <span class="multicolorlogo">HANDS</span></a>
- dev
+
+            <a href="homepage.php"> HELPING <span class="multicolorlogo">HANDS</span></a>
+
             </div>
             <div class="searchbar" >
                     <input type="text" placeholder="Search"/>
@@ -47,15 +43,10 @@ HomepageUI
                     <a href="#">Settings</a>
                     <a href="#">Notifcations</a>
                     <div class="img">
-HomepageUI
-                    <img src="Images/ProfilePicture.png"/>
-                        <div class="online"></div>
-                        <div class="rating">4.8</div>
-=======
+
                     <img src="uploaded/<?php echo $img?>" alt="<?php echo $img ?>" style="border-radius:50vw;margin-top:1vh; cursor:pointer;" onclick="redirectToPage('<?php echo $role; ?>')"/>
                         <div class="online"></div>
                         <div class="rating"><?php echo htmlspecialchars_decode($rating)?></div>
- dev
                     </div>
                     
             
@@ -65,21 +56,6 @@ HomepageUI
     <nav>
         <ul>
             <li>
-HomepageUI
-                <a href="#">Leave a comment</a>
-            </li>
-            <li>
-                <a href="#">Rate</a>
-            </li>
-            <li>
-                <a href="#">View Events</a>
-            </li>
-            <li>
-                <a href="#">View History</a>
-            </li>
-            <li>
-              <a href= "https://www-student.cse.buffalo.edu/CSE442-542/2023-Fall/cse-442d/signin.html" >Logout</a>
-=======
                 <a hef="#">Leave a comment</a>
             </li>
             <li>
@@ -93,22 +69,15 @@ HomepageUI
             </li>
             <li>
               <a href="volunteeredit.php">Edit Profile</a>
- dev
+            </li>
+              <li>
+              <a href= "https://www-student.cse.buffalo.edu/CSE442-542/2023-Fall/cse-442d/signin.html" >Logout</a>
           </li>
         </ul>
     </nav>
     <div class="first_box">
         <div class="df">
         <div class="img">
- HomepageUI
-            <img src="Images/ProfilePicture.png"/>
-                <div class="online"></div>
-               
-            </div>
-            <h1>Rob Roberts</h1>
-            </div>
-            <div class="ratings">4.98/5</div>
-=======
             <img src="uploaded/<?php echo $img?>" alt="<?php echo $img ?>"/>
                 <div class="online"></div>
                
@@ -116,16 +85,11 @@ HomepageUI
             <h1><?php echo htmlspecialchars_decode($name);?></h1>
             </div>
             <div class="ratings"><?php echo htmlspecialchars_decode($rating)?>/5</div>
- dev
     </div>
     <div class="second_box">
 
         <h5>Description</h5>
- HomepageUI
-        <p>I have no purpose other than to assist in other life</p>
-=======
         <p><?php echo htmlspecialchars_decode($desc)?></p>
- dev
     </div>
     
     <div class="first_box mt_4">
@@ -197,10 +161,8 @@ HomepageUI
     document.getElementById(id).classList.add("hidden")
   }
 </script>
-HomepageUI
-=======
+
 <script src="js/redirect.js"></script>
- dev
 
 </body>
 </html>
