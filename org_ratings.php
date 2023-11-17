@@ -19,14 +19,14 @@ if (empty($rating)) {
     $_SESSION['rating_validation_status'] = 'failure';
     
     // Redirect back to user_ratings.php
-    header("Location: user_ratings.php");
+    header("Location: organization_ratings.php");
     exit();
 }
 
 if ($rater_email === $email) {
     $_SESSION['rater_email_status'] = 'failure';
 
-    header("Location: user_ratings.php");
+    header("Location: organization_ratings.php");
     exit();
 }
 
@@ -59,6 +59,6 @@ if ($userResult->num_rows > 0) {
 $conn->close();
 
 // Redirect
-header("Location: user_ratings.php");
+header("Location: organization_ratings.php");
 exit();
 ?>

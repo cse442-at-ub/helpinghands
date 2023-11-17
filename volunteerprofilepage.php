@@ -56,16 +56,16 @@
     <nav>
         <ul>
             <li>
-                <a hef="#">Leave a comment</a>
+                <a href="#">Leave a comment</a>
             </li>
             <li>
-                <a hef="#">Rate</a>
+                <a href="organization_ratings.php">Rate</a>
             </li>
             <li>
-                <a hef="#">View Events</a>
+                <a href="#">View Events</a>
             </li>
             <li>
-                <a hef="#">View History</a>
+                <a href="#">View History</a>
             </li>
             <li>
               <a href="volunteeredit.php">Edit Profile</a>

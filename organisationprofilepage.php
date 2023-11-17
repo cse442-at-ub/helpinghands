@@ -59,7 +59,7 @@
                 <a href="#">Leave a comment</a>
             </li>
             <li>
-                <a href="#">Rate</a>
+                <a href="user_ratings.php">Rate</a>
             </li>
             <li>
                 <a href="#">View Events</a>
@@ -68,7 +68,7 @@
                 <a href="#">View History</a>
             </li>
             <li>
-              <a href="volunteeredit.php">Edit Profile</a>
+              <a href="https://www-student.cse.buffalo.edu/CSE442-542/2023-Fall/cse-442d/user_ratings.php">Edit Profile</a>
             </li>
             <li>
               <a href= "https://www-student.cse.buffalo.edu/CSE442-542/2023-Fall/cse-442d/signin.html" >Logout</a>
