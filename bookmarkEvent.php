@@ -20,31 +20,6 @@ if (isset($_POST['user']) && isset($_POST['eventID'])) {
         echo "You already bookmarked this event.";
         exit;
     }
-/*
-    // Check if the event has room for the new volunteer
-
-    // Getting the current number of registered volunteers
-    $stmt = $conn->prepare("SELECT * FROM eventRegistrations WHERE eventID = ?");
-    $stmt->bind_param("i", $eventID);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $numRegistrations = $result->num_rows; // Stores the current number of registrations for the event
-
-    // Getting the max number of volunteers
-    $stmt = $conn->prepare("SELECT volunteersRequired FROM events WHERE eventID = ?");
-    $stmt->bind_param("i", $eventID);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $maxVolunteersRow = $result->fetch_assoc();
-    $maxVolunteers = $maxVolunteersRow['volunteersRequired'];
-
-    // Comparing
-    if ($numRegistrations >= $maxVolunteers) {
-        echo "Unfortunately, the maxinmum number of volunteers has been reached for this event";
-        exit;
-    }
-*/
-
 
     // Register the user for the event
     $stmt = $conn->prepare("INSERT INTO bookmarkedEvents (user, eventID) VALUES (? , ?)"); // Preparing SQL statement to prevent SQL injection
