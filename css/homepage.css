@@ -301,7 +301,7 @@ post-infomatics a{
     margin-top: 1vh;
 }
 
-.button {
+.post-register button {
     border-radius: 1vh;
     font-size: 3.2vh;
     line-height: 8vh;
@@ -315,11 +315,11 @@ post-infomatics a{
     margin-top: 1vh;
 }
 
-.button:hover{
+.post-register button:hover{
     background-color:#38C805;
 }
 
-.post-register:hover{
+.post-register post-register:hover{
     background-color:#38C805;
 }
 
@@ -353,6 +353,23 @@ post-infomatics a{
 }
 
 .post-save:hover{
+    background-color:#919191;
+    color: white;
+}
+
+.post-save button {
+    margin-top: -4vh;
+    margin-left: 50.5%;
+    width: 19.5%;
+    height: 4vh;
+    background-color: #e4e4e4;
+    border-radius: 1vh;
+    line-height: 4vh;
+    font-size: 1.6vh;
+    font-family: 'Inter';
+}
+
+.post-save button:hover{
     background-color:#919191;
     color: white;
 }

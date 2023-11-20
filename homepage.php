@@ -79,19 +79,32 @@
                      $image = $row3["profile_image"];
                   }
                }
+               //Event Body and Logo
                echo "<div class=\"post-body\"><post-header><div class=\"post-wrapper\"><div class=\"post-logo\"><img src=\"uploaded/" . $image . "\" class=\"logocenter\"></div><a href=\"#\">...</a></div></post-header>";
+               //Event's Creator Rating
                echo "<div class=\"post-rating\"><p>" . $rating . "</p></div>";
+               //Event Description
                echo "<div class=\"post-description\"><p>" . $row["description"] . "</p></div>";
+               //Event Date
                echo "<post-infomatics><img src=\"Images/calendar.png\" alts=\"Calendar\" class=\"post-infomatics-images\"><div class=\"date\"><a>" . $row["startDate"] . " - " . $row["endDate"] ."</a></div>";
+               //Event time
                echo "<img src=\"Images/clock-png-25767.png\" alts=\"Clock\" class=\"post-infomatics-images\"><div class=\"time\"><a>" . $row["startTime"] . " - " . $row["endTime"] . "</a></div>";
+               //Event registered and max people
                echo "<img src=\"Images/people.png\" alts=\"Five Stick figure torsos and heads\" class=\"post-infomatics-images\"><div class=\"participants\"><a>" . $countregisteredUsers . "/" . $row["volunteersRequired"] . "</a></div></post-infomatics>";
+               //Event Image
                echo "<img src=\"" . $row["image"] . "\"class=\"imagecenter\">";
+               //Register Event Setup
                echo "<form action=\"registerEvent.php\" method=\"POST\">";
                echo "<input type=\"hidden\" id=\"user\" name=\"user\" value=\"" . $email ."\">";
                echo "<input type=\"hidden\" id=\"" . $row["eventID"] . "\" name=\"eventID\" value=\"" . $row["eventID"] . "\">";
                echo "<div class=\"post-register\"><button type=\"submit\" id=\"eventRegister\">Register</button></div></form>";
+               //Post Sharing Setup
                echo "<div class=\"post-share\"><a>Share</a></div>";
-               echo "<div class=\"post-save\"><a>Save for later</a></div>";
+               //Bookmarking Event Setup
+               echo "<form action=\"bookmarkEvent.php\" method=\"POST\">";
+               echo "<input type=\"hidden\" id=\"user\" name=\"user\" value=\"" . $email ."\">";
+               echo "<input type=\"hidden\" id=\"" . $row["eventID"] . "\" name=\"eventID\" value=\"" . $row["eventID"] . "\">";
+               echo "<div class=\"post-save\"><button type=\"submit\" id=\"bookmarkEvent\">Save for later</button></div></form>";
                //echo "<div class=\"post-warnings\"><img src=\"Images/673px-Wheelchair_symbol.svg.png\" alts=\"Disabled Symbol\" class=\"warningimages\"><img src=\"Images/warning-sign-arning-sign-colored-stroke-icon-34.png\" alts=\"No Smoking Symbol\" class=\"warningimages\"><img src=\"Images/HeavyLifting.png\" alts=\"Stick figure lifing heavy box\" class=\"warningimages\"></div>";
                echo "</div>";
             }
