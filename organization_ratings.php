@@ -14,6 +14,13 @@ session_start();
     <a href="volunteerprofilepage.php" id="back-button">&lt; Back</a>
     
     <?php
+    if (isset($_SESSION['rating_submission_status']) && $_SESSION['rating_submission_status'] === 'failure') {
+        echo '<p style="color: red;">Error: You already rated this volunteer.</p>';
+    
+        // Unset the session variable to clear the status
+        unset($_SESSION['rating_submission_status']);
+    }
+
     if (isset($_SESSION['rating_validation_status']) && $_SESSION['rating_validation_status'] === 'failure') {
         echo '<p style="color: red;">Error: Rating must be a number between 1 and 5.</p>';
     
@@ -31,7 +38,7 @@ session_start();
     // Check the session variable for the rating submission status
     if (isset($_SESSION['rating_submission_status'])) {
         if ($_SESSION['rating_submission_status'] === 'failure') {
-            echo '<p style="color: red;">Error: Volunteer email not found.</p>';
+            echo '<p style="color: red;">Error: Organization email not found.</p>';
         } elseif ($_SESSION['rating_submission_status'] === 'success') {
             echo '<p style="color: green;">Rating submitted successfully!</p>';
         }
@@ -43,7 +50,7 @@ session_start();
 
     <form id="ratings-form" action="org_ratings.php" method="POST" enctype="multipart/form-data">
         <label for="rating-email">Organization Email:</label>
-        <input type="text" id="rating-email" name="rating-email" placeholder="Enter volunteer email">
+        <input type="text" id="rating-email" name="rating-email" placeholder="Enter organization email">
 
         <label for="quantity">Rating (between 1 and 5):</label>
         <input type="number" id="quantity" name="quantity" min="1" max="5">

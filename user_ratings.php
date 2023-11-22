@@ -14,6 +14,13 @@ session_start();
     <a href="organisationprofilepage.php" id="back-button">&lt; Back</a>
     
     <?php
+    if (isset($_SESSION['rating_submission_status']) && $_SESSION['rating_submission_status'] === 'failure') {
+        echo '<p style="color: red;">Error: You already rated this volunteer.</p>';
+        
+        // Unset the session variable to clear the status
+        unset($_SESSION['rating_submission_status']);
+    }
+
     if (isset($_SESSION['rating_validation_status']) && $_SESSION['rating_validation_status'] === 'failure') {
         echo '<p style="color: red;">Error: Rating must be a number between 1 and 5.</p>';
     
