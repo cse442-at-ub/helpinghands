@@ -21,13 +21,30 @@ $events = $res->get_result();
    </head>
 
    <body>
+   <?php
+      require 'connect.php';
+      session_start();
+      $email = $_SESSION['email'];
+      $getimg = mysqli_query($conn,"SELECT profile_image FROM accounts WHERE email='$email'");
+      $getrating = mysqli_query($conn, "SELECT rating FROM accounts WHERE email='$email'");
+      $getrole = mysqli_query($conn,"SELECT userType FROM accounts WHERE email='$email'");
+      $getname = mysqli_query($conn,"SELECT name FROM accounts WHERE email='$email'");
+      $rows=mysqli_fetch_array($getimg);
+      $rows_rating = mysqli_fetch_array($getrating);
+      $rows_role=mysqli_fetch_array($getrole);
+      $rows_name=mysqli_fetch_array($getname);
+      $img = $rows['profile_image'];
+      $rating = $rows_rating['rating'];
+      $role = $rows_role['userType'];
+      $name = $rows_name['name'];
+   ?>
       <div class="banner">
          <header>
             <div class="wrapper">
                <div class="logo">
                   <img src="Images/Helping Hands Logo.png" alt="Helping Hands Logo" style="margin-right:1vw;margin-top:1.75vh;" class="imgleft">
                   <div class="logo-title">
-                     <a href="#"> HELPING <span class="multicolorlogo">HANDS</span></a>
+                     <a href="homepage.php"> HELPING <span class="multicolorlogo">HANDS</span></a>
                   </div>
                </div>
                <div class="searchbar">
@@ -38,9 +55,9 @@ $events = $res->get_result();
                   <a href="#">Notifications</a>
                </nav>
                <div class="profile">
-                  <a href="#"><img src="Images/ProfilePicture.png" alt="Profile Picture" style="border-radius:50vw;margin-top:1vh;" class="profilepic" ></a>
+                  <img src="uploaded/<?php echo $img?>" alt="<?php echo $img ?>" style="border-radius:50vw;margin-top:1vh; cursor:pointer;" class="profilepic" onclick="redirectToPage('<?php echo $role; ?>')">
                   <div class="behindpfp">
-                     4.98
+                  <?php echo htmlspecialchars_decode($rating)?>
                   </div>
                   <div class="activedot"></div>
                </div>
@@ -114,5 +131,6 @@ $events = $res->get_result();
       unset($_SESSION['flash']); //unset flash message
    } ?>
    </html>
-   
-         
+      <script src="js/redirect.js"></script>
+   </body>
+</html>
