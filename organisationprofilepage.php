@@ -1,12 +1,25 @@
+<?php
+require('connect.php');
+session_start();
+if (!isset($_SESSION['email']) || $_SESSION['userType'] != 'organization') {
+  header('location: signin.html');
+}
+$user = $_SESSION['email'];
+$sql = "SELECT * FROM `events` WHERE `username`=?";
+$events = $conn->prepare($sql);
+$events->bind_param('s', $user);
+$events->execute();
+$events = $events->get_result();
+?>
 <!DOCTYPE html>
 <html>
 
 <head>
   <title>ProfilePage</title>
-  <link rel="stylesheet" href="css\organisationprofilepage.css">
+  <link rel="stylesheet" href="css/organisationprofilepage.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter">
+  <link rel="stylesheet" href="evo-calendar.min.css">
 </head>
-
 <body>
   <?php
   require 'connect.php';
@@ -19,6 +32,45 @@
   $rating = $rows['rating'];
   $desc = $rows['description'];
   $role = $rows['userType'];
+
+  //Calendar 
+  $getEventID = mysqli_query($conn, "SELECT eventID FROM eventRegistrations WHERE user='$email'");
+  $eventIDs = array();
+  while ($rows_eventID = mysqli_fetch_array($getEventID)) {
+    $eventIDs[] = $rows_eventID["eventID"];
+  }
+  $Titles = array();
+  $Locations = array();
+  $StartTimes = array();
+  $EndTimes = array();
+  $StartDates = array();
+  $EndDates = array();
+  $OrgNames = array();
+  foreach ($eventIDs as $eventID) {
+    $getTitle = mysqli_query($conn, "SELECT titles FROM events WHERE eventID='$eventID'");
+    $getLocation = mysqli_query($conn, "SELECT location FROM events WHERE eventID='$eventID'");
+    $getStartTime = mysqli_query($conn, "SELECT startTime FROM events WHERE eventID='$eventID'");
+    $getEndTime = mysqli_query($conn, "SELECT endTime FROM events WHERE eventID='$eventID'");
+    $getStartDate = mysqli_query($conn, "SELECT startDate FROM events WHERE eventID='$eventID'");
+    $getEndDate = mysqli_query($conn, "SELECT endDate FROM events WHERE eventID='$eventID'");
+    $getOrgName = mysqli_query($conn, "SELECT username FROM events WHERE eventID='$eventID'");
+    
+    $rows_Titles = mysqli_fetch_array($getTitle);
+    $rows_Locations = mysqli_fetch_array($getLocation);
+    $rows_StartTimes = mysqli_fetch_array($getStartTime);
+    $rows_EndTimes = mysqli_fetch_array($getEndTime);
+    $rows_StartDates = mysqli_fetch_array($getStartDate);
+    $rows_EndDates = mysqli_fetch_array($getEndDate);
+    $rows_OrgNames = mysqli_fetch_array($getOrgName);
+
+    $Titles[] = $rows_Titles["titles"];
+    $Locations[] = $rows_Locations["location"];
+    $StartTimes[] = $rows_StartTimes["startTime"];
+    $EndTimes[] = $rows_EndTimes["endTime"];
+    $StartDates[] = $rows_StartDates["startDate"];
+    $EndDates[] = $rows_EndDates["endDate"];
+    $OrgNames[] = $rows_OrgNames["username"];
+  }
   ?>
   <header>
     <div class="left">
@@ -49,7 +101,7 @@
           <a href="#">Leave a comment</a>
         </li>
         <li>
-          <a href="#">Rate</a>
+          <a href="user_ratings.php">Rate</a>
         </li>
         <li>
           <a href="#">View Events</a>
@@ -80,21 +132,23 @@
       <button class="showall" onclick="hideall(this)" data-box="events">Hide All</button>
     </div>
     <div class="second_box " id="events">
-      <div class="logo_box">
-        <img src="Images/HomeAid-National.png">
-        <div class="df">
-          <div class="box_rating">
-            4.92
+      <?php while ($event = $events->fetch_assoc()) { ?>
+        <div class="logo_box mt-2">
+          <img src="<?php echo $event['image']; ?>">
+          <div class="df">
+            <div class="box_rating">
+              4.92
+            </div>
+            <div class="pepople_rating">
+              <img src="Images/people.png">
+              0/<?php echo $event['volunteersRequired']; ?>
+            </div>
           </div>
-          <div class="pepople_rating">
-            <img src="Images/people.png">
-            30/50
+          <div class="date">
+            <span><?php echo date('M d, Y', strtotime($event['startDate'])); ?> - <?php echo date('M d, Y', strtotime($event['endDate'])); ?></span><span><?php echo date('ha', strtotime($event['startTime'])); ?> - <?php echo date('ha', strtotime($event['endTime'])); ?></span>
           </div>
         </div>
-        <div class="date">
-          <span>Apr 08, 2023 - Aug 03, 2023</span><span>8am - 1pm</span>
-        </div>
-      </div>
+      <?php } ?>
     </div>
     <div class="first_box mt_4">
       <h1 class="heading">Event History</h1>
@@ -120,8 +174,8 @@
     <div class="second_box " id="bookmarkedEvents">
       <?php
       require 'connect.php'; // Connecting to database
-      $sql = "SELECT startTime, endTime, startDate, endDate, eventID, volunteersRequired, username FROM events WHERE eventID IN ( SELECT eventID FROM bookmarkedEvents WHERE user='$email' )";
-      $result = $conn->query($sql);
+      $sql6 = "SELECT startTime, endTime, startDate, endDate, eventID, volunteersRequired, username FROM events WHERE eventID IN ( SELECT eventID FROM bookmarkedEvents WHERE user='$email' )";
+      $result = $conn->query($sql6);
       if ($result->num_rows > 0) {
         while ($rowEvents = $result->fetch_assoc()) {
           $eventcreator = $rowEvents["username"];
@@ -159,6 +213,76 @@
       }
       ?>
     </div>
+
+     <!--CALENDAR-->
+
+     <div class="first_box mt_4">
+      <h1 class="heading">Calendar</h1>
+    </div>
+  </div>
+
+  <div id="calendarBox" style="display: block;">
+    <div id="calendarContainer">
+      <div id="BGBox">.</div>
+      <div id="calendar"></div>
+    </div>
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/evo-calendar@1.1.2/evo-calendar/js/evo-calendar.min.js"></script>
+  <script src="evo-calendar.js"></script>
+
+  <script>
+    $("#calendar").evoCalendar
+      (
+        {
+          sidebarDisplayDefault: false,
+          todayHighlight: true,
+          eventDisplayDefault: false,
+          firstDayOfWeek: 1,
+        }
+      );
+    var passedArray = <?php echo json_encode($eventIDs); ?>;
+    var TitlesArr = <?php echo json_encode($Titles); ?>;
+    var LocationsArr = <?php echo json_encode($Locations); ?>;
+    var StartTimesArr = <?php echo json_encode($StartTimes); ?>;
+    var EndTimesArr = <?php echo json_encode($EndTimes); ?>;
+    var StartDatesArr = <?php echo json_encode($StartDates); ?>;
+    var EndDatesArr = <?php echo json_encode($EndDates); ?>;
+    var OrgNamesArr = <?php echo json_encode($OrgNames); ?>;
+
+    for (var i = 0; i < passedArray.length; i++) {
+      if (OrgNamesArr[i] != null)
+      {
+        var orgName = OrgNamesArr[i].replace(/@.*$/, "");
+      }
+      else
+      {
+        var orgName = OrgNamesArr[i];
+      }
+
+      var dateObject = new Date(StartDatesArr[i]);
+      dateObject.setDate(dateObject.getDate() + 1);
+      var ActualStartDate = dateObject.toISOString().slice(0, 10);
+      var dateObject2 = new Date(EndDatesArr[i]);
+      dateObject2.setDate(dateObject2.getDate() + 1);
+      var ActualEndDate = dateObject2.toISOString().slice(0, 10);
+
+      var eventID = String(i + 1).padStart(7, '0');
+      var eventDesc = "You have an event with " + orgName + ". Starts at " + StartTimesArr[i] + " and ends at " + EndTimesArr[i] + " At " + LocationsArr[i];
+
+      $("#calendar").evoCalendar('addCalendarEvent', [{
+        id: eventID,
+        name: TitlesArr[i],
+        date: [ActualStartDate, ActualEndDate],
+        description: eventDesc,
+        color: 'blue',
+        type: 'event'
+      }]);
+    }
+  </script>
+  <!--CALENDAR-->
   </div>
   <script type="text/javascript">
     function showall(el) {
@@ -167,7 +291,6 @@
       el.nextElementSibling.classList.remove('d_none')
       document.getElementById(id).classList.remove("hidden")
     }
-
     function hideall(el) {
       el.classList.add("d_none");
       el.previousElementSibling.classList.remove('d_none')
@@ -177,5 +300,4 @@
   </script>
   <script src="js/redirect.js"></script>
 </body>
-
 </html>

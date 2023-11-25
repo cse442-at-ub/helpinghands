@@ -1,0 +1,96 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #D1E4E9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100vh;
+}
+
+#ratings-form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+input[type="submit"] {
+    background-color: #2196F3;
+    color: #fff;
+    cursor: pointer;
+    font-size: 18px;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+}
+
+input[type="submit"]:hover {
+    background-color: #4556a0;
+}
+
+#rubric {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.rubric-item {
+    flex: 1;
+    text-align: center;
+}
+
+.rubric-item h3 {
+    margin-bottom: 10px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    margin-bottom: 8px;
+}
+
+#back-button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 18px;
+    text-decoration: none;
+    color: #2196F3;
+    padding: 10px 20px;
+    background-color: #fff;
+    border-radius: 20px; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}       
+
+#back-button:hover {
+    color: #4556a0;
+    background-color: #f0f0f0;
+}

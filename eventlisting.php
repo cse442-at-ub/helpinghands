@@ -1,3 +1,149 @@
+<?php
+require('connect.php');
+session_start();
+if (!isset($_SESSION['email']) || $_SESSION['userType'] != 'organization') {
+   header('location: signin.html');
+}
+$title = null;
+$location = null;
+$start_date = null;
+$end_date = null;
+$start_time = null;
+$end_time = null;
+$event_type = null;
+$categories = null;
+$description = null;
+$volunters = null;
+$age = null;
+$cut_of_date = null;
+$continue = 1;
+$errors = null;
+$yes = null;
+if (isset($_POST['Event'])) {
+   $title = $_POST['title'];
+   $location = $_POST['location'];
+   $start_date = $_POST['startdate'];
+   $end_date = $_POST['enddate'];
+   $start_time = $_POST['start_time'];
+   $end_time = $_POST['end_time'];
+   $event_type = $_POST['event_type'];
+   $categories = $_POST['categories'];
+   $description = $_POST['description'];
+   $volunters = $_POST['total_volunteers'];
+   $age = $_POST['age_range'];
+   $cut_of_date = $_POST['last_date'];
+   if (empty($title)) {
+      $continue = 0;
+      $errors .= 'Title Required. ';
+   }
+   if (empty($location)) {
+      $continue = 0;
+      $errors .= 'Location Required. ';
+   }
+   if (empty($start_date)) {
+      $continue = 0;
+      $errors .= 'Start Date Required. ';
+   }
+   if (empty($end_date)) {
+      $continue = 0;
+      $errors .= 'End Date Required. ';
+   }
+   if (empty($start_time)) {
+      $continue = 0;
+      $errors .= 'Start Time Required. ';
+   }
+   if (empty($end_time)) {
+      $continue = 0;
+      $errors .= 'End Time Required. ';
+   }
+   if (empty($event_type)) {
+      $continue = 0;
+      $errors .= 'Event Type Required. ';
+   }
+   if (empty($categories)) {
+      $continue = 0;
+      $errors .= 'Categories Required. ';
+   }
+   if (empty($description)) {
+      $continue = 0;
+      $errors .= 'Description Required. ';
+   }
+   if (empty($volunters)) {
+      $continue = 0;
+      $errors .= 'Volunters Required. ';
+   }
+   if (empty($cut_of_date)) {
+      $continue = 0;
+      $errors .= 'Cut Of Date Required. ';
+   }
+   if (empty($age)) {
+      $continue = 0;
+      $errors .= 'Age Range Required. ';
+   }
+   if (is_uploaded_file($_FILES['image-input']['tmp_name'])) {
+      $dir = "uploaded/";
+      $image_file = $dir . basename($_FILES["image-input"]["name"]);
+      $file_type = strtolower(pathinfo($image_file, PATHINFO_EXTENSION));
+
+      $check = getimagesize($_FILES["image-input"]["tmp_name"]);
+      if ($check !== false) {
+         $continue = 1;
+      } else {
+         $continue = 0;
+         $errors .= 'File is not a image. ';
+      }
+
+      if (file_exists($image_file)) {
+         $continue = 0;
+         $errors .= " error: file already exists";
+      }
+
+      //check the size of the image (change value "50000" to change file size)
+      if ($_FILES["image-input"]["size"] > 500000) {
+         $continue = 0;
+         $errors .= " error: file too large";
+      }
+
+      //check to see if the file is a valid type
+      if ($file_type != "jpg" && $file_type != "png" && $file_type != "jpeg" && $file_type != "gif") {
+         $continue = 0;
+         $errors .= " error: invalid file type";
+      }
+   } else {
+      $errors .= 'Image File is required';
+   }
+   if ($continue == 1) {
+      if (move_uploaded_file($_FILES["image-input"]["tmp_name"], $image_file)) {
+         $sql = "INSERT INTO `events` (`titles`, `location`, `startTime`, `endTime`, `startDate`, `endDate`, `description`, `volunteersRequired`, `cutoffDate`, `age`, `username`, `image`, `categories`, `type`) VALUES (?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+         $res = $conn->prepare($sql);
+         $res->bind_param(
+            'ssssssssssssss',
+            $title,
+            $location,
+            $start_time,
+            $end_time,
+            $start_date,
+            $end_date,
+            $description,
+            $volunters,
+            $cut_of_date,
+            $age,
+            $_SESSION['email'],
+            $image_file,
+            $categories,
+            $event_type
+         );
+         if ($res->execute()) {
+            $yes = 'Event added successfully';
+         } else {
+            $errors .= 'Facing error! try Again';
+         }
+      } else {
+         $errors .= "Sorry, there was an error uploading your file.";
+      }
+   }
+}
+?>
 <!DOCTYPE html>
 <html>
    <head>
@@ -131,5 +277,18 @@
          </div>
       </div>
       <script src="js/eventlisting.js"></script>
+      <script>
+      <?php
+      if ($errors != null) {
+      ?>
+         alert('<?php echo $errors; ?>')
+      <?php } ?>
+
+      <?php
+      if ($yes != null) {
+      ?>
+         alert('<?php echo $yes; ?>')
+      <?php } ?>
+   </script>
    </body>
 </html>
