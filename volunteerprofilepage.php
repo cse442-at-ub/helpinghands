@@ -1,3 +1,19 @@
+<?php
+require('connect.php');
+
+session_start();
+if (!isset($_SESSION['email'])) {
+  header('location: signin.html');
+}
+
+$user = $_SESSION['email'];
+$sql = "SELECT events.*, accounts.rating, COUNT(eg.eventID) as total_reg FROM `eventRegistrations` eg INNER JOIN events on events.eventID = eg.eventID INNER JOIN accounts on accounts.email = events.username WHERE eg.user = ? GROUP BY events.eventID, accounts.rating;";
+$events = $conn->prepare($sql);
+$events->bind_param('s', $user);
+$events->execute();
+$events = $events->get_result();
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,25 +26,24 @@
 <header>
 
     <div class="left">
-            <img src="Images/Helping Hands Logo.png"/>
-            <div class="logo-title">
-                <a> HELPING <span class="multicolorlogo">HANDS</span></a>
-            </div>
-            <div class="searchbar" >
-                    <input type="text" placeholder="Search"/>
-
- </div>      </div>
-        <div class="right">
-                    <a href="#">Settings</a>
-                    <a href="#">Notifcations</a>
-                    <div class="img">
-                    <img src="Images/ProfilePicture.png"/>
-                        <div class="online"></div>
-                        <div class="rating">4.8</div>
-                    </div>
-                    
-            
-        </div>
+      <img src="Images/Helping Hands Logo.png"/>
+      <div class="logo-title">
+        <a> HELPING <span class="multicolorlogo">HANDS</span></a>
+      </div>
+      <div class="searchbar" >
+        <input type="text" placeholder="Search"/>
+      </div>      
+    </div>
+    <div class="right">
+      <a href="#">Settings</a>
+      <a href="#">Notifcations</a>
+      <div class="img">
+        <img src="Images/ProfilePicture.png"/>
+          <div class="online"></div>
+          <div class="rating">4.8</div>
+      </div>
+                            
+    </div>
 </header>
 <div class="container">
     <nav>
@@ -75,22 +90,25 @@
             
     </div>
     <div class="second_box " id="events">
-        <div class="logo_box">
-          <img src="Images/HomeAid-National.png">
+      <?php while ($event = $events->fetch_assoc()) { ?>
 
-            <div class="df">
-              <div class="box_rating">
-                4.92
-              </div>
-              <div class="pepople_rating">
-                <img src="Images/people.png">
-                30/50
-              </div>
+        <div class="logo_box mt-2">
+          <img src="<?php echo $event['image']; ?>">
+
+          <div class="df">
+            <div class="box_rating">
+              <?php echo $event['rating']; ?>
             </div>
-            <div class="date">
-            <span>Apr 08, 2023 - Aug 03, 2023</span><span>8am - 1pm</span>
+            <div class="pepople_rating">
+              <img src="Images/people.png">
+              <?php echo $event['total_reg']; ?>/<?php echo $event['volunteersRequired']; ?>
             </div>
+          </div>
+          <div class="date">
+            <span><?php echo date('M d, Y', strtotime($event['startDate'])); ?> - <?php echo date('M d, Y', strtotime($event['endDate'])); ?></span><span><?php echo date('ha', strtotime($event['startTime'])); ?> - <?php echo date('ha', strtotime($event['endTime'])); ?></span>
+          </div>
         </div>
+      <?php } ?>
     </div>
 
 
