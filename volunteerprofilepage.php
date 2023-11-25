@@ -13,6 +13,7 @@ $events = $events->get_result();
 ?>
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>ProfilePage</title>
   <link rel="stylesheet" href="css/volunteerprofilepage.css">
@@ -86,10 +87,7 @@ $events = $events->get_result();
       <a href="#">Settings</a>
       <a href="#">Notifcations</a>
       <div class="img">
-        
-        
-        <img src="uploaded/<?php echo $img ?>" alt="<?php echo $img ?>"
-          style="border-radius:50vw;margin-top:1vh; cursor:pointer;" onclick="redirectToPage('<?php echo $role; ?>')" />
+        <img src="uploaded/<?php echo $img ?>" alt="<?php echo $img ?>" style="border-radius:50vw;margin-top:1vh; cursor:pointer;" onclick="redirectToPage('<?php echo $role; ?>')" />
         <div class="online"></div>
         <div class="rating">
           <?php echo htmlspecialchars_decode($rating) ?>
@@ -168,9 +166,7 @@ $events = $events->get_result();
     </div>
     <div class="first_box mt_4">
       <h1 class="heading">Event History</h1>
-      <img class="hideall d_none"
-        src="Images/png-transparent-arrow-expand-expand-less-expandless-top-up-navigation-set-arrows-part-one-icon.png"
-        onclick="showall(this)" data-box="history">
+      <img class="hideall d_none" src="Images/png-transparent-arrow-expand-expand-less-expandless-top-up-navigation-set-arrows-part-one-icon.png" onclick="showall(this)" data-box="history">
       <button class="showall" onclick="hideall(this)" data-box="history">Hide All</button>
     </div>
     <div class="second_box " id="history">
@@ -178,9 +174,7 @@ $events = $events->get_result();
     </div>
     <div class="first_box mt_4">
       <h1 class="heading">Comments</h1>
-      <img class="hideall"
-        src="Images/png-transparent-arrow-expand-expand-less-expandless-top-up-navigation-set-arrows-part-one-icon.png"
-        onclick="showall(this)" data-box="comments">
+      <img class="hideall" src="Images/png-transparent-arrow-expand-expand-less-expandless-top-up-navigation-set-arrows-part-one-icon.png" onclick="showall(this)" data-box="comments">
       <button class="showall d_none" onclick="hideall(this)" data-box="comments">Hide All</button>
     </div>
     <div class="second_box hidden" id="comments">
@@ -188,9 +182,7 @@ $events = $events->get_result();
     </div>
     <div class="first_box mt_4">
       <h1 class="heading">Bookmarked Events</h1>
-      <img class="hideall d_none"
-        src="Images/png-transparent-arrow-expand-expand-less-expandless-top-up-navigation-set-arrows-part-one-icon.png"
-        onclick="showall(this)" data-box="bookmarkedEvents">
+      <img class="hideall d_none" src="Images/png-transparent-arrow-expand-expand-less-expandless-top-up-navigation-set-arrows-part-one-icon.png" onclick="showall(this)" data-box="bookmarkedEvents">
       <button class="showall" onclick="hideall(this)" data-box="bookmarkedEvents">Hide All</button>
     </div>
     <div class="second_box " id="bookmarkedEvents">
@@ -235,6 +227,7 @@ $events = $events->get_result();
       }
       ?>
     </div>
+
     <!--CALENDAR-->
 
     <div class="first_box mt_4">
