@@ -1,13 +1,24 @@
+<?php
+require('connect.php');
+session_start();
+if (!isset($_SESSION['email'])) {
+  header('location: signin.html');
+}
+$user = $_SESSION['email'];
+$sql = "SELECT events.*, accounts.rating, COUNT(eg.eventID) as total_reg FROM `eventRegistrations` eg INNER JOIN events on events.eventID = eg.eventID INNER JOIN accounts on accounts.email = events.username WHERE eg.user = ? GROUP BY events.eventID, accounts.rating;";
+$events = $conn->prepare($sql);
+$events->bind_param('s', $user);
+$events->execute();
+$events = $events->get_result();
+?>
 <!DOCTYPE html>
 <html>
-
 <head>
   <title>ProfilePage</title>
   <link rel="stylesheet" href="css/volunteerprofilepage.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter">
   <link rel="stylesheet" href="evo-calendar.min.css">
 </head>
-
 <body>
   <?php
   require 'connect.php';
@@ -75,6 +86,8 @@
       <a href="#">Settings</a>
       <a href="#">Notifcations</a>
       <div class="img">
+        
+        
         <img src="uploaded/<?php echo $img ?>" alt="<?php echo $img ?>"
           style="border-radius:50vw;margin-top:1vh; cursor:pointer;" onclick="redirectToPage('<?php echo $role; ?>')" />
         <div class="online"></div>
@@ -135,21 +148,23 @@
       <button class="showall" onclick="hideall(this)" data-box="events">Hide All</button>
     </div>
     <div class="second_box " id="events">
-      <div class="logo_box">
-        <img src="Images/HomeAid-National.png">
-        <div class="df">
-          <div class="box_rating">
-            4.92
+      <?php while ($event = $events->fetch_assoc()) { ?>
+        <div class="logo_box mt-2">
+          <img src="<?php echo $event['image']; ?>">
+          <div class="df">
+            <div class="box_rating">
+              <?php echo $event['rating']; ?>
+            </div>
+            <div class="pepople_rating">
+              <img src="Images/people.png">
+              <?php echo $event['total_reg']; ?>/<?php echo $event['volunteersRequired']; ?>
+            </div>
           </div>
-          <div class="pepople_rating">
-            <img src="Images/people.png">
-            30/50
+          <div class="date">
+            <span><?php echo date('M d, Y', strtotime($event['startDate'])); ?> - <?php echo date('M d, Y', strtotime($event['endDate'])); ?></span><span><?php echo date('ha', strtotime($event['startTime'])); ?> - <?php echo date('ha', strtotime($event['endTime'])); ?></span>
           </div>
         </div>
-        <div class="date">
-          <span>Apr 08, 2023 - Aug 03, 2023</span><span>8am - 1pm</span>
-        </div>
-      </div>
+      <?php } ?>
     </div>
     <div class="first_box mt_4">
       <h1 class="heading">Event History</h1>
@@ -181,8 +196,8 @@
     <div class="second_box " id="bookmarkedEvents">
       <?php
       require 'connect.php'; // Connecting to database
-      $sql = "SELECT startTime, endTime, startDate, endDate, eventID, volunteersRequired, username FROM events WHERE eventID IN ( SELECT eventID FROM bookmarkedEvents WHERE user='$email' )";
-      $result = $conn->query($sql);
+      $sql6 = "SELECT startTime, endTime, startDate, endDate, eventID, volunteersRequired, username FROM events WHERE eventID IN ( SELECT eventID FROM bookmarkedEvents WHERE user='$email' )";
+      $result = $conn->query($sql6);
       if ($result->num_rows > 0) {
         while ($rowEvents = $result->fetch_assoc()) {
           $eventcreator = $rowEvents["username"];
@@ -233,8 +248,6 @@
       <div id="calendar"></div>
     </div>
   </div>
-
-
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/evo-calendar@1.1.2/evo-calendar/js/evo-calendar.min.js"></script>
   <script src="evo-calendar.js"></script>
@@ -250,7 +263,6 @@
         }
       );
     var passedArray = <?php echo json_encode($eventIDs); ?>;
-
     var TitlesArr = <?php echo json_encode($Titles); ?>;
     var LocationsArr = <?php echo json_encode($Locations); ?>;
     var StartTimesArr = <?php echo json_encode($StartTimes); ?>;
@@ -268,8 +280,6 @@
       {
         var orgName = OrgNamesArr[i];
       }
-      
-
       var dateObject = new Date(StartDatesArr[i]);
       dateObject.setDate(dateObject.getDate() + 1);
       var ActualStartDate = dateObject.toISOString().slice(0, 10);
@@ -311,5 +321,4 @@
   </script>
   <script src="js/redirect.js"></script>
 </body>
-
 </html>

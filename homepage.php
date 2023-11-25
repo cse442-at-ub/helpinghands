@@ -1,10 +1,25 @@
+<?php
+require('connect.php');
+session_start();
+if (!isset($_SESSION['email'])) {
+   header('location:signin.html'); //if user is not logined redirect user to signin
+}
+$events = [];
+
+$sql = "SELECT events.*, accounts.profile_image, accounts.rating , count(eg.eventID) as total_reg FROM `events` INNER JOIN accounts on events.username = accounts.email left JOIN eventRegistrations eg on eg.eventID =events.eventID GROUP BY events.eventID, accounts.profile_image, accounts.rating"; //select all events with organization
+$res = $conn->prepare($sql);
+$res->execute();
+$events = $res->get_result();
+?>
 <!DOCTYPE html>
 <html>
+
    <head>
       <title>Homepage</title>
       <link rel="stylesheet" href="css\homepage.css">
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter">
    </head>
+
    <body>
    <?php
       require 'connect.php';
@@ -49,59 +64,73 @@
             </div>
          </header>
       </div>
-      
       <?php
-         require 'connect.php'; // Connecting to database
-
-         // Access Events Table
-         $sql = "SELECT image,startTime,endTime, startDate, endDate, eventID, description, volunteersRequired, username FROM events";
-         $sql2 = "SELECT eventID, user FROM eventRegistrations";
-         $sql3 = "SELECT name, profile_image, rating FROM accounts";
-         $result = $conn->query($sql);
-         $result2 = $conn->query($sql2);
-         $result3 = $conn->query($sql3);
-
-         // Makes sure there is actually an event to be listed
-         if ($result->num_rows > 0){
-            // outputs data into event body for each row
-            while ($row = $result->fetch_assoc()) {
-               $countregisteredUsers = 0;
-               while ($row2 = mysqli_fetch_assoc($result2)){
-                  if ($row2["eventID"]==$row["eventID"]){
-                     $countregisteredUsers++;
-                  }
-               }
-               $image = "";
-               $rating = 0;
-               while ($row3 = mysqli_fetch_assoc($result3)){
-                  if ($row3["name"]==$row["username"]){
-                     $rating = $row3["rating"];
-                     $image = $row3["profile_image"];
-                  }
-               }
-               echo "<div class=\"post-body\"><post-header><div class=\"post-wrapper\"><div class=\"post-logo\"><img src=\"uploaded/" . $image . "\" class=\"logocenter\"></div><a href=\"#\">...</a></div></post-header>";
-               echo "<div class=\"post-rating\"><p>" . $rating . "</p></div>";
-               echo "<div class=\"post-description\"><p>" . $row["description"] . "</p></div>";
-               echo "<post-infomatics><img src=\"Images/calendar.png\" alts=\"Calendar\" class=\"post-infomatics-images\"><div class=\"date\"><a>" . $row["startDate"] . " - " . $row["endDate"] ."</a></div>";
-               echo "<img src=\"Images/clock-png-25767.png\" alts=\"Clock\" class=\"post-infomatics-images\"><div class=\"time\"><a>" . $row["startTime"] . " - " . $row["endTime"] . "</a></div>";
-               echo "<img src=\"Images/people.png\" alts=\"Five Stick figure torsos and heads\" class=\"post-infomatics-images\"><div class=\"participants\"><a>" . $countregisteredUsers . "/" . $row["volunteersRequired"] . "</a></div></post-infomatics>";
-               echo "<img src=\"" . $row["image"] . "\"class=\"imagecenter\">";
-               echo "<form action=\"registerEvent.php\" method=\"POST\">";
-               echo "<input type=\"hidden\" id=\"user\" name=\"user\" value=\"" . $email ."\">";
-               echo "<input type=\"hidden\" id=\"" . $row["eventID"] . "\" name=\"eventID\" value=\"" . $row["eventID"] . "\">";
-               echo "<div class=\"post-register\"><button type=\"submit\" id=\"eventRegister\">Register</button></div></form>";
-               echo "<div class=\"post-share\"><a>Share</a></div>";
-               echo "<div class=\"post-save\"><a>Save for later</a></div>";
-               //echo "<div class=\"post-warnings\"><img src=\"Images/673px-Wheelchair_symbol.svg.png\" alts=\"Disabled Symbol\" class=\"warningimages\"><img src=\"Images/warning-sign-arning-sign-colored-stroke-icon-34.png\" alts=\"No Smoking Symbol\" class=\"warningimages\"><img src=\"Images/HeavyLifting.png\" alts=\"Stick figure lifing heavy box\" class=\"warningimages\"></div>";
-               echo "</div>";
-            }
-         }
-         else {
-            echo "no events found";
-         }
-         $conn->close();
-      ?>
-      
+   while ($event = $events->fetch_assoc()) {
+   ?>
+      div class="post-body">
+         <post-header>
+            <div class="post-wrapper">
+               <div class="post-logo">
+                  <img src="Images/<?php echo $event['profile_image']; ?>" alts="Weld Food Bank Logo" class="logocenter">
+               </div>
+               <a href="#">...</a>
+            </div>
+         </post-header>
+         <div class="post-rating">
+            <p>
+               <?php echo $event['rating']; ?>
+            </p>
+         </div>
+         <div class="post-description">
+            <p>
+               <?php echo $event['description']; ?>
+            </p>
+         </div>
+         <post-infomatics>
+            <img src="Images/calendar.png" alts="Calendar" class="post-infomatics-images">
+            <div class="date">
+               <a><?php echo date('M d, Y', strtotime($event['startDate'])); ?> - <?php echo date('M d, Y', strtotime($event['endDate'])); ?></a>
+            </div>
+            <img src="Images/clock-png-25767.png" alts="Clock" class="post-infomatics-images">
+            <div class="time">
+               <a><span><?php echo date('ha', strtotime($event['startTime'])); ?> - <?php echo date('ha', strtotime($event['endTime'])); ?></span></a>
+            </div>
+            <img src="Images/people.png" alts="Five Stick figure torsos and heads" class="post-infomatics-images">
+            <div class="participants">
+               <a><?php echo $event['total_reg'] . '/' . $event['volunteersRequired'] ?></a>
+            </div>
+         </post-infomatics>
+         <img src="<?php echo $event['image']; ?>" alt="<?php echo $event['titles']; ?>" class="imagecenter" style="max-width: 40vw">
+         <div class="">
+            <form method="POST" action="registerEvent.php">
+               <input name="eventID" type="hidden" value="<?php echo $event['eventID']; ?>" />
+               <button class="post-register" type="submit">Register!</button>
+            </form>
+         </div>
+         <div class="post-share">
+            <a>Share</a>
+         </div>
+         <div class="post-save">
+            <a>Save for later</a>
+         </div>
+         <div class="post-warnings">
+            <img src="Images/673px-Wheelchair_symbol.svg.png" alts="Disabled Symbol" class="warningimages">
+            <img src="Images/No_Smoking.svg.png" alts="No Smoking Symbol" class="warningimages">
+            <img src="Images/HeavyLifting.png" alts="Stick figure lifing heavy box" class="warningimages">
+         </div>
+      </div>
+      <?php } ?>
+   <body>
+   <?php
+   if (isset($_SESSION['flash'])) { //check flah message
+   ?>
+      <script>
+         alert("<?php echo $_SESSION['flash']; ?>")
+      </script>
+   <?php
+      unset($_SESSION['flash']); //unset flash message
+   } ?>
+   </html>
       <script src="js/redirect.js"></script>
    </body>
 </html>
