@@ -43,7 +43,7 @@ $events = $res->get_result();
                </div>
             </div>
             <div class="searchbar">
-               <input type="text" placeholder="Search">
+               <input type="text" id="searchInput" placeholder="Search" oninput="search()">
             </div>
             <nav>
                <a href="#">Settings</a>
@@ -61,7 +61,7 @@ $events = $res->get_result();
       <?php
    while ($event = $events->fetch_assoc()) {
    ?>
-      div class="post-body">
+      <div class="post-body">
          <post-header>
             <div class="post-wrapper">
                <div class="post-logo">
@@ -95,13 +95,11 @@ $events = $res->get_result();
             </div>
          </post-infomatics>
          <img src="<?php echo $event['image']; ?>" alt="<?php echo $event['titles']; ?>" class="imagecenter" style="max-width: 40vw">
-         <div class="">
             <form method="POST" action="registerEvent.php">
                <input type="hidden" id="user" name="user" value="<?php echo $email; ?>">
                <input name="eventID" type="hidden" value="<?php echo $event['eventID']; ?>">
                <button class="post-register" type="submit">Register!</button>
             </form>
-         </div>
          <div class="post-share">
             <a>Share</a>
          </div>
@@ -129,5 +127,6 @@ $events = $res->get_result();
    } ?>
    </html>
       <script src="js/redirect.js"></script>
+      <script src="js/search.js"></script>
    </body>
 </html>
