@@ -1,6 +1,6 @@
 <?php
 
-require 'connect.php'; // Connecting to databade
+require 'connect.php'; // Connecting to database
 
 
 // Check if userID and organizationID are given using the POST method

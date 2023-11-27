@@ -39,6 +39,14 @@ $img = $userData['profile_image'];
 $name = $userData['name'];
 $rating = $userData['rating'];
 $desc = $userData['description'];
+$userType = $userData['userType'];
+
+// Setting data from session
+$userEmail = $_SESSION['email'];
+$userGetAll = mysqli_query($conn, "SELECT profile_image,name,rating,description,userType FROM accounts WHERE email='$userEmail'");
+$userRows = mysqli_fetch_array($userGetAll);
+$userImg = $userRows['profile_image'];
+$userRating = $userRows['rating'];
 
 ?>
 
@@ -64,10 +72,10 @@ $desc = $userData['description'];
       <a href="#">Settings</a>
       <a href="#">Notifcations</a>
       <div class="img">
-        <img src="uploaded/<?php echo $img ?>" alt="<?php echo $img ?>" style="border-radius:50vw;margin-top:1vh; cursor:pointer;" />
+        <img src="uploaded/<?php echo $userImg ?>" alt="<?php echo $userImg ?>" style="border-radius:50vw;margin-top:1vh; cursor:pointer;" />
         <div class="online"></div>
         <div class="rating">
-          <?php echo htmlspecialchars_decode($rating) ?>
+          <?php echo htmlspecialchars_decode($userRating) ?>
         </div>
       </div>
     </div>
@@ -87,10 +95,16 @@ $desc = $userData['description'];
         <li>
             <a hef="#">View History</a>
         </li>
-        <li>
+        <?php if($userType == 'organization' &&  $_SESSION['userType'] == 'volunteer'): ?>
           <li>
-          <a href= "logout.php" >Logout</a>
-      </li>
+              <script src="subscriptionForm.js"></script>
+              <form action="subscribe.php" method = "post" class = "subscription-form">
+                <input type="hidden" name="userID" value="<?php echo $_SESSION['userID']; ?>">
+                <input type="hidden" name="organizationID" value="<?php echo $userID; ?>">
+                <button type="submit" class="subscribe-button">Subscribe</button>
+              </form>
+          </li>
+        <?php endif; ?>
     </ul>
 </nav>
 <div class="first_box">
