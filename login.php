@@ -31,10 +31,12 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
                 if (password_verify($password, $account['password'])) { 
 
                     $userType = $account['userType'];
+                    $userID = $account['userID'];
 
                     // Storing username and userType in session
                     $_SESSION['email'] = $email;
                     $_SESSION['userType'] = $userType;
+                    $_SESSION['userID'] = $userID;
                     //echo $_SESSION['userType'] . " " . $_SESSION['email'] . " logged in successfully";
                     //$_SESSION['message'] = $_SESSION['userType'] . " " . $_SESSION['email'] . " logged in succesfully"; // setting the console output as a message
                     header("Location: homepage.php");
