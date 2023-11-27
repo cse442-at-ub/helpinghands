@@ -59,11 +59,10 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
         } else{ // If the credentials arent in the table
              consoleLog("Incorrect email or password");
         }
-/*
+    /*
     $stmt->close();
     $conn->close();
     */
-}
 
 // session_destroy(); // destroys session and clears all session data
 
