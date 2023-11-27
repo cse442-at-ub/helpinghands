@@ -1,6 +1,30 @@
 <?php
 require('connect.php');
 session_start();
+
+// Start the session and include the database connection
+session_start();
+include 'connect.php';
+
+// Check if a user is logged in
+if (isset($_SESSION['email'])) {
+    $volunteer_id = $_SESSION['user_id'];
+
+    // Prepare SQL query to fetch total volunteer hours
+    $query = "SELECT SUM(hours_volunteered) AS total_hours FROM VolunteerHours WHERE volunteer_id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $volunteer_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = $result->fetch_assoc();
+    $total_hours = $data['total_hours'] ?? 0; // Default to 0 if no hours are recorded
+    $stmt->close();
+} else {
+    // Redirect to login page or show an error if the user is not logged in
+    header("Location: signin.php");
+    exit();
+}
+
 if (!isset($_SESSION['email'])) {
   header('location: signin.html');
 }
@@ -10,22 +34,10 @@ $events = $conn->prepare($sql);
 $events->bind_param('s', $user);
 $events->execute();
 $events = $events->get_result();
-
-// Retrieve the volunteer's ID (you might need to adjust this part)
-$volunteerId = $_SESSION['volunteer_id']; // or use a different method to get the volunteer ID
-
-// Query to get the total volunteer hours
-$query = "SELECT SUM(hours) AS total_hours FROM registered_events WHERE volunteer_id = ?";
-$stmt = $conn->prepare($query);
-$stmt->bind_param("i", $volunteerId);
-$stmt->execute();
-$result = $stmt->get_result();
-$data = $result->fetch_assoc();
-
-$totalHours = $data['total_hours'] ?? 0;
 ?>
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>ProfilePage</title>
   <link rel="stylesheet" href="css/volunteerprofilepage.css">
@@ -99,10 +111,7 @@ $totalHours = $data['total_hours'] ?? 0;
       <a href="#">Settings</a>
       <a href="#">Notifcations</a>
       <div class="img">
-        
-        
-        <img src="uploaded/<?php echo $img ?>" alt="<?php echo $img ?>"
-          style="border-radius:50vw;margin-top:1vh; cursor:pointer;" onclick="redirectToPage('<?php echo $role; ?>')" />
+        <img src="uploaded/<?php echo $img ?>" alt="<?php echo $img ?>" style="border-radius:50vw;margin-top:1vh; cursor:pointer;" onclick="redirectToPage('<?php echo $role; ?>')" />
         <div class="online"></div>
         <div class="rating">
           <?php echo htmlspecialchars_decode($rating) ?>
@@ -149,8 +158,8 @@ $totalHours = $data['total_hours'] ?? 0;
     </div>
     <div class="second_box">
       <h5>Description</h5>
-      <div class="volunteer-hours">
-        <h3>Total Volunteer Hours: <?php echo $totalHours; ?></h3>
+      <div>
+       <h3>Total Volunteer Hours: <?php echo $total_hours; ?></h3>
       </div>
       <p>
         <?php echo htmlspecialchars_decode($desc) ?>
@@ -184,9 +193,7 @@ $totalHours = $data['total_hours'] ?? 0;
     </div>
     <div class="first_box mt_4">
       <h1 class="heading">Event History</h1>
-      <img class="hideall d_none"
-        src="Images/png-transparent-arrow-expand-expand-less-expandless-top-up-navigation-set-arrows-part-one-icon.png"
-        onclick="showall(this)" data-box="history">
+      <img class="hideall d_none" src="Images/png-transparent-arrow-expand-expand-less-expandless-top-up-navigation-set-arrows-part-one-icon.png" onclick="showall(this)" data-box="history">
       <button class="showall" onclick="hideall(this)" data-box="history">Hide All</button>
     </div>
     <div class="second_box " id="history">
@@ -194,9 +201,7 @@ $totalHours = $data['total_hours'] ?? 0;
     </div>
     <div class="first_box mt_4">
       <h1 class="heading">Comments</h1>
-      <img class="hideall"
-        src="Images/png-transparent-arrow-expand-expand-less-expandless-top-up-navigation-set-arrows-part-one-icon.png"
-        onclick="showall(this)" data-box="comments">
+      <img class="hideall" src="Images/png-transparent-arrow-expand-expand-less-expandless-top-up-navigation-set-arrows-part-one-icon.png" onclick="showall(this)" data-box="comments">
       <button class="showall d_none" onclick="hideall(this)" data-box="comments">Hide All</button>
     </div>
     <div class="second_box hidden" id="comments">
@@ -204,9 +209,7 @@ $totalHours = $data['total_hours'] ?? 0;
     </div>
     <div class="first_box mt_4">
       <h1 class="heading">Bookmarked Events</h1>
-      <img class="hideall d_none"
-        src="Images/png-transparent-arrow-expand-expand-less-expandless-top-up-navigation-set-arrows-part-one-icon.png"
-        onclick="showall(this)" data-box="bookmarkedEvents">
+      <img class="hideall d_none" src="Images/png-transparent-arrow-expand-expand-less-expandless-top-up-navigation-set-arrows-part-one-icon.png" onclick="showall(this)" data-box="bookmarkedEvents">
       <button class="showall" onclick="hideall(this)" data-box="bookmarkedEvents">Hide All</button>
     </div>
     <div class="second_box " id="bookmarkedEvents">
@@ -251,6 +254,7 @@ $totalHours = $data['total_hours'] ?? 0;
       }
       ?>
     </div>
+
     <!--CALENDAR-->
 
     <div class="first_box mt_4">

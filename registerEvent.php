@@ -6,32 +6,6 @@ session_start();
 
 
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $volunteerId = $_POST['volunteer_id'];
-    $eventId = $_POST['event_id'];
-
-    // Retrieve event times from the events table
-    $query = "SELECT start_time, end_time FROM events WHERE id = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("i", $eventId);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $event = $result->fetch_assoc();
-
-    // Calculate hours
-    $startTime = new DateTime($event['start_time']);
-    $endTime = new DateTime($event['end_time']);
-    $interval = $startTime->diff($endTime);
-    $hours = $interval->h + ($interval->days * 24); // assuming no event lasts more than 24 hours
-
-    // Insert into registered_events
-    $insertQuery = "INSERT INTO registered_events (volunteer_id, event_id, start_time, end_time, hours) VALUES (?, ?, ?, ?, ?)";
-    $insertStmt = $conn->prepare($insertQuery);
-    $insertStmt->bind_param("iissi", $volunteerId, $eventId, $event['start_time'], $event['end_time'], $hours);
-    $insertStmt->execute();
-}
-
-
 // Check if username and eventID are given using the POST method
 if (isset($_POST['user']) && isset($_POST['eventID'])) {
     $user = $_POST["user"];
@@ -68,5 +42,35 @@ if (isset($_POST['user']) && isset($_POST['eventID'])) {
         header('location:homepage.php');
     }
 }
+
+$event_id = $_POST['event_id'];
+$volunteer_id = $_POST['volunteer_id'];
+
+// Fetch event start and end time
+$query = "SELECT startTime, endTime FROM events WHERE id = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("i", $event_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$event = $result->fetch_assoc();
+$stmt->close();
+
+// Calculate hours volunteered
+$startTime = new DateTime($event['startTime']);
+$endTime = new DateTime($event['endTime']);
+$interval = $startTime->diff($endTime);
+$hours_volunteered = $interval->h + ($interval->i / 60);
+
+// Insert volunteer hours into the database
+$insertQuery = "INSERT INTO VolunteerHours (volunteer_id, event_id, hours_volunteered) VALUES (?, ?, ?)";
+$insertStmt = $conn->prepare($insertQuery);
+$insertStmt->bind_param("iid", $volunteer_id, $event_id, $hours_volunteered);
+$insertStmt->execute();
+$insertStmt->close();
+
+// Redirect to a confirmation page or back to the homepage
+header("Location: homepage.php");
+exit();
+
 
 ?>

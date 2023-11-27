@@ -11,38 +11,19 @@ $res = $conn->prepare($sql);
 $res->execute();
 $events = $res->get_result();
 
-$volunteerId = $_SESSION['volunteer_id']; 
+$volunteer_id = $_SESSION['user_id'];
 
-// Check if the register action has been triggered
-if (isset($_POST['register_event'])) {
-    $eventId = $_POST['event_id']; // Get the event ID from the form submission
-
-    // Retrieve event start and end times from the database
-    $eventQuery = "SELECT start_time, end_time FROM events WHERE id = ?";
-    $stmt = $conn->prepare($eventQuery);
-    $stmt->bind_param("i", $eventId);
-    $stmt->execute();
-    $eventResult = $stmt->get_result();
-    $eventData = $eventResult->fetch_assoc();
-
-    if ($eventData) {
-        // Calculate volunteer hours
-        $startTime = new DateTime($eventData['start_time']);
-        $endTime = new DateTime($eventData['end_time']);
-        $interval = $startTime->diff($endTime);
-        $hours = $interval->h;
-        $hours += ($interval->days * 24); // Adding days to hours if event spans multiple days
-
-        // Insert registration and hours into the database
-        $insertQuery = "INSERT INTO registered_events (volunteer_id, event_id, hours) VALUES (?, ?, ?)";
-        $insertStmt = $conn->prepare($insertQuery);
-        $insertStmt->bind_param("iii", $volunteerId, $eventId, $hours);
-        $insertStmt->execute();
-    }
-}
+// Fetch events from the database
+$query = "SELECT * FROM events";
+$stmt = $conn->prepare($query);
+$stmt->execute();
+$result = $stmt->get_result();
+$events = $result->fetch_all(MYSQLI_ASSOC);
+$stmt->close();
 ?>
 <!DOCTYPE html>
 <html>
+
 
    <head>
       <title>Homepage</title>
@@ -52,45 +33,38 @@ if (isset($_POST['register_event'])) {
 
    <body>
    <?php
-      require 'connect.php';
-      session_start();
-      $email = $_SESSION['email'];
-      $getimg = mysqli_query($conn,"SELECT profile_image FROM accounts WHERE email='$email'");
-      $getrating = mysqli_query($conn, "SELECT rating FROM accounts WHERE email='$email'");
-      $getrole = mysqli_query($conn,"SELECT userType FROM accounts WHERE email='$email'");
-      $getname = mysqli_query($conn,"SELECT name FROM accounts WHERE email='$email'");
-      $rows=mysqli_fetch_array($getimg);
-      $rows_rating = mysqli_fetch_array($getrating);
-      $rows_role=mysqli_fetch_array($getrole);
-      $rows_name=mysqli_fetch_array($getname);
-      $img = $rows['profile_image'];
-      $rating = $rows_rating['rating'];
-      $role = $rows_role['userType'];
-      $name = $rows_name['name'];
+   require 'connect.php';
+   session_start();
+   $email = $_SESSION['email'];
+   $getall = mysqli_query($conn, "SELECT profile_image,rating,userType,name FROM accounts WHERE email='$email'");
+   $rows = mysqli_fetch_array($getall);
+   $img = $rows['profile_image'];
+   $rating = $rows['rating'];
+   $role = $rows['userType'];
+   $name = $rows['name'];
    ?>
-      <div class="banner">
-         <header>
-            <div class="wrapper">
-               <div class="logo">
-                  <img src="Images/Helping Hands Logo.png" alt="Helping Hands Logo" style="margin-right:1vw;margin-top:1.75vh;" class="imgleft">
-                  <div class="logo-title">
-                     <a href="homepage.php"> HELPING <span class="multicolorlogo">HANDS</span></a>
-                  </div>
+   <div class="banner">
+      <header>
+         <div class="wrapper">
+            <div class="logo">
+               <img src="Images/Helping Hands Logo.png" alt="Helping Hands Logo" style="margin-right:1vw;margin-top:1.75vh;" class="imgleft">
+               <div class="logo-title">
+                  <a href="homepage.php"> HELPING <span class="multicolorlogo">HANDS</span></a>
                </div>
-               <div class="searchbar">
-                  <input type="text" placeholder="Search">
+            </div>
+            <div class="searchbar">
+               <input type="text" placeholder="Search">
+            </div>
+            <nav>
+               <a href="#">Settings</a>
+               <a href="#">Notifications</a>
+            </nav>
+            <div class="profile">
+               <img src="uploaded/<?php echo $img ?>" alt="<?php echo $img ?>" style="border-radius:50vw;margin-top:1vh; cursor:pointer;" class="profilepic" onclick="redirectToPage('<?php echo $role; ?>')">
+               <div class="behindpfp">
+                  <?php echo htmlspecialchars_decode($rating) ?>
                </div>
-               <nav>
-                  <a href="#">Settings</a>
-                  <a href="#">Notifications</a>
-               </nav>
-               <div class="profile">
-                  <img src="uploaded/<?php echo $img?>" alt="<?php echo $img ?>" style="border-radius:50vw;margin-top:1vh; cursor:pointer;" class="profilepic" onclick="redirectToPage('<?php echo $role; ?>')">
-                  <div class="behindpfp">
-                  <?php echo htmlspecialchars_decode($rating)?>
-                  </div>
-                  <div class="activedot"></div>
-               </div>
+               <div class="activedot"></div>
             </div>
          </header>
       </div>
@@ -133,17 +107,24 @@ if (isset($_POST['register_event'])) {
          <img src="<?php echo $event['image']; ?>" alt="<?php echo $event['titles']; ?>" class="imagecenter" style="max-width: 40vw">
          <div class="">
             <form method="POST" action="registerEvent.php">
-               <input name="eventID" type="hidden" value="<?php echo $event['eventID']; ?>" />
+               <input type="hidden" name="event_id" value="<?php echo $event['eventID']; ?>">
+               <input type="hidden" name="volunteer_id" value="<?php echo $_SESSION['user_id']; ?>">
                <button class="post-register" type="submit">Register!</button>
-               <button onclick="registerForEvent(eventId, volunteerId)">Register</button>
+            </form>
+            <form method="POST" action="registerEvent.php">
+               <input type="hidden" id="user" name="user" value="<?php echo $email; ?>">
+               <input name="eventID" type="hidden" value="<?php echo $event['eventID']; ?>">
+               <button class="post-register" type="submit">Register!</button>
             </form>
          </div>
          <div class="post-share">
             <a>Share</a>
          </div>
-         <div class="post-save">
-            <a>Save for later</a>
-         </div>
+         <form action="bookmarkEvent.php" method="POST">
+            <input type="hidden" id="user" name="user" value="<?php echo $email; ?>">
+            <input type="hidden" id="<?php echo $eventID; ?>" name="eventID" value="<?php echo $eventID; ?>">
+            <div class="post-save"><button type="submit" id="bookmarkEvent">Save for later</button></div>
+         </form>
          <div class="post-warnings">
             <img src="Images/673px-Wheelchair_symbol.svg.png" alts="Disabled Symbol" class="warningimages">
             <img src="Images/No_Smoking.svg.png" alts="No Smoking Symbol" class="warningimages">
@@ -163,18 +144,5 @@ if (isset($_POST['register_event'])) {
    } ?>
    </html>
       <script src="js/redirect.js"></script>
-      <script>
-      function registerForEvent(eventId, volunteerId) {
-    const xhr = new XMLHttpRequest();
-    xhr.open("POST", "registerEvent.php", true);
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xhr.onreadystatechange = function() {
-        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-            <p> Registration was successful </p>
-        }
-    }
-    xhr.send("volunteer_id=" + volunteerId + "&event_id=" + eventId);
-}
-   </script>
    </body>
 </html>
