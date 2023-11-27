@@ -10,6 +10,36 @@ $sql = "SELECT events.*, accounts.profile_image, accounts.rating , count(eg.even
 $res = $conn->prepare($sql);
 $res->execute();
 $events = $res->get_result();
+
+$volunteerId = $_SESSION['volunteer_id']; 
+
+// Check if the register action has been triggered
+if (isset($_POST['register_event'])) {
+    $eventId = $_POST['event_id']; // Get the event ID from the form submission
+
+    // Retrieve event start and end times from the database
+    $eventQuery = "SELECT start_time, end_time FROM events WHERE id = ?";
+    $stmt = $conn->prepare($eventQuery);
+    $stmt->bind_param("i", $eventId);
+    $stmt->execute();
+    $eventResult = $stmt->get_result();
+    $eventData = $eventResult->fetch_assoc();
+
+    if ($eventData) {
+        // Calculate volunteer hours
+        $startTime = new DateTime($eventData['start_time']);
+        $endTime = new DateTime($eventData['end_time']);
+        $interval = $startTime->diff($endTime);
+        $hours = $interval->h;
+        $hours += ($interval->days * 24); // Adding days to hours if event spans multiple days
+
+        // Insert registration and hours into the database
+        $insertQuery = "INSERT INTO registered_events (volunteer_id, event_id, hours) VALUES (?, ?, ?)";
+        $insertStmt = $conn->prepare($insertQuery);
+        $insertStmt->bind_param("iii", $volunteerId, $eventId, $hours);
+        $insertStmt->execute();
+    }
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -105,6 +135,7 @@ $events = $res->get_result();
             <form method="POST" action="registerEvent.php">
                <input name="eventID" type="hidden" value="<?php echo $event['eventID']; ?>" />
                <button class="post-register" type="submit">Register!</button>
+               <button onclick="registerForEvent(eventId, volunteerId)">Register</button>
             </form>
          </div>
          <div class="post-share">
@@ -132,5 +163,18 @@ $events = $res->get_result();
    } ?>
    </html>
       <script src="js/redirect.js"></script>
+      <script>
+      function registerForEvent(eventId, volunteerId) {
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "registerEvent.php", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function() {
+        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+            <p> Registration was successful </p>
+        }
+    }
+    xhr.send("volunteer_id=" + volunteerId + "&event_id=" + eventId);
+}
+   </script>
    </body>
 </html>

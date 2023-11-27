@@ -10,6 +10,19 @@ $events = $conn->prepare($sql);
 $events->bind_param('s', $user);
 $events->execute();
 $events = $events->get_result();
+
+// Retrieve the volunteer's ID (you might need to adjust this part)
+$volunteerId = $_SESSION['volunteer_id']; // or use a different method to get the volunteer ID
+
+// Query to get the total volunteer hours
+$query = "SELECT SUM(hours) AS total_hours FROM registered_events WHERE volunteer_id = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("i", $volunteerId);
+$stmt->execute();
+$result = $stmt->get_result();
+$data = $result->fetch_assoc();
+
+$totalHours = $data['total_hours'] ?? 0;
 ?>
 <!DOCTYPE html>
 <html>
@@ -136,6 +149,9 @@ $events = $events->get_result();
     </div>
     <div class="second_box">
       <h5>Description</h5>
+      <div class="volunteer-hours">
+        <h3>Total Volunteer Hours: <?php echo $totalHours; ?></h3>
+      </div>
       <p>
         <?php echo htmlspecialchars_decode($desc) ?>
       </p>

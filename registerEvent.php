@@ -6,6 +6,32 @@ session_start();
 
 
 
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $volunteerId = $_POST['volunteer_id'];
+    $eventId = $_POST['event_id'];
+
+    // Retrieve event times from the events table
+    $query = "SELECT start_time, end_time FROM events WHERE id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $eventId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $event = $result->fetch_assoc();
+
+    // Calculate hours
+    $startTime = new DateTime($event['start_time']);
+    $endTime = new DateTime($event['end_time']);
+    $interval = $startTime->diff($endTime);
+    $hours = $interval->h + ($interval->days * 24); // assuming no event lasts more than 24 hours
+
+    // Insert into registered_events
+    $insertQuery = "INSERT INTO registered_events (volunteer_id, event_id, start_time, end_time, hours) VALUES (?, ?, ?, ?, ?)";
+    $insertStmt = $conn->prepare($insertQuery);
+    $insertStmt->bind_param("iissi", $volunteerId, $eventId, $event['start_time'], $event['end_time'], $hours);
+    $insertStmt->execute();
+}
+
+
 // Check if username and eventID are given using the POST method
 if (isset($_POST['user']) && isset($_POST['eventID'])) {
     $user = $_POST["user"];
