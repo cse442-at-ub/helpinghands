@@ -5,8 +5,7 @@ if (!isset($_SESSION['email'])) {
    header('location:signin.html'); //if user is not logined redirect user to signin
 }
 $events = [];
-
-$sql = "SELECT events.*, accounts.profile_image, accounts.rating , count(eg.eventID) as total_reg FROM `events` INNER JOIN accounts on events.username = accounts.email left JOIN eventRegistrations eg on eg.eventID =events.eventID GROUP BY events.eventID, accounts.profile_image, accounts.rating"; //select all events with organization
+$sql = "SELECT events.*, accounts.userID, accounts.userType, accounts.profile_image, accounts.rating , count(eg.eventID) as total_reg FROM `events` INNER JOIN accounts on events.username = accounts.email left JOIN eventRegistrations eg on eg.eventID =events.eventID GROUP BY events.eventID, accounts.profile_image, accounts.rating"; //select all events with organization
 $res = $conn->prepare($sql);
 $res->execute();
 $events = $res->get_result();
@@ -14,24 +13,24 @@ $events = $res->get_result();
 <!DOCTYPE html>
 <html>
 
+<head>
+   <title>Homepage</title>
+   <link rel="stylesheet" href="css\homepage.css">
+   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter">
+</head>
 
-   <head>
-      <title>Homepage</title>
-      <link rel="stylesheet" href="css\homepage.css">
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter">
-   </head>
-
-   <body>
+<body>
    <?php
    require 'connect.php';
    session_start();
    $email = $_SESSION['email'];
-   $getall = mysqli_query($conn, "SELECT profile_image,rating,userType,name FROM accounts WHERE email='$email'");
+   $getall = mysqli_query($conn, "SELECT profile_image,rating,userType,name,userID FROM accounts WHERE email='$email'");
    $rows = mysqli_fetch_array($getall);
    $img = $rows['profile_image'];
    $rating = $rows['rating'];
    $role = $rows['userType'];
    $name = $rows['name'];
+   $personaluid = $rows['userID'];
    ?>
    <div class="banner">
       <header>
@@ -50,22 +49,22 @@ $events = $res->get_result();
                <a href="#">Notifications</a>
             </nav>
             <div class="profile">
-               <img src="uploaded/<?php echo $img ?>" alt="<?php echo $img ?>" style="border-radius:50vw;margin-top:1vh; cursor:pointer;" class="profilepic" onclick="redirectToPage('<?php echo $role; ?>')">
+               <img src="uploaded/<?php echo $img ?>" alt="<?php echo $img ?>" style="border-radius:50vw;margin-top:1vh; cursor:pointer;" class="profilepic" onclick="redirectToPage('<?php echo $role, $personaluid; ?>')">
                <div class="behindpfp">
                   <?php echo htmlspecialchars_decode($rating) ?>
                </div>
                <div class="activedot"></div>
             </div>
-         </header>
-      </div>
-      <?php
+      </header>
+   </div>
+   <?php
    while ($event = $events->fetch_assoc()) {
    ?>
-      div class="post-body">
+      <div class="post-body">
          <post-header>
             <div class="post-wrapper">
                <div class="post-logo">
-                  <img src="Images/<?php echo $event['profile_image']; ?>" alts="Weld Food Bank Logo" class="logocenter">
+                  <img src="Images/<?php echo $event['profile_image']; ?>" alts="Weld Food Bank Logo" class="logocenter" onclick="redirectToPage('<?php echo $event['userType'], $event['userID']; ?>')">
                </div>
                <a href="#">...</a>
             </div>
@@ -110,24 +109,27 @@ $events = $res->get_result();
             <input type="hidden" id="<?php echo $eventID; ?>" name="eventID" value="<?php echo $eventID; ?>">
             <div class="post-save"><button type="submit" id="bookmarkEvent">Save for later</button></div>
          </form>
-         <div class="post-warnings">
-            <img src="Images/673px-Wheelchair_symbol.svg.png" alts="Disabled Symbol" class="warningimages">
-            <img src="Images/No_Smoking.svg.png" alts="No Smoking Symbol" class="warningimages">
-            <img src="Images/HeavyLifting.png" alts="Stick figure lifing heavy box" class="warningimages">
-         </div>
+         <?php /*<div class="post-warnings">
+         <img src="Images/673px-Wheelchair_symbol.svg.png" alts="Disabled Symbol" class="warningimages">
+         <img src="Images/No_Smoking.svg.png" alts="No Smoking Symbol" class="warningimages">
+        <img src="Images/HeavyLifting.png" alts="Stick figure lifing heavy box" class="warningimages">
+      </div>*/ ?>
       </div>
-      <?php } ?>
+   <?php } ?>
+
    <body>
-   <?php
-   if (isset($_SESSION['flash'])) { //check flah message
-   ?>
-      <script>
-         alert("<?php echo $_SESSION['flash']; ?>")
-      </script>
-   <?php
-      unset($_SESSION['flash']); //unset flash message
-   } ?>
-   </html>
-      <script src="js/redirect.js"></script>
-   </body>
+      <?php
+      if (isset($_SESSION['flash'])) { //check flash message
+      ?>
+         <script>
+            alert("<?php echo $_SESSION['flash']; ?>")
+         </script>
+      <?php
+         unset($_SESSION['flash']); //unset flash message
+      } ?>
+
+</html>
+<script src="js/redirect.js"></script>
+</body>
+
 </html>

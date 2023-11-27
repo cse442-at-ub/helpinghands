@@ -4,7 +4,13 @@ session_start();
 if (!isset($_SESSION['email']) || $_SESSION['userType'] != 'organization') {
   header('location: signin.html');
 }
-$user = $_SESSION['email'];
+$uid = (isset($_GET['uid'])) ? $_GET['uid'] : $_SESSION['userID'];
+$sql2 = "SELECT email FROM accounts WHERE userID='$uid'";
+$emailping = $conn->prepare($sql2);
+$emailping->bind_param('s', $uid);
+$emailping->execute();
+$emailping = $emailping->get_result();
+$user = $emailping['email'];
 $sql = "SELECT * FROM `events` WHERE `username`=?";
 $events = $conn->prepare($sql);
 $events->bind_param('s', $user);
@@ -20,21 +26,23 @@ $events = $events->get_result();
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter">
   <link rel="stylesheet" href="evo-calendar.min.css">
 </head>
+
 <body>
   <?php
   require 'connect.php';
   session_start();
   $email = $_SESSION['email'];
-  $getall = mysqli_query($conn, "SELECT profile_image,name,rating,description,userType FROM accounts WHERE email='$email'");
+  $getall = mysqli_query($conn, "SELECT profile_image,name,rating,description,userType,userID FROM accounts WHERE email='$email'");
   $rows = mysqli_fetch_array($getall);
   $img = $rows['profile_image'];
   $name = $rows['name'];
   $rating = $rows['rating'];
   $desc = $rows['description'];
   $role = $rows['userType'];
+  $personaluid = $rows['userID'];
 
   //Calendar 
-  $getEventID = mysqli_query($conn, "SELECT eventID FROM eventRegistrations WHERE user='$email'");
+  $getEventID = mysqli_query($conn, "SELECT eventID FROM eventRegistrations WHERE user='$user'");
   $eventIDs = array();
   while ($rows_eventID = mysqli_fetch_array($getEventID)) {
     $eventIDs[] = $rows_eventID["eventID"];
@@ -54,7 +62,7 @@ $events = $events->get_result();
     $getStartDate = mysqli_query($conn, "SELECT startDate FROM events WHERE eventID='$eventID'");
     $getEndDate = mysqli_query($conn, "SELECT endDate FROM events WHERE eventID='$eventID'");
     $getOrgName = mysqli_query($conn, "SELECT username FROM events WHERE eventID='$eventID'");
-    
+
     $rows_Titles = mysqli_fetch_array($getTitle);
     $rows_Locations = mysqli_fetch_array($getLocation);
     $rows_StartTimes = mysqli_fetch_array($getStartTime);
@@ -86,7 +94,7 @@ $events = $events->get_result();
       <a href="#">Settings</a>
       <a href="#">Notifcations</a>
       <div class="img">
-        <img src="uploaded/<?php echo $img ?>" alt="<?php echo $img ?>" style="border-radius:50vw;margin-top:1vh; cursor:pointer;" onclick="redirectToPage('<?php echo $role; ?>')" />
+        <img src="uploaded/<?php echo $img ?>" alt="<?php echo $img ?>" style="border-radius:50vw;margin-top:1vh; cursor:pointer;" onclick="redirectToPage('<?php echo $role, $personaluid; ?>')" />
         <div class="rating"><?php echo htmlspecialchars_decode($rating) ?></div>
       </div>
     </div>
@@ -94,27 +102,37 @@ $events = $events->get_result();
   <div class="container">
     <nav>
       <ul>
-        <li>
-          <a href="https://www-student.cse.buffalo.edu/CSE442-542/2023-Fall/cse-442d/eventlisting2.php">Create event</a>
-        </li>
-        <li>
-          <a href="#">Leave a comment</a>
-        </li>
-        <li>
-          <a href="user_ratings.php">Rate</a>
-        </li>
+      <?php
+        if ($uid == $_SESSION['userID']) {
+          echo "<li>";
+          echo "<a href=\"https://www-student.cse.buffalo.edu/CSE442-542/2023-Fall/cse-442d/eventlisting2.php\">Create event</a>";
+          echo "</li>";
+        }
+        if ($uid != $_SESSION['userID']) {
+          echo "<li>";
+          echo "<a href=\"#\">Leave a comment</a>";
+          echo "</li>";
+          echo "<li>";
+          echo "<a href=\"user_ratings.php\">Rate</a>";
+          echo "</li>";
+        }
+        ?>
         <li>
           <a href="#">View Events</a>
         </li>
         <li>
           <a href="#">View History</a>
         </li>
-        <li>
-          <a href="volunteeredit.php">Edit Profile</a>
-        </li>
-        <li>
-          <a href="https://www-student.cse.buffalo.edu/CSE442-542/2023-Fall/cse-442d/signin.html">Logout</a>
-        </li>
+        <?php
+        if ($uid == $_SESSION['userID']) {
+          echo "<li>";
+          echo "<a href=\"volunteeredit.php\">Edit Profile</a>";
+          echo "</li>";
+          echo "<li>";
+          echo "<a href=\"https://www-student.cse.buffalo.edu/CSE442-542/2023-Fall/cse-442d/signin.html\">Logout</a>";
+          echo "</li>";
+        }
+        ?>
       </ul>
     </nav>
     <div class="first_box">
@@ -174,7 +192,7 @@ $events = $events->get_result();
     <div class="second_box " id="bookmarkedEvents">
       <?php
       require 'connect.php'; // Connecting to database
-      $sql6 = "SELECT startTime, endTime, startDate, endDate, eventID, volunteersRequired, username FROM events WHERE eventID IN ( SELECT eventID FROM bookmarkedEvents WHERE user='$email' )";
+      $sql6 = "SELECT startTime, endTime, startDate, endDate, eventID, volunteersRequired, username FROM events WHERE eventID IN ( SELECT eventID FROM bookmarkedEvents WHERE user='$user' )";
       $result = $conn->query($sql6);
       if ($result->num_rows > 0) {
         while ($rowEvents = $result->fetch_assoc()) {
@@ -214,9 +232,9 @@ $events = $events->get_result();
       ?>
     </div>
 
-     <!--CALENDAR-->
+    <!--CALENDAR-->
 
-     <div class="first_box mt_4">
+    <div class="first_box mt_4">
       <h1 class="heading">Calendar</h1>
     </div>
   </div>
@@ -234,15 +252,12 @@ $events = $events->get_result();
   <script src="evo-calendar.js"></script>
 
   <script>
-    $("#calendar").evoCalendar
-      (
-        {
-          sidebarDisplayDefault: false,
-          todayHighlight: true,
-          eventDisplayDefault: false,
-          firstDayOfWeek: 1,
-        }
-      );
+    $("#calendar").evoCalendar({
+      sidebarDisplayDefault: false,
+      todayHighlight: true,
+      eventDisplayDefault: false,
+      firstDayOfWeek: 1,
+    });
     var passedArray = <?php echo json_encode($eventIDs); ?>;
     var TitlesArr = <?php echo json_encode($Titles); ?>;
     var LocationsArr = <?php echo json_encode($Locations); ?>;
@@ -253,12 +268,9 @@ $events = $events->get_result();
     var OrgNamesArr = <?php echo json_encode($OrgNames); ?>;
 
     for (var i = 0; i < passedArray.length; i++) {
-      if (OrgNamesArr[i] != null)
-      {
+      if (OrgNamesArr[i] != null) {
         var orgName = OrgNamesArr[i].replace(/@.*$/, "");
-      }
-      else
-      {
+      } else {
         var orgName = OrgNamesArr[i];
       }
 
@@ -291,6 +303,7 @@ $events = $events->get_result();
       el.nextElementSibling.classList.remove('d_none')
       document.getElementById(id).classList.remove("hidden")
     }
+
     function hideall(el) {
       el.classList.add("d_none");
       el.previousElementSibling.classList.remove('d_none')
@@ -300,4 +313,5 @@ $events = $events->get_result();
   </script>
   <script src="js/redirect.js"></script>
 </body>
+
 </html>
