@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Contact form</title>
+<link rel="stylesheet" href="contactform.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter">
+</head>
+<body>
+    <div class="banner">
+        <header>
+            <div class="wrapper">
+                <div class="logo">
+                    <img src="Images/Helping Hands Logo.png" alt="Helping Hands Logo" style=" position: relative; transform:translate(0px, 16px)" class="img">
+                    <a> HELPING <span class="multicolorbanner">HANDS</span></a>
+                </div>
+                <nav>
+                    <a href="http://127.0.0.1:5500/signup.html">Login</a>
+                    <a href="#">About</a>
+                </nav>
+            </div>
+        </header>
+    </div>
+    <div class="banner-area">
+        <h2>Fixed Banner</h2>
+    </div>
+    <body>
+        <div class="AccountBox">
+            <div class="MissionStatement">
+                <H1>Empower change with us. Explore countless volunteering opportunities effortlessly. Your journey to make a difference starts here. </H1>
+            </div>
+            <a id="Title" p><span class="multicolorbanner">Welcome to</span> HELPING <span class="multicolorbanner">HANDS</span></a>
+            <form onsubmit = "sendEmail(); reset(); return false;">
+                <div class="InputBox">
+                    <label for="name"><b>Name</b></label>
+                    <input type="text" id="name" placeholder="Enter Full name" name="name" required>
+                </div>
+                <div class="InputBox">
+                    <label for="email"><b>Email</b></label>
+                    <input type="text" id="email" placeholder="Enter Email" name="email" required>
+                </div>
+                <div class="InputBox">
+                    <label for="message"><b>Message</b></label>
+                    <input type="text" id="message" placeholder="Enter Message" name="message" required>
+                </div>
+                <div class="accountCheck">
+                    <input type="checkbox" id="form_confirm"  name="form_confirm" value="yes" required>
+                    <label for="form_confirm"> I confirm the entered email is correct</label><br>
+                </div>
+                <div class="InputBox">
+                    <button type="submit" id="signup">Submit form</button>
+                </div>
+            </form>
+        </div>
+        <script src="https://smtpjs.com/v3/smtp.js"></script>
+        <script>
+            function sendEmail(){
+                Email.send({
+                    Host : "smtp.sendgrid.net",
+                    Username : "apikey",
+                    Password: "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",
+                    //Password : "F8521B2D109A2B1F5292BCA023214FE9B3F5",
+                    To : 'scrubs442@gmail.com',
+                    From : document.getElementById("email").value,
+                    Subject : "New Contact form inquiry",
+                    Body : "Name: " + document.getElementById("name").value 
+                    + "<br> Email" + document.getElementById("email").value 
+                    + "<br> Message" + document.getElementById("message").value 
+                }).then(
+                message => alert("Message sent successfully")
+                );
+            }
+        </script>
+    </body>
+</body>
+</html>
+
+
+      
