@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function(){ // Wait until document is fully loaded before running script
 
     var subscriptionForm = document.querySelector('.subscription-form');
+    var subscribeButton = document.querySelector('.subscribe-button');
 
     subscriptionForm.addEventListener('submit', function(event) { // adding event listener for when form is submitted
 
@@ -16,7 +17,8 @@ document.addEventListener('DOMContentLoaded', function(){ // Wait until document
         .then(response => response.text()) // making sure response is in text
 
         .then(data => {
-            alert(data) // Displays alert with the data echoed by subscribe.php
+            //alert(data) // Displays alert with the data echoed by subscribe.php
+            subscribeButton.innerHTML = data;
         })
 
         .catch(error => {
