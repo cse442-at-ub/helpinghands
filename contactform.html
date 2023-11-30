@@ -29,7 +29,7 @@
                 <H1>Empower change with us. Explore countless volunteering opportunities effortlessly. Your journey to make a difference starts here. </H1>
             </div>
             <a id="Title" p><span class="multicolorbanner">Welcome to</span> HELPING <span class="multicolorbanner">HANDS</span></a>
-            <form onsubmit = "sendEmail(); reset(); return false;">
+            <form action = "contactform.php" method="post">
                 <div class="InputBox">
                     <label for="name"><b>Name</b></label>
                     <input type="text" id="name" placeholder="Enter Full name" name="name" required>
@@ -51,7 +51,7 @@
                 </div>
             </form>
         </div>
-        <script src="https://smtpjs.com/v3/smtp.js"></script>
+        <!-- <script src="https://smtpjs.com/v3/smtp.js"></script>
         <script>
             function sendEmail(){
                 Email.send({
@@ -69,7 +69,7 @@
                 message => alert("Message sent successfully")
                 );
             }
-        </script>
+        </script> -->
     </body>
 </body>
 </html>
