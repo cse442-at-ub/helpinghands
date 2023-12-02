@@ -208,29 +208,12 @@ nav a:hover
 
 
 
-#emailError.show {
-    visibility: visible;
-    opacity: 1;
+
+.centered-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
 }
 
-.error-message {
-    display: none; /* Initially hidden */
-    color: red; /* Error message color */
-    font-size: 0.9em; /* Smaller font size */
-    margin-top: 5px; /* Spacing between input field and error message */
-    /* Additional styles for animation, positioning, etc. */
-}
-
-.error-message.active {
-    display: block; /* Show when active */
-    /* Animation or transition styles if needed */
-}
-
-/* Error message styling */
-#emailError {
-    color: red;
-    font-size: 14px;
-    display: none; /* Initially hidden */
-    margin-top: 5px;
-}
 
