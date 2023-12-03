@@ -104,7 +104,7 @@ $events = $events->get_result();
           <a href="user_ratings.php">Rate</a>
         </li>
         <li>
-          <a href="#">View Events</a>
+          <a href="eventslist.php">My Events</a>
         </li>
         <li>
           <a href="#">View History</a>
