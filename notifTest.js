@@ -14,16 +14,23 @@ document.addEventListener('DOMContentLoaded', function(){ // Wait until document
             body: formData
         })
         .then(response => response.text())
+        .then(data => {
+            console.log(data); // logging data to console for debugging
+            fetchAndDisplay();
+        })
         .catch(error => {
             console.error('Error: ', error); // Logs error to console
         });
     });
 
+    fetchAndDisplay();
+
     // Fetch and display notifications
+    function fetchAndDisplay(){
         fetch('fetchNotifications.php')
         .then(response => response.json())
         .then(notifications => {
-            const container = document.getElementById('notifications-container');
+            const container = document.querySelector('.notifications-container');
             
             notifications.forEach(notification => {
                 const notifElement = document.createElement('div'); // Creating notificatoin element
@@ -31,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function(){ // Wait until document
 
                 // Marking notification as read when it is clicked
                 notifElement.onclick = function() {
-                    fetch('markNotifAsRead.php', {
+                    fetch('markNotificationAsRead.php', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -45,4 +52,5 @@ document.addEventListener('DOMContentLoaded', function(){ // Wait until document
             });
         })
         .catch(error => console.error('Error:', error));
+    }
 });

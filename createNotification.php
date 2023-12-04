@@ -10,8 +10,8 @@ if(isset($_SESSION['userID']) && isset($_POST['organizationID']) && isset($_POST
     $eventID = $_POST['eventID'];
     $message = $_POST['message'];
 
-    $stmt = $conn->prepare("INSERT INTO notifications (userID, organizationID, eventID, message) VALUES (?, ?, ?, ?, ?)"); // Preparing SQL statement
-    $stmt->bind_param("iiiis", $userID, $orgID, $eventID, $message);
+    $stmt = $conn->prepare("INSERT INTO notifications (userID, organizationID, eventID, message) VALUES (?, ?, ?, ?)"); // Preparing SQL statement
+    $stmt->bind_param("iiis", $userID, $orgID, $eventID, $message);
 
     if($stmt->execute()){
         echo "Notification created successfully";
