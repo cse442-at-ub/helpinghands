@@ -1,5 +1,25 @@
 document.addEventListener('DOMContentLoaded', function(){ // Wait until document is fully loaded before running script
-        // Fetch and display notifications
+        
+    // Preventing redirect
+    var createNotificationForm = document.querySelector(".createNotif-form");
+
+    createNotificationForm.addEventListener('submit', function(event) { // adding event listener for when form is submitted
+
+        event.preventDefault(); // prevents the page from reloading on submission
+
+        var formData = new FormData(this);
+
+        fetch('createNotification.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .catch(error => {
+            console.error('Error: ', error); // Logs error to console
+        });
+    });
+
+    // Fetch and display notifications
         fetch('fetchNotifications.php')
         .then(response => response.json())
         .then(notifications => {
