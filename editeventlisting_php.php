@@ -4,7 +4,29 @@ session_start();
 
 $event_id = isset($_GET['eventID']) ? intval($_GET['eventID']) : 0;
 
+$query = "SELECT username FROM events WHERE eventID='$event_id'";
+$result = mysqli_query($conn, $query);
+
+// Get the email of the user who created the event
+if ($result) {
+    $row = mysqli_fetch_assoc($result);
+
+    if ($row) {
+        $user = $row['username'];
+    }
+    else {
+        echo "no match";
+    }
+
+    mysqli_free_result($result);
+}
+
+// Check that the user who created the event and the user logged in match
 if (isset($_POST['edit-event'])) {
+    if ($user != $_SESSION['email']) {
+        header("Location: signin.html");
+        exit();
+    }
     $continue = 1;
     $title = $_POST['title'];
     $location = $_POST['location'];
