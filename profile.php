@@ -72,7 +72,9 @@ $userRating = $userRows['rating'];
       <a href="#">Settings</a>
       <a href="#">Notifcations</a>
       <div class="img">
+      <a href = "<?php echo "profile.php?userID=" . $_SESSION['userID'] ?>">
         <img src="uploaded/<?php echo $userImg ?>" alt="<?php echo $userImg ?>" style="border-radius:50vw;margin-top:1vh; cursor:pointer;" />
+      </a>
         <div class="online"></div>
         <div class="rating">
           <?php echo htmlspecialchars_decode($userRating) ?>
@@ -112,7 +114,6 @@ $userRating = $userRows['rating'];
     <div class="img">
         <img src="uploaded/<?php echo $img?>" alt="<?php echo $img ?>"/>
             <div class="online"></div>
-           
         </div>
         <h1><?php echo htmlspecialchars_decode($name);?></h1>
         </div>
