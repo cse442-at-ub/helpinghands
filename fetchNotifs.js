@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function(){ // Wait until document
                         body: JSON.stringify({ notificationID: notification.notificationID }) // converting notificationID to a JSON string and sending it to the server in the fetch request
                     });
                     notifElement.remove(); // removes the notification from the user's screen
+                    window.location.href = "profile.php?userID=" + notification.organizationID;
                 };
                 container.appendChild(notifElement); // adding notification
             });
