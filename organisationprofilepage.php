@@ -13,6 +13,7 @@ $events = $events->get_result();
 ?>
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>ProfilePage</title>
   <link rel="stylesheet" href="css/organisationprofilepage.css">
@@ -31,6 +32,7 @@ $events = $events->get_result();
   $rating = $rows['rating'];
   $desc = $rows['description'];
   $role = $rows['userType'];
+
   //Calendar 
   $getEventID = mysqli_query($conn, "SELECT eventID FROM eventRegistrations WHERE user='$email'");
   $eventIDs = array();
@@ -102,7 +104,7 @@ $events = $events->get_result();
           <a href="user_ratings.php">Rate</a>
         </li>
         <li>
-          <a href="#">View Events</a>
+          <a href="eventslist.php">My Events</a>
         </li>
         <li>
           <a href="#">View History</a>

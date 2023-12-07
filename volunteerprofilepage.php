@@ -129,9 +129,6 @@ $events = $events->get_result();
           <a href="organization_ratings.php">Rate</a>
         </li>
         <li>
-          <a href="#">View Events</a>
-        </li>
-        <li>
           <a href="#">View History</a>
         </li>
         <li>
