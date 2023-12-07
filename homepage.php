@@ -108,10 +108,21 @@ $events = $res->get_result();
             </div>
          </post-infomatics>
          <img src="<?php echo $event['image']; ?>" alt="<?php echo $event['titles']; ?>" class="imagecenter" style="max-width: 40vw">
-         <form method="POST" action="registerEvent.php">
+         <form method="POST" action="registerEvent.php" class = "registration-form">
             <input type="hidden" id="user" name="user" value="<?php echo $email; ?>">
             <input name="eventID" type="hidden" value="<?php echo $event['eventID']; ?>">
+            <?php
+            // Check if the user is already registered
+            $stmt = $conn->prepare("SELECT * FROM eventRegistrations WHERE user = ? AND eventID = ?");
+            $stmt->bind_param("si", $email, $event['eventID']);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result->num_rows > 0): ?>
+            <button class="post-register" type="submit">Cancel</button>
+            <?php else: ?>
             <button class="post-register" type="submit">Register!</button>
+            <?php endif; ?>
          </form>
          <div class="post-share">
             <a>Share</a>
@@ -143,6 +154,7 @@ $events = $res->get_result();
 </html>
 <script src="js/redirect.js"></script>
 <script src="js/search.js"></script>
+<script src='registrationForm.js'></script>
 </body>
 
 </html>

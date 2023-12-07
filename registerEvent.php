@@ -16,12 +16,15 @@ if (isset($_POST['user']) && isset($_POST['eventID'])) {
     $stmt->execute();
     $result = $stmt->get_result();
 
-    if ($result->num_rows > 0) {
-        echo "You are already registered for this event.";
+    if ($result->num_rows > 0) { // If registration exists, cancel
+        $deleteStmt = $conn->prepare('DELETE FROM eventRegistrations WHERE user = ? AND eventID = ?');
+        $deleteStmt->bind_param('si', $user, $eventID);
+        $deleteStmt->execute();
+        echo "Register!"; // Resetting button to "Register!" after registration is canceled
         exit;
     }
 
-    // Check if the event has room for the new volunteer
+    // Checking if the event has room for the new volunteer
 
     // Getting the current number of registered volunteers
     $stmt = $conn->prepare("SELECT * FROM eventRegistrations WHERE eventID = ?");
@@ -56,7 +59,7 @@ if (isset($_POST['user']) && isset($_POST['eventID'])) {
         exit;
     }
 
-    echo "You have successfully registered for the event.";
+    echo "Cancel"; // Changing button to "Cancel" after subscribing
 
 }
 

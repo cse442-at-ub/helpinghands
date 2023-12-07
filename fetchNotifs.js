@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function(){ // Wait until document
         .then(notifications => {
             const container = document.querySelector('.dropdown-content');
 
-            notifications.foreach(notification => {
+            notifications.forEach(notification => {
                 const notifElement = document.createElement('a'); // Creating notification element
                 notifElement.textContent = notification.message;
 
@@ -20,9 +20,10 @@ document.addEventListener('DOMContentLoaded', function(){ // Wait until document
                     });
                     notifElement.remove(); // removes the notification from the user's screen
                 };
-            })
+                container.appendChild(notifElement); // adding notification
+            });
         })
-
+        .catch(error => console.error('Error: ', error));
     }
 
     fetchAndDisplay();
