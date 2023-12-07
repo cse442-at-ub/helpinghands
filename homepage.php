@@ -10,6 +10,16 @@ $sql = "SELECT events.*, accounts.profile_image, accounts.rating , count(eg.even
 $res = $conn->prepare($sql);
 $res->execute();
 $events = $res->get_result();
+
+$volunteer_id = $_SESSION['user_id'];
+
+// Fetch events from the database
+$query = "SELECT * FROM events";
+$stmt = $conn->prepare($query);
+$stmt->execute();
+$result = $stmt->get_result();
+$events = $result->fetch_all(MYSQLI_ASSOC);
+$stmt->close();
 ?>
 <!DOCTYPE html>
 <html>
@@ -43,6 +53,7 @@ $events = $res->get_result();
                </div>
             </div>
             <div class="searchbar">
+
                <input type="text" id="searchInput" placeholder="Search" oninput="search()">
             </div>
             <nav>
@@ -96,6 +107,12 @@ $events = $res->get_result();
          </post-infomatics>
          <img src="<?php echo $event['image']; ?>" alt="<?php echo $event['titles']; ?>" class="imagecenter" style="max-width: 40vw">
             <form method="POST" action="registerEvent.php">
+               <input type="hidden" name="event_id" value="<?php echo $event['eventID']; ?>">
+               <input type="hidden" name="volunteer_id" value="<?php echo $_SESSION['user_id']; ?>">
+               <button class="post-register" type="submit">Register!</button>
+            </form>
+            <form method="POST" action="registerEvent.php">
+
                <input type="hidden" id="user" name="user" value="<?php echo $email; ?>">
                <input name="eventID" type="hidden" value="<?php echo $event['eventID']; ?>">
                <button class="post-register" type="submit">Register!</button>

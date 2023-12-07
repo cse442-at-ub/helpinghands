@@ -1,6 +1,30 @@
 <?php
 require('connect.php');
 session_start();
+
+// Start the session and include the database connection
+session_start();
+include 'connect.php';
+
+// Check if a user is logged in
+if (isset($_SESSION['email'])) {
+    $volunteer_id = $_SESSION['user_id'];
+
+    // Prepare SQL query to fetch total volunteer hours
+    $query = "SELECT SUM(hours_volunteered) AS total_hours FROM VolunteerHours WHERE volunteer_id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $volunteer_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = $result->fetch_assoc();
+    $total_hours = $data['total_hours'] ?? 0; // Default to 0 if no hours are recorded
+    $stmt->close();
+} else {
+    // Redirect to login page or show an error if the user is not logged in
+    header("Location: signin.php");
+    exit();
+}
+
 if (!isset($_SESSION['email'])) {
   header('location: signin.html');
 }
@@ -131,6 +155,9 @@ $events = $events->get_result();
     </div>
     <div class="second_box">
       <h5>Description</h5>
+      <div>
+       <h3>Total Volunteer Hours: <?php echo $total_hours; ?></h3>
+      </div>
       <p>
         <?php echo htmlspecialchars_decode($desc) ?>
       </p>
