@@ -25,4 +25,6 @@ document.addEventListener('DOMContentLoaded', function(){ // Wait until document
 
     }
 
+    fetchAndDisplay();
+
 });
