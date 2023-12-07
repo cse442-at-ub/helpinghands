@@ -51,11 +51,15 @@ $events = $res->get_result();
                   <a class="dropa">Notifications
                      <i class="fa fa-caret-down"></i>
                   </a>
+                  <script src = "fetchNotifs.js"></script>
                   <div class="dropdown-content">
+                     <!--
                      <a href="#">Linky1</a>
                      <a href="#">Linky2</a>
                      <a href="#">Linky3</a>
                      <a href="#">Linky4</a>
+                     -->
+
                   </div>
             </nav>
             <div class="profile">
