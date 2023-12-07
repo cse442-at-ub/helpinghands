@@ -1,36 +1,11 @@
 <?php
 require('connect.php');
 session_start();
-
-
-// Start the session and include the database connection
-session_start();
-include 'connect.php';
-
-// Check if a user is logged in
-if (isset($_SESSION['email'])) {
-    $volunteer_id = $_SESSION['user_id'];
-
-    // Prepare SQL query to fetch total volunteer hours
-    $query = "SELECT SUM(hours_volunteered) AS total_hours FROM VolunteerHours WHERE volunteer_id = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("i", $volunteer_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $data = $result->fetch_assoc();
-    $total_hours = $data['total_hours'] ?? 0; // Default to 0 if no hours are recorded
-    $stmt->close();
-} else {
-    // Redirect to login page or show an error if the user is not logged in
-    header("Location: signin.php");
-    exit();
-}
-
-if (!isset($_SESSION['email'])) {
+if (!isset($_SESSION['email']) || $_SESSION['userType'] != 'organization') {
   header('location: signin.html');
 }
 $user = $_SESSION['email'];
-$sql = "SELECT events.*, accounts.rating, COUNT(eg.eventID) as total_reg FROM `eventRegistrations` eg INNER JOIN events on events.eventID = eg.eventID INNER JOIN accounts on accounts.email = events.username WHERE eg.user = ? GROUP BY events.eventID, accounts.rating;";
+$sql = "SELECT * FROM `events` WHERE `username`=?";
 $events = $conn->prepare($sql);
 $events->bind_param('s', $user);
 $events->execute();
@@ -41,8 +16,7 @@ $events = $events->get_result();
 
 <head>
   <title>ProfilePage</title>
-
-  <link rel="stylesheet" href="css/volunteerprofilepage.css">
+  <link rel="stylesheet" href="css/organisationprofilepage.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter">
   <link rel="stylesheet" href="evo-calendar.min.css">
 </head>
@@ -51,12 +25,13 @@ $events = $events->get_result();
   require 'connect.php';
   session_start();
   $email = $_SESSION['email'];
-  $getall = mysqli_query($conn, "SELECT profile_image,rating,userType,name FROM accounts WHERE email='$email'");
+  $getall = mysqli_query($conn, "SELECT profile_image,name,rating,description,userType FROM accounts WHERE email='$email'");
   $rows = mysqli_fetch_array($getall);
   $img = $rows['profile_image'];
-  $rating = $rows['rating'];
-  $role = $rows['userType'];
   $name = $rows['name'];
+  $rating = $rows['rating'];
+  $desc = $rows['description'];
+  $role = $rows['userType'];
 
   //Calendar 
   $getEventID = mysqli_query($conn, "SELECT eventID FROM eventRegistrations WHERE user='$email'");
@@ -64,7 +39,6 @@ $events = $events->get_result();
   while ($rows_eventID = mysqli_fetch_array($getEventID)) {
     $eventIDs[] = $rows_eventID["eventID"];
   }
-
   $Titles = array();
   $Locations = array();
   $StartTimes = array();
@@ -72,7 +46,6 @@ $events = $events->get_result();
   $StartDates = array();
   $EndDates = array();
   $OrgNames = array();
-
   foreach ($eventIDs as $eventID) {
     $getTitle = mysqli_query($conn, "SELECT titles FROM events WHERE eventID='$eventID'");
     $getLocation = mysqli_query($conn, "SELECT location FROM events WHERE eventID='$eventID'");
@@ -81,7 +54,7 @@ $events = $events->get_result();
     $getStartDate = mysqli_query($conn, "SELECT startDate FROM events WHERE eventID='$eventID'");
     $getEndDate = mysqli_query($conn, "SELECT endDate FROM events WHERE eventID='$eventID'");
     $getOrgName = mysqli_query($conn, "SELECT username FROM events WHERE eventID='$eventID'");
-
+    
     $rows_Titles = mysqli_fetch_array($getTitle);
     $rows_Locations = mysqli_fetch_array($getLocation);
     $rows_StartTimes = mysqli_fetch_array($getStartTime);
@@ -114,10 +87,7 @@ $events = $events->get_result();
       <a href="#">Notifcations</a>
       <div class="img">
         <img src="uploaded/<?php echo $img ?>" alt="<?php echo $img ?>" style="border-radius:50vw;margin-top:1vh; cursor:pointer;" onclick="redirectToPage('<?php echo $role; ?>')" />
-        <div class="online"></div>
-        <div class="rating">
-          <?php echo htmlspecialchars_decode($rating) ?>
-        </div>
+        <div class="rating"><?php echo htmlspecialchars_decode($rating) ?></div>
       </div>
     </div>
   </header>
@@ -125,10 +95,16 @@ $events = $events->get_result();
     <nav>
       <ul>
         <li>
+          <a href="https://www-student.cse.buffalo.edu/CSE442-542/2023-Fall/cse-442d/eventlisting2.php">Create event</a>
+        </li>
+        <li>
           <a href="#">Leave a comment</a>
         </li>
         <li>
-          <a href="organization_ratings.php">Rate</a>
+          <a href="user_ratings.php">Rate</a>
+        </li>
+        <li>
+          <a href="eventslist.php">My Events</a>
         </li>
         <li>
           <a href="#">View History</a>
@@ -137,39 +113,22 @@ $events = $events->get_result();
           <a href="volunteeredit.php">Edit Profile</a>
         </li>
         <li>
-
           <a href="https://www-student.cse.buffalo.edu/CSE442-542/2023-Fall/cse-442d/signin.html">Logout</a>
         </li>
       </ul>
     </nav>
     <div class="first_box">
-      <div class="df">
-        <div class="img">
-          <img src="uploaded/<?php echo $img ?>" alt="<?php echo $img ?>" />
-          <div class="online"></div>
-        </div>
-        <h1>
-          <?php echo htmlspecialchars_decode($name); ?>
-        </h1>
-      </div>
-      <div class="ratings">
-        <?php echo htmlspecialchars_decode($rating) ?>/5
-      </div>
+      <img src="uploaded/<?php echo $img ?>" alt="<?php echo $img ?>" style="height: 150px; width: auto" />
+      <h1><?php echo htmlspecialchars_decode($name); ?></h1>
+      <div class="ratings"><?php echo htmlspecialchars_decode($rating) ?>/5</div>
     </div>
     <div class="second_box">
       <h5>Description</h5>
-      <div>
-       <h3>Total Volunteer Hours: <?php echo $total_hours; ?></h3>
-      </div>
-      <p>
-        <?php echo htmlspecialchars_decode($desc) ?>
-      </p>
+      <p><?php echo htmlspecialchars_decode($desc) ?></p>
     </div>
     <div class="first_box mt_4">
       <h1 class="heading">Current Events</h1>
-      <img class="hideall d_none"
-        src="Images/png-transparent-arrow-expand-expand-less-expandless-top-up-navigation-set-arrows-part-one-icon.png"
-        onclick="showall(this)" data-box="events">
+      <img class="hideall d_none" src="Images/png-transparent-arrow-expand-expand-less-expandless-top-up-navigation-set-arrows-part-one-icon.png" onclick="showall(this)" data-box="events">
       <button class="showall" onclick="hideall(this)" data-box="events">Hide All</button>
     </div>
     <div class="second_box " id="events">
@@ -178,11 +137,11 @@ $events = $events->get_result();
           <img src="<?php echo $event['image']; ?>">
           <div class="df">
             <div class="box_rating">
-              <?php echo $event['rating']; ?>
+              4.92
             </div>
             <div class="pepople_rating">
               <img src="Images/people.png">
-              <?php echo $event['total_reg']; ?>/<?php echo $event['volunteersRequired']; ?>
+              0/<?php echo $event['volunteersRequired']; ?>
             </div>
           </div>
           <div class="date">
@@ -197,15 +156,15 @@ $events = $events->get_result();
       <button class="showall" onclick="hideall(this)" data-box="history">Hide All</button>
     </div>
     <div class="second_box " id="history">
-      <h2 class="history">Empty, You should volunter to fill this </h2>
+      <h2 class="history">This organisation has no previous events</h2>
     </div>
     <div class="first_box mt_4">
       <h1 class="heading">Comments</h1>
       <img class="hideall" src="Images/png-transparent-arrow-expand-expand-less-expandless-top-up-navigation-set-arrows-part-one-icon.png" onclick="showall(this)" data-box="comments">
-      <button class="showall d_none" onclick="hideall(this)" data-box="comments">Hide All</button>
+      <button class="showall d_none" onclick="hideall(this)" data-box="comments">Show All</button>
     </div>
     <div class="second_box hidden" id="comments">
-      <h2 class="history">Empty, You should volunter to fill this </h2>
+      <h2 class="history">No comments</h2>
     </div>
     <div class="first_box mt_4">
       <h1 class="heading">Bookmarked Events</h1>
@@ -235,22 +194,19 @@ $events = $events->get_result();
           //Main Declaration
           echo "<div class=\"logo_box\">";
           // Image Display
-          echo "<img src=\"uploaded/" . $image . "\">";
-          echo "<div class=\"df\">";
+          echo  "<img src=\"uploaded/" . $image . "\">";
+          echo    "<div class=\"df\">";
           //Rating
-          echo "<div class=\"box_rating\"> . $ratingEvent . </div>";
+          echo      "<div class=\"box_rating\"> . $ratingEvent . </div>";
           //PEPOPLE count >:(
-          echo "<div class=\"pepople_rating\">";
-          echo "<img src=\"Images/people.png\" class=\"peopleimg\">";
-
-          echo $count . "/" . $rowEvents["volunteersRequired"];
-          echo "</div></div>";
+          echo      "<div class=\"pepople_rating\">";
+          echo        "<img src=\"Images/people.png\">";
+          echo        $count . "/" . $rowEvents["volunteersRequired"];
+          echo      "</div></div>";
           //Date and Time
-          echo "<div class=\"date\">";
-
-          echo "<span>" . date('M d, Y', strtotime($rowEvents['startDate'])) . " - " . date('M d, Y', strtotime($rowEvents["endDate"])) . "</span><span>" . date('ha', strtotime($rowEvents["startTime"])) . " - " . date('ha', strtotime($rowEvents["endTime"])) . "</span>";
-
-          echo "</div></div>";
+          echo    "<div class=\"date\">";
+          echo    "<span>" . $rowEvents["startDate"] . " - " . $rowEvents["endDate"] . "</span><span>" . $rowEvents["startTime"] . " - " . $rowEvents["endTime"] . "</span>";
+          echo    "</div></div>";
         }
       } else {
         echo "<h2 class=\"bookmarkedEvents\">Empty, You have no bookmarked events</h2>";
@@ -258,9 +214,9 @@ $events = $events->get_result();
       ?>
     </div>
 
-    <!--CALENDAR-->
+     <!--CALENDAR-->
 
-    <div class="first_box mt_4">
+     <div class="first_box mt_4">
       <h1 class="heading">Calendar</h1>
     </div>
   </div>
@@ -271,6 +227,8 @@ $events = $events->get_result();
       <div id="calendar"></div>
     </div>
   </div>
+
+
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/evo-calendar@1.1.2/evo-calendar/js/evo-calendar.min.js"></script>
   <script src="evo-calendar.js"></script>
@@ -303,6 +261,7 @@ $events = $events->get_result();
       {
         var orgName = OrgNamesArr[i];
       }
+
       var dateObject = new Date(StartDatesArr[i]);
       dateObject.setDate(dateObject.getDate() + 1);
       var ActualStartDate = dateObject.toISOString().slice(0, 10);
@@ -322,9 +281,7 @@ $events = $events->get_result();
         type: 'event'
       }]);
     }
-
   </script>
-
   <!--CALENDAR-->
   </div>
   <script type="text/javascript">
@@ -334,7 +291,6 @@ $events = $events->get_result();
       el.nextElementSibling.classList.remove('d_none')
       document.getElementById(id).classList.remove("hidden")
     }
-
     function hideall(el) {
       el.classList.add("d_none");
       el.previousElementSibling.classList.remove('d_none')

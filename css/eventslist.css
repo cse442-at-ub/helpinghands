@@ -1,0 +1,77 @@
+body {
+    font-family: 'Inter', Arial, sans-serif;
+    background-color: rgb(209, 228, 233);
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h2 {
+    color: #333;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.back-button {
+    background-color: #e4e4e4;
+    color: #333; /* Change text color to black */
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.event-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.event-card {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 15px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.event-title {
+    padding-top: 3vh;
+    font-size: 18px;
+    margin: 0;
+}
+
+.edit-link {
+    text-decoration: none;
+    color: #333;
+    background-color: #e4e4e4;
+    border: 1px solid #e4e4e4;
+    border-radius: 5px;
+    padding: 8px 15px;
+    margin-top: 10px;
+    align-self: flex-end;
+    cursor: pointer;
+}
+
+.edit-link:hover {
+    background-color: #919191;
+    border-color: #919191;
+}
+
+.back-button:hover {
+    background-color: #919191;
+    border-color: #919191;
+}

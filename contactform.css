@@ -32,7 +32,7 @@ header
 {
     text-decoration: none;
     font-size: 30px;
-    margin: 10px;
+    margin-left: 10px;
     font-family: 'Inter';
     color: rgb(68,172,190);
     flex-shrink: 0;
@@ -76,7 +76,7 @@ nav a:hover
 {
     color: #1d1d1d;
     text-align: center;
-    font-family: 'Inter';
+    font-family: "Inter";
     font-size: 12px;
     position: absolute;
     width: 620px;
@@ -95,66 +95,36 @@ nav a:hover
     transform: translate(-50%, -50%);
     box-sizing: border-box;
     border-radius: 20px;
+    padding-top: 20px;
 }
 
 .AccountBox #Title
 {
     text-decoration: none;
     font-size: 22px;
-    font-family: "Inter";
+    font-family: 'Inter';
     color: rgb(68,172,190);
-    position: absolute;
-    margin-top: 40px;
+    margin-top:50px;
     margin-left: 10%;
+    margin-bottom: 10%;
     pointer-events: none;
 }
 
-.AccountOption
-{
-    width:80%;
-    margin: 0 auto;
-    height:120px;
-    border-bottom:1px solid black;
-}
 
-.AccountOption li
-{
-    list-style-type: none;
-    padding: 0;
-    display: inline-block;
-    margin-left: 10px;
-    margin-right: 12px;
-    margin-top: 93px;
-}
-
-.AccountOption #accountLink
-{
-    text-decoration: none;
-    color: black;
-    transition: 0.3s;
-}
-
-.AccountOption #accountLink:hover
-{
-    color: rgb(68,172,190);
-    transition: 0.3s;
-}
-
-.selectionBox
-{
-    width: 75px;
-    height:4px;
-    transform:translate(0px, 3px);
-    border-radius: 10px 10px 0px 0px;
-    background: #47DEFF;
-    pointer-events: none;
-}
-
-.InputBox
+.AccountBox .InputBox
 {
     text-align: center;
     width: 100%;
     height: 50px;
+    margin-top:30px ;
+    margin-bottom: 45px;
+}
+
+.AccountBox .InputBox2
+{
+    text-align: center;
+    width: 100%;
+    height: 3000px;
     margin-top:30px ;
     margin-bottom: 45px;
 }
@@ -178,10 +148,23 @@ nav a:hover
     border-radius: 5px;
 }
 
+.AccountBox input::placeholder
+{
+    color: black;
+    opacity: 20%;
+}
+
 .accountCheck
 {
-    width: 110px;
 
+        font-family: "Inter", Helvetica;
+        font-weight: 400;
+        color: #000000;
+        font-size: 14px;
+        letter-spacing: 0;
+        line-height: normal;
+        white-space: nowrap;
+      
 }
 .accountCheck label
 {
@@ -197,13 +180,7 @@ nav a:hover
     height: 18px;
 }
 
-.AccountBox input::placeholder
-{
-    color: black;
-    opacity: 20%;
-}
-
-.AccountBox #signin
+.AccountBox #signup
 {
     width: 295px;
     height: 49px;
@@ -217,17 +194,43 @@ nav a:hover
     transition: 0.2s;
 }
 
-.AccountBox #signin:hover
+.AccountBox #signup:hover
 {
     background-color: #76ff21;
     transition: 0.3s;
 }
 
-.AccountBox #signin:active
+.AccountBox #signup:active
 {
     background-color: #4bc400;
     transition: 0.2s;
 }
 
 
+
+#emailError.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+.error-message {
+    display: none; /* Initially hidden */
+    color: red; /* Error message color */
+    font-size: 0.9em; /* Smaller font size */
+    margin-top: 5px; /* Spacing between input field and error message */
+    /* Additional styles for animation, positioning, etc. */
+}
+
+.error-message.active {
+    display: block; /* Show when active */
+    /* Animation or transition styles if needed */
+}
+
+/* Error message styling */
+#emailError {
+    color: red;
+    font-size: 14px;
+    display: none; /* Initially hidden */
+    margin-top: 5px;
+}
 

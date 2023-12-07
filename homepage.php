@@ -10,18 +10,27 @@ $sql = "SELECT events.*, accounts.profile_image, accounts.rating , count(eg.even
 $res = $conn->prepare($sql);
 $res->execute();
 $events = $res->get_result();
+
+$volunteer_id = $_SESSION['user_id'];
+
+// Fetch events from the database
+$query = "SELECT * FROM events";
+$stmt = $conn->prepare($query);
+$stmt->execute();
+$result = $stmt->get_result();
+$events = $result->fetch_all(MYSQLI_ASSOC);
+$stmt->close();
 ?>
 <!DOCTYPE html>
 <html>
 
+   <head>
+      <title>Homepage</title>
+      <link rel="stylesheet" href="css\homepage.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter">
+   </head>
 
-<head>
-   <title>Homepage</title>
-   <link rel="stylesheet" href="css\homepage.css">
-   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter">
-</head>
-
-<body>
+   <body>
    <?php
    require 'connect.php';
    session_start();
@@ -47,6 +56,7 @@ $events = $res->get_result();
             </div>
             <nav>
                <a href="#">Settings</a>
+
                <div class="dropdown">
                   <a class="dropa">Notifications
                      <i class="fa fa-caret-down"></i>
@@ -61,6 +71,7 @@ $events = $res->get_result();
                      -->
 
                   </div>
+
             </nav>
             <div class="profile">
                <img src="uploaded/<?php echo $img ?>" alt="<?php echo $img ?>" style="border-radius:50vw;margin-top:1vh; cursor:pointer;" class="profilepic" onclick="redirectToPage('<?php echo $role; ?>')">
@@ -69,11 +80,10 @@ $events = $res->get_result();
                </div>
                <div class="activedot"></div>
             </div>
-      </header>
-   </div>
-   <?php
-   while ($event = $events->fetch_assoc()) {
-   ?>
+
+         </header>
+      </div>
+      <?php while ($event = $events->fetch_assoc()) { ?>
       <div class="post-body">
          <post-header>
             <div class="post-wrapper">
@@ -108,11 +118,12 @@ $events = $res->get_result();
             </div>
          </post-infomatics>
          <img src="<?php echo $event['image']; ?>" alt="<?php echo $event['titles']; ?>" class="imagecenter" style="max-width: 40vw">
-         <form method="POST" action="registerEvent.php">
-            <input type="hidden" id="user" name="user" value="<?php echo $email; ?>">
-            <input name="eventID" type="hidden" value="<?php echo $event['eventID']; ?>">
-            <button class="post-register" type="submit">Register!</button>
-         </form>
+
+            <form method="POST" action="registerEvent.php">
+               <input type="hidden" id="user" name="user" value="<?php echo $email; ?>">
+               <input name="eventID" type="hidden" value="<?php echo $event['eventID']; ?>">
+               <button class="post-register" type="submit">Register!</button>
+            </form>
          <div class="post-share">
             <a>Share</a>
          </div>
@@ -127,22 +138,20 @@ $events = $res->get_result();
             <img src="Images/HeavyLifting.png" alts="Stick figure lifing heavy box" class="warningimages">
          </div>
       </div>
-   <?php } ?>
 
+      <?php } ?>
    <body>
-      <?php
-      if (isset($_SESSION['flash'])) { //check flah message
-      ?>
-         <script>
-            alert("<?php echo $_SESSION['flash']; ?>")
-         </script>
-      <?php
-         unset($_SESSION['flash']); //unset flash message
-      } ?>
-
-</html>
-<script src="js/redirect.js"></script>
-<script src="js/search.js"></script>
-</body>
-
+   <?php
+   if (isset($_SESSION['flash'])) { //check flah message
+   ?>
+      <script>
+         alert("<?php echo $_SESSION['flash']; ?>")
+      </script>
+   <?php
+      unset($_SESSION['flash']); //unset flash message
+   } ?>
+   </html>
+      <script src="js/redirect.js"></script>
+      <script src="js/search.js"></script>
+   </body>
 </html>

@@ -49,12 +49,22 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
                 }
         } else{ // If the credentials arent in the table
             // consoleLog("Incorrect email or password");
+                    $_SESSION['message'] = $_SESSION['userType'] . " " . $_SESSION['email'] . " logged in succesfully"; // setting the console output as a message
+                    header("Location: homepage.php");
+                    exit();
+                    
+                } else { // If password is incorrect
+                    $_SESSION['message'] = "Incorrect email or password";
+                    header("Locaiton: signin.html");
+                    exit();
+                }
+        } else{ // If the credentials arent in the table
+             consoleLog("Incorrect email or password");
         }
-/*
+    /*
     $stmt->close();
     $conn->close();
     */
-}
 
 // session_destroy(); // destroys session and clears all session data
 
