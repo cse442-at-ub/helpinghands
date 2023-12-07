@@ -2,7 +2,6 @@
 
 
 require 'connect.php'; // Connecting to database
-session_start();
 
 
 
@@ -10,37 +9,55 @@ session_start();
 if (isset($_POST['user']) && isset($_POST['eventID'])) {
     $user = $_POST["user"];
     $eventID = $_POST["eventID"];
-    
-    try {
-        // Check if the event is already full
-        $stmt = mysqli_query($conn, "SELECT events.eventID, events.volunteersRequired, count(eg.eventID) as total_reg FROM `events` left JOIN eventRegistrations eg on eg.eventID = events.eventID WHERE events.eventID=$eventID GROUP BY events.eventID;");
-        $eventData = $stmt->fetch_assoc();
-      
-        if ($eventData['volunteersRequired'] == $eventData['total_reg']) {
-            $_SESSION['flash'] = "Event is already full";
-            header('location:homepage.php');
-            exit;
-        }
-         // Check if the user is already registered
-        $stmt = mysqli_query($conn, "SELECT * FROM eventRegistrations WHERE user = '$user' AND eventID = $eventID");
-        if (mysqli_num_rows($stmt)) {
-            $_SESSION['flash'] = "You are already registered for this event.";
-            header('location:homepage.php');
-            exit;
-        }
 
-        // Register the user for the event
-        $stmt = $conn->prepare("INSERT INTO eventRegistrations (user, eventID) VALUES (? , ?)");
-        $stmt->bind_param('ss', $user, $eventID);
-        $stmt->execute();
+    // Check if the user is already registered
+    $stmt = $conn->prepare("SELECT * FROM eventRegistrations WHERE user = ? AND eventID = ?");
+    $stmt->bind_param("si", $user, $eventID);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-        $_SESSION['flash'] = "You have successfully registered for the event.";
-        header('location:homepage.php');
-
-    } catch(PDOException $error) {
-        $_SESSION['flash'] = "Error: " . $error->getMessage(); // echos error message
-        header('location:homepage.php');
+    if ($result->num_rows > 0) {
+        echo "You are already registered for this event.";
+        exit;
     }
+
+    // Check if the event has room for the new volunteer
+
+    // Getting the current number of registered volunteers
+    $stmt = $conn->prepare("SELECT * FROM eventRegistrations WHERE eventID = ?");
+    $stmt->bind_param("i", $eventID);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $numRegistrations = $result->num_rows; // Stores the current number of registrations for the event
+
+    // Getting the max number of volunteers
+    $stmt = $conn->prepare("SELECT volunteersRequired FROM events WHERE eventID = ?");
+    $stmt->bind_param("i", $eventID);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $maxVolunteersRow = $result->fetch_assoc();
+    $maxVolunteers = $maxVolunteersRow['volunteersRequired'];
+
+    // Comparing
+    if ($numRegistrations >= $maxVolunteers) {
+        echo "Unfortunately, the maxinmum number of volunteers has been reached for this event";
+        exit;
+    }
+
+
+
+    // Register the user for the event
+    $stmt = $conn->prepare("INSERT INTO eventRegistrations (user, eventID) VALUES (? , ?)"); // Preparing SQL statement to prevent SQL injection
+    $stmt->bind_param("si", $user, $eventID);
+
+    // Error handling
+    if(!$stmt->execute()){
+        echo "Error: " . $stmt->error; // echoes error message
+        exit;
+    }
+
+    echo "You have successfully registered for the event.";
+
 }
 
 ?>

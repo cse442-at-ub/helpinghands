@@ -167,6 +167,7 @@ nav ul li a{
     width: calc(100% - 60px);
     display: flex;
     flex-wrap: wrap;
+    flex-direction: row;
     justify-content: space-between;
     z-index: 1; /* Ensure the comment section is on top */
     align-items: center;
@@ -229,16 +230,24 @@ nav ul li a{
     background-color: #E4E4E4;
     padding: 20px;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
     width: 100%;
     max-width: 300px;
     margin: 0 auto;
+    margin-bottom: 10px;
     border-radius: 20px;
+    display: flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    flex-direction: row;
 }
 .logo_box img{
     margin-bottom: 5px;
     width: 100%;
+}
+.logo_box peopleimg{
+    margin-bottom: 5px;
+    width: 100%;
+    height:100%;
 }
 .box_rating{
         padding: 5px 10px;

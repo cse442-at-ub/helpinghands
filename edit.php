@@ -78,4 +78,3 @@ if ($_FILES['imgInp']['error'] === UPLOAD_ERR_OK) {
   }
 }
 ?>
-

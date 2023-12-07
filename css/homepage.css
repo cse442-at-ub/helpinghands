@@ -117,13 +117,44 @@ nav a{
     padding: 2.5vh 0.625vw;
 }
 
-nav a:hover{
-    border-radius:3vw;
+nav a:hover, .dropdown:hover .dropa{
+    border-radius:3vh;
     padding:.8vw;
     background: #D1E4E9;
     color: black;
 }
 
+.dropdown {
+    float: left;
+    overflow: hidden;
+}
+
+.dropdown .dropa {
+    border:none;
+}
+
+.dropdown-content {
+    display:none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    z-index: 1;
+    border-bottom-left-radius: 3vh;
+    border-bottom-right-radius: 3vh;
+}
+
+.dropdown-content a {
+    float: none;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
 .profile {
     justify-self: felx-end;
     align-self: center;
@@ -301,25 +332,7 @@ post-infomatics a{
     margin-top: 1vh;
 }
 
-.post-register button {
-    border-radius: 1vh;
-    font-size: 3.2vh;
-    line-height: 8vh;
-    font-family: 'Inter';
-    color: black;
-    text-align: center;
-    background-color: #B1FF96;
-    width: 40%;
-    height: 8vh;
-    margin-left: 30%;
-    margin-top: 1vh;
-}
-
-.post-register button:hover{
-    background-color:#38C805;
-}
-
-.post-register post-register:hover{
+.post-register:hover{
     background-color:#38C805;
 }
 
@@ -353,23 +366,6 @@ post-infomatics a{
 }
 
 .post-save:hover{
-    background-color:#919191;
-    color: white;
-}
-
-.post-save button {
-    margin-top: -4vh;
-    margin-left: 50.5%;
-    width: 19.5%;
-    height: 4vh;
-    background-color: #e4e4e4;
-    border-radius: 1vh;
-    line-height: 4vh;
-    font-size: 1.6vh;
-    font-family: 'Inter';
-}
-
-.post-save button:hover{
     background-color:#919191;
     color: white;
 }

@@ -18,7 +18,7 @@ $events = $events->get_result();
   <title>ProfilePage</title>
   <link rel="stylesheet" href="css/organisationprofilepage.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter">
-  <link rel="stylesheet" href="evo-calendar.min.css">
+  <link rel="stylesheet" href="css/evo-calendar.min.css">
 </head>
 <body>
   <?php
@@ -231,7 +231,7 @@ $events = $events->get_result();
 
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/evo-calendar@1.1.2/evo-calendar/js/evo-calendar.min.js"></script>
-  <script src="evo-calendar.js"></script>
+  <script src="js/evo-calendar.js"></script>
 
   <script>
     $("#calendar").evoCalendar

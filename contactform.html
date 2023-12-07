@@ -2,9 +2,8 @@
 <html>
 <head>
 <title>Contact form</title>
-<link rel="stylesheet" href="contactform.css">
+<link rel="stylesheet" href="css/contactform.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter">
-<script src = "script.js" type = "text/javascript"></script>
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <body>
@@ -16,8 +15,8 @@
                     <a> HELPING <span class="multicolorbanner">HANDS</span></a>
                 </div>
                 <nav>
-                    <a href="http://127.0.0.1:5500/signup.html">Login</a>
-                    <a href="#">About</a>
+                    <a href="signup.html">Login</a>
+                    <a href="aboutpage.html">About</a>
                 </nav>
             </div>
         </header>
@@ -27,14 +26,11 @@
     </div>
     <body>
         <div class="AccountBox">
-            <div class="MissionStatement">
-                <H1>Empower change with us. Explore countless volunteering opportunities effortlessly. Your journey to make a difference starts here. </H1>
-            </div>
             <a id="Title" p><span class="multicolorbanner">Welcome to</span> HELPING <span class="multicolorbanner">HANDS</span></a>
             <form id="contactForm" action="https://formsubmit.co/scrubs442@gmail.com" method="POST">
                 <input type="text" name="_honey" style="display: none;">
                 <input type="hidden" name="_captcha" vaue="false">
-                <input type = "hidden" name = "_next" value = "http://127.0.0.1:5500/contactsuccessform.html">
+                <input type = "hidden" name = "_next" value = "contactsuccessform.html">
                 <div class="InputBox">
                     <label for="name"><b>Name</b></label>
                     <input type="text" id="name" placeholder="Enter Full name" name="name" required>

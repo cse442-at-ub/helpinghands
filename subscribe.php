@@ -1,6 +1,6 @@
 <?php
 
-require 'connect.php'; // Connecting to databade
+require 'connect.php'; // Connecting to database
 
 
 // Check if userID and organizationID are given using the POST method
@@ -19,13 +19,13 @@ if(isset($_POST['userID']) && isset($_POST['organizationID'])){
         $deleteStmt->bind_param('ii', $userID, $organizationID);
         $deleteStmt->execute();
 
-        echo "unsubscribed successfully";
+        echo "Subscribe";
     } else { // If subscription doesn't exist, subscribe
         $insertStmt = $conn->prepare('INSERT INTO subscriptions (userID, organizationID) VALUES (?, ?)');
         $insertStmt->bind_param('ii', $userID, $organizationID);
         $insertStmt->execute();
 
-        echo "subscribed successfully";
+        echo "Unsubscribe";
     }
 }
 

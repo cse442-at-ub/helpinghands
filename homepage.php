@@ -15,13 +15,13 @@ $events = $res->get_result();
 <html>
 
 
-   <head>
-      <title>Homepage</title>
-      <link rel="stylesheet" href="css\homepage.css">
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter">
-   </head>
+<head>
+   <title>Homepage</title>
+   <link rel="stylesheet" href="css\homepage.css">
+   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter">
+</head>
 
-   <body>
+<body>
    <?php
    require 'connect.php';
    session_start();
@@ -47,7 +47,20 @@ $events = $res->get_result();
             </div>
             <nav>
                <a href="#">Settings</a>
-               <a href="#">Notifications</a>
+               <div class="dropdown">
+                  <a class="dropa">Notifications
+                     <i class="fa fa-caret-down"></i>
+                  </a>
+                  <script src = "js/fetchNotifs.js"></script>
+                  <div class="dropdown-content">
+                     <!--
+                     <a href="#">Linky1</a>
+                     <a href="#">Linky2</a>
+                     <a href="#">Linky3</a>
+                     <a href="#">Linky4</a>
+                     -->
+
+                  </div>
             </nav>
             <div class="profile">
                <img src="uploaded/<?php echo $img ?>" alt="<?php echo $img ?>" style="border-radius:50vw;margin-top:1vh; cursor:pointer;" class="profilepic" onclick="redirectToPage('<?php echo $role; ?>')">
@@ -56,16 +69,16 @@ $events = $res->get_result();
                </div>
                <div class="activedot"></div>
             </div>
-         </header>
-      </div>
-      <?php
+      </header>
+   </div>
+   <?php
    while ($event = $events->fetch_assoc()) {
    ?>
       <div class="post-body">
          <post-header>
             <div class="post-wrapper">
                <div class="post-logo">
-                  <img src="Images/<?php echo $event['profile_image']; ?>" alts="Weld Food Bank Logo" class="logocenter">
+                  <img src="uploaded/<?php echo $event['profile_image']; ?>" alts="Weld Food Bank Logo" class="logocenter">
                </div>
                <a href="#">...</a>
             </div>
@@ -95,11 +108,11 @@ $events = $res->get_result();
             </div>
          </post-infomatics>
          <img src="<?php echo $event['image']; ?>" alt="<?php echo $event['titles']; ?>" class="imagecenter" style="max-width: 40vw">
-            <form method="POST" action="registerEvent.php">
-               <input type="hidden" id="user" name="user" value="<?php echo $email; ?>">
-               <input name="eventID" type="hidden" value="<?php echo $event['eventID']; ?>">
-               <button class="post-register" type="submit">Register!</button>
-            </form>
+         <form method="POST" action="registerEvent.php">
+            <input type="hidden" id="user" name="user" value="<?php echo $email; ?>">
+            <input name="eventID" type="hidden" value="<?php echo $event['eventID']; ?>">
+            <button class="post-register" type="submit">Register!</button>
+         </form>
          <div class="post-share">
             <a>Share</a>
          </div>
@@ -114,19 +127,22 @@ $events = $res->get_result();
             <img src="Images/HeavyLifting.png" alts="Stick figure lifing heavy box" class="warningimages">
          </div>
       </div>
-      <?php } ?>
+   <?php } ?>
+
    <body>
-   <?php
-   if (isset($_SESSION['flash'])) { //check flah message
-   ?>
-      <script>
-         alert("<?php echo $_SESSION['flash']; ?>")
-      </script>
-   <?php
-      unset($_SESSION['flash']); //unset flash message
-   } ?>
-   </html>
-      <script src="js/redirect.js"></script>
-      <script src="js/search.js"></script>
-   </body>
+      <?php
+      if (isset($_SESSION['flash'])) { //check flah message
+      ?>
+         <script>
+            alert("<?php echo $_SESSION['flash']; ?>")
+         </script>
+      <?php
+         unset($_SESSION['flash']); //unset flash message
+      } ?>
+
+</html>
+<script src="js/redirect.js"></script>
+<script src="js/search.js"></script>
+</body>
+
 </html>

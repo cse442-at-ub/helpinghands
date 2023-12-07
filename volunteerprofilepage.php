@@ -16,9 +16,9 @@ $events = $events->get_result();
 
 <head>
   <title>ProfilePage</title>
-  <link rel="stylesheet" href="css/volunteerprofilepage.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter">
-  <link rel="stylesheet" href="evo-calendar.min.css">
+  <link rel="stylesheet" type="text/css" href="css/volunteerprofilepage.css">
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Inter">
+  <link rel="stylesheet" href="css/evo-calendar.min.css">
 </head>
 <body>
   <?php
@@ -111,7 +111,7 @@ $events = $events->get_result();
           <a href="volunteeredit.php">Edit Profile</a>
         </li>
         <li>
-          <a href="https://www-student.cse.buffalo.edu/CSE442-542/2023-Fall/cse-442d/signin.html">Logout</a>
+          <a href="logout.php">Logout</a>
         </li>
       </ul>
     </nav>
@@ -211,12 +211,12 @@ $events = $events->get_result();
           echo "<div class=\"box_rating\"> . $ratingEvent . </div>";
           //PEPOPLE count >:(
           echo "<div class=\"pepople_rating\">";
-          echo "<img src=\"Images/people.png\">";
+          echo "<img src=\"Images/people.png\" class=\"peopleimg\">";
           echo $count . "/" . $rowEvents["volunteersRequired"];
           echo "</div></div>";
           //Date and Time
           echo "<div class=\"date\">";
-          echo "<span>" . $rowEvents["startDate"] . " - " . $rowEvents["endDate"] . "</span><span>" . $rowEvents["startTime"] . " - " . $rowEvents["endTime"] . "</span>";
+          echo "<span>" . date('M d, Y', strtotime($rowEvents['startDate'])) . " - " . date('M d, Y', strtotime($rowEvents["endDate"])) . "</span><span>" . date('ha', strtotime($rowEvents["startTime"])) . " - " . date('ha', strtotime($rowEvents["endTime"])) . "</span>";
           echo "</div></div>";
         }
       } else {
@@ -240,7 +240,7 @@ $events = $events->get_result();
   </div>
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/evo-calendar@1.1.2/evo-calendar/js/evo-calendar.min.js"></script>
-  <script src="evo-calendar.js"></script>
+  <script src="js/evo-calendar.js"></script>
 
   <script>
     $("#calendar").evoCalendar

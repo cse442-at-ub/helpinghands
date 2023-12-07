@@ -31,10 +31,12 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
                 if (password_verify($password, $account['password'])) { 
 
                     $userType = $account['userType'];
+                    $userID = $account['userID'];
 
                     // Storing username and userType in session
                     $_SESSION['email'] = $email;
                     $_SESSION['userType'] = $userType;
+                    $_SESSION['userID'] = $userID;
                     //echo $_SESSION['userType'] . " " . $_SESSION['email'] . " logged in successfully";
                     //$_SESSION['message'] = $_SESSION['userType'] . " " . $_SESSION['email'] . " logged in succesfully"; // setting the console output as a message
                     header("Location: homepage.php");
@@ -47,22 +49,12 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
                 }
         } else{ // If the credentials arent in the table
             // consoleLog("Incorrect email or password");
-                    $_SESSION['message'] = $_SESSION['userType'] . " " . $_SESSION['email'] . " logged in succesfully"; // setting the console output as a message
-                    header("Location: homepage.php");
-                    exit();
-                    
-                } else { // If password is incorrect
-                    $_SESSION['message'] = "Incorrect email or password";
-                    header("Locaiton: signin.html");
-                    exit();
-                }
-        } else{ // If the credentials arent in the table
-             consoleLog("Incorrect email or password");
         }
-    /*
+/*
     $stmt->close();
     $conn->close();
     */
+}
 
 // session_destroy(); // destroys session and clears all session data
 

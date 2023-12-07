@@ -1,4 +1,3 @@
-// Searchbar searching function
 function search() {
     var searchText = document.getElementById('searchInput').value.toLowerCase();
     var cards = document.getElementsByClassName('post-body');
@@ -8,9 +7,9 @@ function search() {
         var card = cards[i];
 
         if (cardContent.includes(searchText)) {
-            card.style.display = 'block'; // display matching cards
+            card.style.display = 'block'; // Display matching cards
         } else {
-            card.style.display = 'none'; // hide non-matching cards
+            card.style.display = 'none'; // Hide non-matching cards
         }
     }
 }
