@@ -243,9 +243,10 @@ post-header{
     margin-left: auto;
     margin-right: auto;
     object-fit: contain;
-    max-width:16vh;
-    min-width:16vh;
-    margin-top:-1vh;
+    max-height:7vh;
+    min-height:7vh;
+    margin-top:0vh;
+    margin-bottom:1vh;
 }
 
 .imagecenter {
@@ -328,35 +329,17 @@ post-infomatics a{
     background-color: #B1FF96;
     width: 40%;
     height: 8vh;
-    margin-left: 30%;
     margin-top: 1vh;
+    margin-bottom: 2vh;
 }
 
 .post-register:hover{
     background-color:#38C805;
 }
 
-.post-share {
-    margin-top: 1vh;
-    margin-left: 30%;
-    width: 19.5%;
-    height: 4vh;
-    background-color: #e4e4e4;
-    border-radius: 1vh;
-    line-height: 4vh;
-    font-size: 1.6vh;
-    font-family: 'Inter';
-}
-
-.post-share:hover{
-    background-color:#919191;
-    color: white;
-}
-
 .post-save {
-    margin-top: -4vh;
-    margin-left: 50.5%;
-    width: 19.5%;
+    margin-top: 0vh;
+    width: 40%;
     height: 4vh;
     background-color: #e4e4e4;
     border-radius: 1vh;
