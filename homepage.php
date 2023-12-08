@@ -19,6 +19,7 @@ $events = $res->get_result();
    <title>Homepage</title>
    <link rel="stylesheet" href="css\homepage.css">
    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter">
+   <link rel="stylesheet" href="css\MainNavbar.css">
 </head>
 
 <body>
