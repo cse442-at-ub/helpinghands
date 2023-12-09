@@ -19,6 +19,7 @@ $events = $res->get_result();
    <title>Homepage</title>
    <link rel="stylesheet" href="css\homepage.css">
    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter">
+   <link rel="stylesheet" href="css\MainNavbar.css">
 </head>
 
 <body>
@@ -113,13 +114,10 @@ $events = $res->get_result();
             <input name="eventID" type="hidden" value="<?php echo $event['eventID']; ?>">
             <button class="post-register" type="submit">Register!</button>
          </form>
-         <div class="post-share">
-            <a>Share</a>
-         </div>
          <form action="bookmarkEvent.php" method="POST">
             <input type="hidden" id="user" name="user" value="<?php echo $email; ?>">
             <input type="hidden" id="<?php echo $eventID; ?>" name="eventID" value="<?php echo $eventID; ?>">
-            <div class="post-save"><button type="submit" id="bookmarkEvent">Save for later</button></div>
+            <button class="post-save" type="submit" id="bookmarkEvent">Save for later</button>
          </form>
          <div class="post-warnings">
             <img src="Images/673px-Wheelchair_symbol.svg.png" alts="Disabled Symbol" class="warningimages">
