@@ -85,6 +85,7 @@ body{
     max-width: 700px;
     padding: 0 15px;
     margin: 0 auto;
+    overflow: hidden;
 }
 
 .first_box{
@@ -203,12 +204,13 @@ input:focus, textarea:focus {
 }
 
 .overlap-12 {
-    position: relative;
-    width: 320px;
-    height: 64px;
-    top: 500px;
-    left: 850px;
+    position: relative !important;
+    width: 320px !important;;
+    height: 64px !important;;
+    top: 20px !important;; 
+    margin: 0 auto !important;;
 }
+
 
 input[type="submit"] {
     background-color: #e7feff;
